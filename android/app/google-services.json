@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "657125110906",
+    "project_id": "ttun-ef3f6",
+    "storage_bucket": "ttun-ef3f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657125110906:android:5c841b61cba938081a37c3",
+        "android_client_info": {
+          "package_name": "com.qrcode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657125110906-4enm01q4ueiev70s4p4gpa78srn61629.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP9biLA77wuYn0vmyolNs8RQAw_6gSgP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657125110906-4enm01q4ueiev70s4p4gpa78srn61629.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "657125110906-acp87ppkaoon2jsn2hcles1g53c23sl2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ref.FCMtesting"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,6 +9,7 @@ import { NotificationListener ,requestUserPermission } from "./src/pushNotificat
 import {PermissionsAndroid} from 'react-native';
   
 const App =()=>{
+  //ooww
   if (Platform.OS === 'android') {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
   }

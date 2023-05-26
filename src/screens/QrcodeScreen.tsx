@@ -11,10 +11,13 @@ import {
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import QrCodeMask from 'react-native-qrcode-mask';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const QrcodeScreen=()=> {
-   
+  const navigation=useNavigation();
+  const route= useRoute();
+  //const id=route.params?.json1.name;
+  //console.log(id);
   var repeat = new Set();
   const [scan, setScan] = useState(true);
   const [invoice,setInvoice]=useState([]);
@@ -55,8 +58,7 @@ const QrcodeScreen=()=> {
     this.scanner.reactivate();
   };
 
-  const navigation=useNavigation();
-
+  
 return (
 <QRCodeScanner
   onRead={onSuccess}

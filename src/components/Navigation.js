@@ -6,6 +6,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import QrcodeScreen from "../screens/QrcodeScreen";
 
+
 import { AuthContext } from "../context/AuthContext";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import UserScreen from "../screens/UserScreen";
@@ -15,6 +16,9 @@ import ListScreen from "../screens/ListScreen"
 import SearchScreen from "../screens/SearchScreen";
 
 import * as Animatable from 'react-native-animatable';
+import UpdateAccountnameScreen from "../screens/userscreen/UpdateAccountnameScreen";
+import SharedAccountScreen from "../screens/userscreen/SharedAccountScreen";
+import SharedListScreen from "../screens/userscreen/SharedListScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,11 +28,11 @@ const Tab = createBottomTabNavigator();
 const HomeStack=({navigation,route})=>{
     React.useLayoutEffect(() => {
         const routeName = getFocusedRouteNameFromRoute(route);
-        console.log(routeName)
+        //console.log(routeName)
         if (routeName == "Qrcode") {
-        navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
+            navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
         } else {
-        navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'flex',} });
+            navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'flex',} });
         }
     }, [navigation, route]);
     return(
@@ -47,14 +51,39 @@ const HomeStack=({navigation,route})=>{
     );
 }
 
-const UserStack=()=>{
+const UserStack=({navigation,route})=>{
+    React.useLayoutEffect(() => {
+        const routeName = getFocusedRouteNameFromRoute(route);
+        //console.log(routeName)
+        if (routeName == "UpdateAccountname" || routeName == "SharedAccount"|| routeName == "SharedList") {
+            navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
+        } else {
+            navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'flex',} });
+        }
+    }, [navigation, route]);
     return(
-        <Stack.Navigator>
+    <Stack.Navigator initialRoutName="User">
         <Stack.Screen
             name="User"
             component={UserScreen}
             options={{ headerShown: false }}/>
-        </Stack.Navigator>
+
+        <Stack.Screen
+            name="UpdateAccountname"
+            component={UpdateAccountnameScreen}
+            options={{headerShown:false }}
+            />
+        <Stack.Screen
+            name="SharedAccount"
+            component={SharedAccountScreen}
+            options={{headerShown:false }}
+            />
+        <Stack.Screen
+            name="SharedList"
+            component={SharedListScreen}
+            options={{headerShown:false }}
+            />
+    </Stack.Navigator>
         
     );
 }
@@ -87,18 +116,13 @@ const SearchStack=()=>{
 
 const Navigation =()=>{
 
-    const {userInfo}=useContext(AuthContext);
-    handleViewRef = ref => this.view = ref;
-  
-    bounce = () => this.view.bounce(200);
-  
+    const {token}=useContext(AuthContext);
     return(
         <NavigationContainer >    
-            { userInfo.token ?(
+            { token.token ?(
                 <>
                 <Tab.Navigator 
                 //initialRouteName="首頁"
-                
                 screenOptions={{
                     headerShown:false,
                     tabBarShowLabel:false,
@@ -106,23 +130,17 @@ const Navigation =()=>{
                     tabBarInactiveTintColor:'#10348D',
                     tabBarActiveTintColor:'#FFFFFF',
                     lazy:true,
-                    unmountOnBlur:true,
-                    
-                    
+                    unmountOnBlur:true,                   
                 }}
                 >
                     <Tab.Screen name="首頁" component={HomeStack}   options={{
                         tabBarIcon:({focused,color,size})=>(
                             focused ? size=30:size=25,
-                            <Animatable.View animation="tada" ref={this.handleViewRef}>
                                 <FontAwesomeIcon icon={faHome} size={size} color={color} />
-                            </Animatable.View> 
                         )
                     }}
-                    
                     />
                      <Tab.Screen name="搜尋" component={SearchStack} options={{
-                        
                         tabBarIcon:({focused,color,size})=>(
                             focused ? size=30:size=25,
                             <FontAwesomeIcon icon={faSearch}  size={size} color={color}/>

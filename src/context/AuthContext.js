@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AuthContext= createContext();
 
 export const AuthProvider =({children})=>{
-    const [userInfo,setUserInfo]=useState({});
+    const [token,setToken]=useState({});
     const [isLoading,setIsLoading]=useState(false);
     const [splashLoading,setSplashLoading]= useState(false);
 
@@ -18,11 +18,11 @@ export const AuthProvider =({children})=>{
             password,
         }).then(res=>{
             setIsLoading(false);
-            let userInfo=res.data;
-            console.log(userInfo);
-            console.log(res.status);
-            setUserInfo(userInfo);
-            AsyncStorage.setItem('userInfo',JSON.stringify(userInfo));
+            let token=res.data;
+            console.log(token);
+            //console.log(res.status);
+            setToken(token);
+            AsyncStorage.setItem('token',JSON.stringify(token));
             
         }).catch(e=>{
             console.log(`login error ${e}`);
@@ -39,11 +39,11 @@ export const AuthProvider =({children})=>{
         
 
         }).then(res=>{
-            let userInfo=res.data
-            setUserInfo(userInfo);
-            AsyncStorage.setItem('userInfo',JSON.stringify(userInfo));
+            let token=res.data
+            setToken(token);
+            AsyncStorage.setItem('token',JSON.stringify(token));
             
-            console.log(userInfo);
+            console.log(token);
             setIsLoading(false);
         }).catch(e=>{
             
@@ -54,27 +54,22 @@ export const AuthProvider =({children})=>{
     };
 
     const logout =()=>{
-        //setIsLoading(true);
-
-        
-            //console.log(res.data);
-            AsyncStorage.removeItem('userInfo');
-            setUserInfo({});
+        //setIsLoading(true);   
+            console.log('logout');
+            AsyncStorage.removeItem('token');
+            setToken({});
             setIsLoading(false);
-        
-        //setIsLoading(false);
     };
 
     const isLoggedIn=async ()=>{
         try{
             //setSplashLoading(true);
-            let userInfo =await AsyncStorage.getItem('userInfo')
-            userInfo=JSON.parse(userInfo);
-
-            if(userInfo){
-                setUserInfo(userInfo);
+            let token =await AsyncStorage.getItem('token')
+            token=JSON.parse(token);
+            console.log("isloggedin:"+token.token);
+            if(token){
+                setToken(token);
             };
-
             //setSplashLoading(false);
         }catch(e){
             //setSplashLoading(false);
@@ -92,7 +87,7 @@ export const AuthProvider =({children})=>{
         <AuthContext.Provider 
         value={{
           isLoading,
-          userInfo,
+          token,
           splashLoading,
           register,
           login,

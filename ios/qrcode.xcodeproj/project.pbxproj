@@ -578,6 +578,7 @@
 					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
 				);
 				INFOPLIST_FILE = qrcode/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "冰機靈";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -666,6 +667,7 @@
 					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
 				);
 				INFOPLIST_FILE = qrcode/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "冰機靈";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

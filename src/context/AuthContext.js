@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import { BASE_URL } from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 export const AuthContext= createContext();
 
@@ -23,8 +24,8 @@ export const AuthProvider =({children})=>{
             //console.log(res.status);
             setToken(token);
             AsyncStorage.setItem('token',JSON.stringify(token));
-            
         }).catch(e=>{
+            Alert.alert("帳號或密碼錯誤");
             console.log(`login error ${e}`);
             setIsLoading(false);
         });

@@ -18,18 +18,16 @@ const UserScreen=()=>{
             getUserInfo();
         },[])
     )
-
     /*useEffect(()=>{
          getUserInfo();
     },[]);*/
-
     console.log('userScreen');
     const [refreshing, setRefreshing] = useState(false);
     const [userInfo,setUserInfo]=useState({});
     const {token,logout}=useContext(AuthContext);
     const [role,setRole]=useState("");
     const iconSize=18;
-    const [switchChange,setSwitchChange]=useState(false);
+    const [switchChange,setSwitchChange]=useState(true);
     const navigation=useNavigation();
 
     const getFCMToken = async () => {
@@ -37,7 +35,6 @@ const UserScreen=()=>{
         try {
           const fcmtoken = await messaging().getToken();
           console.log(fcmtoken);
-
           axios({
             method:"POST",
             url:`${BASE_URL}/auth/uploadFCM`,
@@ -69,14 +66,11 @@ const UserScreen=()=>{
         });
     }
 
-    
-
     const onRefresh =useCallback(()=>{ // 避免不必要的渲染使用
         setRefreshing(true);
         getUserInfo();
     },[]);
     //console.log(switchChange);
-
     return(
         <SafeAreaView style={styles.safeAreaView}>
             <ScrollView
@@ -86,11 +80,11 @@ const UserScreen=()=>{
                 }>
 
                 <View style={styles.infobg}>
-
                     <Button 
                         buttonStyle={styles.infoButtontop}
                         icon={<FontAwesomeIcon icon={faUser} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
+                        onPress={()=>navigation.navigate('UpdateUserName',{userInfo:userInfo})}
                         title={
                             <>
                                 <Text>名稱</Text>
@@ -107,7 +101,7 @@ const UserScreen=()=>{
                         title={<>
                                 <Text>電子郵件</Text>
                                 <View style={styles.titleView_4}>
-                                    <Text style={styles.leftTitle}>{userInfo.email}</Text>
+                                    <Text style={styles.leftTitle} ellipsizeMode="tail" numberOfLines={1}>{userInfo.email}</Text>
                                     <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
                                 </View>
                             </>}>
@@ -116,6 +110,7 @@ const UserScreen=()=>{
                         buttonStyle={styles.infoButtoncenter}
                         icon={<FontAwesomeIcon icon={faPhone} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
+                        onPress={()=>navigation.navigate('UpdateUserPhone',{userInfo:userInfo})}
                         title={<>
                                 <Text>電話</Text>
                                 <View style={styles.titleView}>
@@ -128,6 +123,7 @@ const UserScreen=()=>{
                         buttonStyle={styles.infoButtoncenter}
                         icon={<FontAwesomeIcon icon={faLock} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
+                        onPress={()=>navigation.navigate('UpdateUserPassword',{userInfo:userInfo})}
                         title={<>
                                 <Text>修改密碼</Text>
                                 <View style={styles.titleView_4}>
@@ -139,6 +135,7 @@ const UserScreen=()=>{
                         buttonStyle={styles.infoButtonBottom}
                         icon={<FontAwesomeIcon icon={faIdCard} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
+                        onPress={()=>navigation.navigate('UpdateUserRole',{userInfo:userInfo})}
                         title={<>
                                 <Text>用戶類型</Text>
                                 <View style={styles.titleView_4}>
@@ -147,6 +144,7 @@ const UserScreen=()=>{
                                 </View>
                             </>}>
                     </Button>
+                    
                     <Button 
                         buttonStyle={styles.accountButtontop}
                         icon={<FontAwesomeIcon icon={faSnowflake} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
@@ -160,24 +158,7 @@ const UserScreen=()=>{
                                 </View>
                             </>}>
                     </Button>
-                    <Button 
-                        buttonStyle={styles.accountButtoncenter}
-                        icon={<FontAwesomeIcon icon={faPaperPlane} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
-                        titleStyle={styles.buttonTitle}
-
-                        title={<>
-                                <Text>共用冰箱</Text>
-                                <View style={styles.titleView_4}>
-                                <Switch
-                                    trackColor={{false: '#64FF00', true: '#40F71F'}}
-                                    thumbColor={switchChange ? '#FFFFFF' : '#FFFFFF'}
-                                    //ios_backgroundColor="#64FF00"
-                                    onValueChange={()=>setSwitchChange(!switchChange)}
-                                    value={switchChange}
-                                />
-                                </View>
-                            </>}>
-                    </Button>
+                    
                     <Button 
                         buttonStyle={styles.accountButtoncenter}
                         icon={<FontAwesomeIcon icon={faShare} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
@@ -195,14 +176,14 @@ const UserScreen=()=>{
                         icon={<FontAwesomeIcon icon={faList} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
                         onPress={()=>navigation.navigate('SharedList')}
+                        
                         title={<>
-                                <Text>查看共用冰箱</Text>
+                                <Text>查看共用用戶</Text>
                                 <View style={styles.titleView_6}>
                                     <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
                                 </View>
                             </>}>
-                    </Button>
-
+                    </Button>    
                     <Button 
                         buttonStyle={styles.accountButtonBottom}
                         icon={<FontAwesomeIcon icon={faCloudArrowUp} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
@@ -322,6 +303,9 @@ const styles =StyleSheet.create({
     },
    
     leftTitle:{
+        width:180,
+        textAlign:'right',
+        //backgroundColor:'black',
         color:'#969696',
         fontSize:15,
     },
@@ -330,31 +314,25 @@ const styles =StyleSheet.create({
     },
     titleView:{
         flexDirection:"row",
-        //backgroundColor:"#F58C8C",
         width:235,
         justifyContent:'flex-end',
         
     },
     titleView_4:{
         flexDirection:"row",
-        //backgroundColor:"#F58C8C",
         width:206,
         justifyContent:'flex-end',
         
     },
     titleView_6:{
         flexDirection:"row",
-        //backgroundColor:"#F58C8C",
         width:178,
-        justifyContent:'flex-end',
-        
+        justifyContent:'flex-end', 
     },
     iconLeft:{
         marginRight:5,
         marginLeft:5,
-
     },
-
     scrollView:{
         justifyContent:'flex-start',
         //alignItems:'center',

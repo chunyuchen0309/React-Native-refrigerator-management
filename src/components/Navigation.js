@@ -19,6 +19,10 @@ import * as Animatable from 'react-native-animatable';
 import UpdateAccountnameScreen from "../screens/userscreen/UpdateAccountnameScreen";
 import SharedAccountScreen from "../screens/userscreen/SharedAccountScreen";
 import SharedListScreen from "../screens/userscreen/SharedListScreen";
+import UpdateUserRoleScreen from "../screens/userscreen/UpdateUserRoleScreen";
+import UpdateUserPhoneScreen from "../screens/userscreen/UpdateUserPhoneScreen";
+import UpdateUserNameScreen from "../screens/userscreen/UpdateUserNameScreen";
+import UpdateUserPasswordScreen from "../screens/userscreen/UpdateUserPasswordScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,7 +59,8 @@ const UserStack=({navigation,route})=>{
     React.useLayoutEffect(() => {
         const routeName = getFocusedRouteNameFromRoute(route);
         //console.log(routeName)
-        if (routeName == "UpdateAccountname" || routeName == "SharedAccount"|| routeName == "SharedList") {
+        if (routeName == "UpdateAccountname" || routeName == "SharedAccount"|| routeName == "SharedList" || routeName =="UpdateUserName"
+            || routeName =="UpdateUserPhone" || routeName =="UpdateUserRole"|| routeName =="UpdateUserPassword") {
             navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
         } else {
             navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'flex',} });
@@ -81,6 +86,26 @@ const UserStack=({navigation,route})=>{
         <Stack.Screen
             name="SharedList"
             component={SharedListScreen}
+            options={{headerShown:false }}
+            />
+        <Stack.Screen
+            name="UpdateUserName"
+            component={UpdateUserNameScreen}
+            options={{headerShown:false }}
+            />
+        <Stack.Screen
+            name="UpdateUserPhone"
+            component={UpdateUserPhoneScreen}
+            options={{headerShown:false }}
+            />
+        <Stack.Screen
+            name="UpdateUserRole"
+            component={UpdateUserRoleScreen}
+            options={{headerShown:false }}
+            />
+        <Stack.Screen
+            name="UpdateUserPassword"
+            component={UpdateUserPasswordScreen}
             options={{headerShown:false }}
             />
     </Stack.Navigator>

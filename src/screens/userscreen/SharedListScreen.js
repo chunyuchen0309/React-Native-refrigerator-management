@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, KeyboardAvoidingView, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Input, Text,} from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
@@ -17,20 +17,19 @@ const SharedListScreen=()=>{
     console.log("SharedListScreen");
     const {token}=useContext(AuthContext);
     const [isLoading,setIsLoading]=useState(false);
-    const [userList,setUserList]=useState([{username:'owen'},{username:'kevin'},{username:'tom'}]);
+    const [userList,setUserList]=useState([]);
     const [requestUserList,setRequestUserList]=useState([]);
     const navigation=useNavigation();
     const closeSwipeable = useRef(null);
+
     useEffect(()=>{
         getAccount();
     },[]);
 
-    const getAccount=()=>{
-        setIsLoading(true);
-        //console.log(username+" and "+accountName+" and "+token.token);
+    const getAccount=()=>{ //初始載入資料
         axios({
             method:"GET",
-            url:`${BASE_URL}/auth/getAccount`,
+            url:`${BASE_URL}/account/request`,
             headers: {'Authorization': token.token},
         }).then(res=>{
             console.log(res.data);
@@ -45,13 +44,75 @@ const SharedListScreen=()=>{
         });        
     }
 
+    const agreeAccount=(index)=>{  //同意申請
+        console.log("agreeAccount_up");
+        axios({
+            method:"PUT",
+            url:`${BASE_URL}/account/request/handle`,
+            headers: {'Authorization': token.token},
+            data:{
+                targetName:requestUserList[index].name,
+                targetEmail:requestUserList[index].email,
+                targetPhone:requestUserList[index].phone,
+                status:true,
+            },
+        }).then(res=>{
+            console.log(res.data);
+            getAccount();
+        }).catch(e=>{
+            console.log(`getAccount error ${e}`);
+        }).finally(()=>{
+            //navigation.goBack();
+        });        
+    }
+    const deleteAccount=(index)=>{ //刪除共用
+        console.log("deleteAccount_up");
+        axios({
+            method:"PUT",
+            url:`${BASE_URL}/account/shared/delete`,
+            headers: {'Authorization': token.token},
+            data:{
+                name:userList[index].name,
+                email:userList[index].email,
+                phone:userList[index].phone,
+            },
+        }).then(res=>{
+            console.log(res.data);
+            getAccount();
+        }).catch(e=>{
+            console.log(`error ${e}`);
+        }).finally(()=>{
+            //navigation.goBack();
+        });        
+    }
+
+
     const deleteItem = (index) => { //回調函數
         //console.log("刪除call")
-        console.log(userList[index]);
-        const arr = [...userList];
-        arr.splice(index, 1);
-        setUserList(arr);
+        Alert.alert(
+            "帳戶訊息",
+            `名稱:${userList[index].name}\n 
+            電話號碼: ${userList[index].phone}\n
+            郵件: ${userList[index].email}`,
+            [
+             {text: "Cancel",onPress: () => console.log("Cancel Pressed"),style: "cancel"},
+             { text: "Agree", onPress: () => deleteAccount(index),style:'destructive'}
+           ]
+         )
       };
+    
+    const agreeItem =(index)=>{
+        Alert.alert(
+           "申請訊息",
+           `名稱:${requestUserList[index].name}\n 
+           電話號碼: ${requestUserList[index].phone}\n
+           郵件: ${requestUserList[index].email}`,
+           [
+            {text: "Cancel",onPress: () => console.log("Cancel Pressed"),style: "cancel"},
+            { text: "Agree", onPress: () => agreeAccount(index),style:'destructive'}
+          ]
+        )
+    }
 
 
     
@@ -79,8 +140,15 @@ const SharedListScreen=()=>{
                 <FlashList
                     data={requestUserList}
                     estimatedItemSize={50}
-                    renderItem={({item})=>(
-                        <ItemBox data={item}/>
+                    renderItem={({item,index})=>(
+                        <TouchableOpacity onPress={()=>agreeItem(index)}>
+                        <View style={Userstyle.listButton}>
+                            <Text style={Userstyle.listTitle}>
+                            {item.name}
+                            </Text>
+                        </View>
+                        </TouchableOpacity>
+                        
                         )}
                     />
             </View>

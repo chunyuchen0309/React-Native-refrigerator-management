@@ -53,7 +53,6 @@ const RegisterScreen =()=>{
         </Text>
         <View style={styles.radioButton}>
             <CheckBox
-                
                 checked={role === 1}
                 onPress={()=>setRole(0)}
                 title="Personal"

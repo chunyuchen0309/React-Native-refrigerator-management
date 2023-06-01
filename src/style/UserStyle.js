@@ -95,7 +95,22 @@ const Userstyle =StyleSheet.create({
     deletetext:{
         color:"#FFFFFF",
         fontSize:15,
-    }
+    },
+    checkBoxView:{
+        marginHorizontal:50,
+        marginVertical:45,
+        flexDirection:'row',
+    },
+    whitebg:{
+        backgroundColor:'#FFFFFF',
+        marginHorizontal:15,
+        borderRadius:20,
+        marginTop:-60,
+        paddingVertical:30,
+    },
+    PasswordcontainerStyle:{ //all for title &input
+        paddingHorizontal:20,
+    },
 });
 
 export default Userstyle;

@@ -29,7 +29,14 @@ const HomeScreen =()=>{
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
         }
         >
-        <Button 
+        <Button
+        title="建立冰箱"
+        onPress={
+            ()=>navigation.navigate('Step1',)
+        }>
+            
+        </Button>
+            <Button 
                 title="Qrcode"
                 loading={isLoading}
                 buttonStyle={{       

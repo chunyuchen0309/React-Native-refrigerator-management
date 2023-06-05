@@ -24,6 +24,14 @@ import UpdateUserPhoneScreen from "../screens/userscreen/UpdateUserPhoneScreen";
 import UpdateUserNameScreen from "../screens/userscreen/UpdateUserNameScreen";
 import UpdateUserPasswordScreen from "../screens/userscreen/UpdateUserPasswordScreen";
 
+import { RefrigeratorProvider } from "../context/RefrigeratorContext";
+import Step5Screen from "../screens/create_refrigerator/Step5Screen";
+import Step4Screen from "../screens/create_refrigerator/Step4Screen";
+import Step3Screen from "../screens/create_refrigerator/Step3Screen";
+import Step2Screen from "../screens/create_refrigerator/Step2Screen";
+import Step1Screen from "../screens/create_refrigerator/Step1Screen";
+
+
 const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
@@ -33,25 +41,51 @@ const HomeStack=({navigation,route})=>{
     React.useLayoutEffect(() => {
         const routeName = getFocusedRouteNameFromRoute(route);
         //console.log(routeName)
-        if (routeName == "Qrcode") {
+        if (routeName == "Qrcode" || routeName == "Step1" || routeName == "Step2"|| routeName == "Step3"|| routeName == "Step4"|| routeName == "Step5") {
             navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
         } else {
             navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'flex',} });
         }
     }, [navigation, route]);
     return(
-    <Stack.Navigator initialRoutName="Home">   
-        <Stack.Screen 
-            name="Home" 
-            component={HomeScreen}
-            options={{headerShown:false }} />
-        <Stack.Screen
-            name="Qrcode"
-            component={QrcodeScreen}
-            options={{headerShown:false }}
-            
-            />
-    </Stack.Navigator>
+        <RefrigeratorProvider>
+            <Stack.Navigator initialRoutName="Home">   
+                <Stack.Screen 
+                    name="Home" 
+                    component={HomeScreen}
+                    options={{headerShown:false }} />
+                <Stack.Screen
+                    name="Qrcode"
+                    component={QrcodeScreen}
+                    options={{headerShown:false }}
+                    />
+                <Stack.Screen
+                    name="Step1"
+                    component={Step1Screen}
+                    options={{headerShown:false }}
+                    />
+                <Stack.Screen
+                    name="Step2"
+                    component={Step2Screen}
+                    options={{headerShown:false }}
+                    />
+                <Stack.Screen
+                    name="Step3"
+                    component={Step3Screen}
+                    options={{headerShown:false }}
+                    />
+                <Stack.Screen
+                    name="Step4"
+                    component={Step4Screen}
+                    options={{headerShown:false }}
+                    />
+                <Stack.Screen
+                    name="Step5"
+                    component={Step5Screen}
+                    options={{headerShown:false }}
+                    />
+            </Stack.Navigator>
+        </RefrigeratorProvider>
     );
 }
 

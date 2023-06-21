@@ -1,20 +1,20 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, Switch, View } from "react-native";
+import {   SafeAreaView, ScrollView, StyleSheet, Switch, TouchableWithoutFeedback, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { BASE_URL } from "../../config";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRight, faCloudArrowUp, faEnvelope, faList, faLock, faPaperPlane, faPhone, faShare, faShareFromSquare, faSnowflake, faUser } from "@fortawesome/free-solid-svg-icons";
-import { faCircleLeft, faIdCard, } from "@fortawesome/free-regular-svg-icons";
 import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/native";
 import { RefrigeratorContext } from "../../context/RefrigeratorContext";
-
+import Modal from "react-native-modal";
+import AnimatedLottieView from "lottie-react-native";
 
 const Step5Screen = () => {
-
+    const [modalVisible,setModalVisible]=useState(false);
     const setting=()=>{
-        navigation.navigate("Home");
+        //navigation.navigate("Home");
+        setModalVisible(true);
+        
     }
 
     console.log('step5');
@@ -31,6 +31,30 @@ const Step5Screen = () => {
     return (
         <SafeAreaView style={styles.safeAreaView}>
 
+        <Modal 
+            animationIn={"zoomIn"}
+            animationInTiming={900}
+            animationOut={"zoomOut"}
+            animationOutTiming={800}
+            isVisible={modalVisible}
+            backdropOpacity={0.2}  
+            onBackdropPress={() => {setModalVisible(false),navigation.navigate("Home")}}
+            >
+                <TouchableWithoutFeedback 
+                onPress={()=>{setModalVisible(false),navigation.navigate("Home")}}
+                >
+                    <View style={styles.modalView}>
+                        <AnimatedLottieView
+                        source={require('../../assets/checkmark.json')}
+                        autoPlay
+                        speed={0.3}
+                        loop={false}>
+
+                        </AnimatedLottieView>
+
+                    </View>
+                </TouchableWithoutFeedback>    
+        </Modal>
 
             <View style={styles.infobg}>
                 <Button
@@ -189,6 +213,27 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 15,
     },
+    modalView:{
+        opacity:0.8,
+        borderRadius:10,
+        alignSelf:'center',
+        //justifyContent:'center',
+        backgroundColor:'#FFFFFF',
+        width:280,
+        height:200,
+    },
+    modalTitle:{
+        marginVertical:20,
+        fontSize:30,
+        textAlign:'center',
+    },
+    modalContent:{
+        padding:10,
+        lineHeight:30,
+        fontSize:18,
+        color:'#8D8D8D',
+        //textAlign:'center',
+    }
 });
 
 export default Step5Screen;

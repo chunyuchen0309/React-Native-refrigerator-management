@@ -12,7 +12,7 @@ import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/n
 import messaging from '@react-native-firebase/messaging';
 
 const UserScreen=()=>{
-
+    //123
     useFocusEffect(
         React.useCallback(()=>{
             getUserInfo();
@@ -228,13 +228,14 @@ const styles =StyleSheet.create({
         marginHorizontal:20,
         marginTop:50,
         borderRadius:20,
+        paddingVertical:50,
     },
     infoButtontop:{
         height:40,
         justifyContent:'flex-start',
         backgroundColor:'#A7DCFF',
         marginHorizontal:20,
-        marginTop:50,
+        //marginTop:50,
         marginBottom:3,
         borderTopStartRadius:10,
         borderTopEndRadius:10,
@@ -297,8 +298,9 @@ const styles =StyleSheet.create({
         justifyContent: 'flex-start',
         backgroundColor:'#D9FEAA',
         marginHorizontal:20,
-        marginVertical:40,
-        //marginBottom:3,
+        //paddingTop:20,
+        //marginVertical:40,
+        marginTop:20,
         borderRadius:10,
     },
    

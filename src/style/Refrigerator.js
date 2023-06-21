@@ -92,7 +92,9 @@ const  refrigerator =StyleSheet.create({
     topCenterButton:{ //上方分層
         backgroundColor:"#416BFF"
 
-    }
+    },
+    
+
 
 })
 

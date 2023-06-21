@@ -1,10 +1,11 @@
-import React, { Component, useCallback, useContext, useEffect, useState } from "react";
+import React, { Component, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Button, Text } from "react-native-elements";
 import { AuthContext } from "../context/AuthContext";
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import {  useIsFocused, useNavigation } from "@react-navigation/native";
 import { RefreshControl } from "react-native";
-
+import AnimatedLottieView from "lottie-react-native";
+import { ChangeColor } from "../assets/stepBarColor";
 
 const HomeScreen =()=>{
     
@@ -17,6 +18,7 @@ const HomeScreen =()=>{
         setRefreshing(true);
             setRefreshing(false);   
     },[]);
+    
 
     console.log("home");
 
@@ -29,6 +31,10 @@ const HomeScreen =()=>{
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
         }
         >
+        
+            
+        
+        
         <Button
         title="建立冰箱"
         onPress={

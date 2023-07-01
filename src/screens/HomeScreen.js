@@ -14,6 +14,7 @@ const HomeScreen =()=>{
     const [refreshing, setRefreshing] = useState(false);
     const isFocused=useIsFocused();
 
+
     const onRefresh =useCallback(()=>{ // 避免不必要的渲染使用
         setRefreshing(true);
             setRefreshing(false);   
@@ -36,28 +37,14 @@ const HomeScreen =()=>{
         
         
         <Button
+        accessible={true}
+        accessibilityLabel="建立冰箱按鈕"
         title="建立冰箱"
         onPress={
             ()=>navigation.navigate('Step1',)
         }>
             
         </Button>
-            <Button 
-                title="Qrcode"
-                loading={isLoading}
-                buttonStyle={{       
-                    backgroundColor: "#919191",
-                    borderRadius: 5,
-                }}
-                containerStyle={{
-                    height: 40,
-                    width: 120,
-                    marginHorizontal: 30,
-                    marginVertical: 10,
-                }}
-                titleStyle={{ marginHorizontal: 10, color: 'black' ,fontWeight:"bold"}}
-                onPress={()=>navigation.navigate('Qrcode',{"json1":{"data":"abc","name":"owen"}})}
-                />
             </ScrollView>         
         </SafeAreaView>     
     );

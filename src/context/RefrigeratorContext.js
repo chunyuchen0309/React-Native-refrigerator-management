@@ -24,30 +24,30 @@ export const RefrigeratorProvider =({children})=>{
     }
 
     const step2_cold=(count)=>{
-        console.log("冷藏分層 : ",count);
-        setColdCount(count)
+        console.log("冷藏分層 : "+count);
+        setColdCount(Number(count))
     }
 
     const step2_freezing=(count)=>{
-        console.log("冷凍分層 : ",count);
-        setFresszingCount(count)
+        console.log("冷凍分層 : "+count);
+        setFresszingCount(Number(count))
     }
 
     const step3_coldDoor=(count)=>{
-        console.log("冷藏門分層 : ",count);
-        setColdDoorCount(count);
+        console.log("冷藏門分層 : "+count);
+        setColdDoorCount(Number(count));
     }
     const step3_freezingDoor=(count)=>{
-        console.log("冷凍門分層 : ",count);
-        setFresszingDoorCount(count);
+        console.log("冷凍門分層 : "+count);
+        setFresszingDoorCount(Number(count));
     }
 
     const step4_coldPlane=(count)=>{
-        console.log("冷藏平面分層 : ",count);
+        console.log("冷藏平面分層 : "+count);
         setColdPlaneCount(count);
     }
     const step4_freezingPlane=(count)=>{
-        console.log("冷凍平面分層 : ",count);
+        console.log("冷凍平面分層 : "+count);
         setFresszingPlaneCount(count);
     }
 

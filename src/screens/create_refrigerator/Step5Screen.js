@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import {   SafeAreaView, ScrollView, StyleSheet, Switch, TouchableWithoutFeedback, View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import {   Alert, Keyboard, SafeAreaView, ScrollView, StyleSheet, Switch, TouchableWithoutFeedback, View } from "react-native";
+import { Button, Input, Text } from "react-native-elements";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { BASE_URL } from "../../config";
@@ -11,13 +11,112 @@ import AnimatedLottieView from "lottie-react-native";
 
 const Step5Screen = () => {
     const [modalVisible,setModalVisible]=useState(false);
+    const [refName,setRefName]=useState("");
+    const [upInfo,setUpInfo]=useState([]);
+    const [isLoading,setIsLoading]=useState(false);
+    const {token}=useContext(AuthContext);
     const setting=()=>{
+        setIsLoading(true);
         //navigation.navigate("Home");
-        setModalVisible(true);
-        
-    }
+        //setModalVisible(true);
+        //console.log(coldCount+freezingCount);
+        if(outConfig=="上層冷凍+下層冷藏"){
+            for(var i=1;i<=freezingCount;i++){
+                upInfo.push(
+                    {
+                    "type":"freezer",
+                    "door":false,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":freezingPlaneCount==4? 2:freezingPlaneCount==6? 3:freezingPlaneCount==9? 3:3,
+                    "compartment_row":freezingPlaneCount==4? 2:freezingPlaneCount==6? 2:freezingPlaneCount==9? 3:3,
+                    });
+            }
+            for(var i=(freezingCount+1);i<=(coldCount+freezingCount);i++){
+                upInfo.push(
+                    {
+                    "type":"cooler",
+                    "door":false,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":coldPlaneCount==4? 2:coldPlaneCount==6? 3:coldPlaneCount==9? 3:3,
+                    "compartment_row":coldPlaneCount==4? 2:coldPlaneCount==6? 2:coldPlaneCount==9? 3:3,
+                    });
+            }
+            for(var i=1;i<=freezingDoorCount;i++){
+                upInfo.push(
+                    {
+                    "type":"freezer",
+                    "door":true,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":1,
+                    "compartment_row":1,
+                    });
+            }
+            for(var i=(freezingDoorCount+1);i<=(coldDoorCount+freezingDoorCount);i++){
+                upInfo.push(
+                    {
+                    "type":"cooler",
+                    "door":true,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":1,
+                    "compartment_row":1,
+                    });
+            }
+            console.log(upInfo);
+        }else{
+            for(var i=1;i<=coldCount;i++){
+                upInfo.push(
+                    {
+                    "type":"cooler",
+                    "door":false,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":coldPlaneCount==4? 2:coldPlaneCount==6? 3:coldPlaneCount==9? 3:3,
+                    "compartment_row":coldPlaneCount==4? 2:coldPlaneCount==6? 2:coldPlaneCount==9? 3:3,
+                    });
+            }
+            for(var i=(coldCount+1);i<=(freezingCount+coldCount);i++){
+                upInfo.push(
+                    {
+                    "type":"freezer",
+                    "door":false,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":freezingPlaneCount==4? 2:freezingPlaneCount==6? 3:freezingPlaneCount==9? 3:3,
+                    "compartment_row":freezingPlaneCount==4? 2:freezingPlaneCount==6? 2:freezingPlaneCount==9? 3:3,
+                    });
+            }
+            for(var i=1;i<=coldDoorCount;i++){
+                upInfo.push(
+                    {
+                    "type":"cooler",
+                    "door":true,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":1,
+                    "compartment_row":1,
+                    });
+            }
+            for(var i=(1+coldDoorCount);i<=(coldDoorCount+freezingDoorCount);i++){
+                upInfo.push(
+                    {
+                    "type":"freezer",
+                    "door":true,
+                    "refrigerator_col":"1",
+                    "refrigerator_row":""+i,
+                    "compartment_col":1,
+                    "compartment_row":1,
+                    });
+            }
+            console.log(upInfo);
+        }
+        //setUpInfo([]);
+        Update();
+    };
 
-    console.log('step5');
     const {
         outConfig,
         coldCount,
@@ -28,7 +127,33 @@ const Step5Screen = () => {
         freezingPlaneCount,}=useContext(RefrigeratorContext);
     const navigation = useNavigation();
 
+    const Update=()=>{
+        
+        axios({
+            method:"POST",
+            url:`${BASE_URL}/storage/add`,
+            headers: {'Authorization': token.token},
+            data:{
+                "refrigerator_name": refName,
+                "compartment": upInfo,
+            },
+        }).then(res=>{
+            console.log(res.data);
+            setIsLoading(false);
+            setModalVisible(true);
+        }).catch(e=>{
+            console.log(`新增冰箱失敗 ${e}`);
+            setIsLoading(false);
+            Alert.alert("已有建立冰箱紀錄，無法再次新增");
+            navigation.navigate("Home")
+        }).finally(()=>{
+            setIsLoading(false);
+        });
+    }
+    console.log(refName);
+
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <SafeAreaView style={styles.safeAreaView}>
 
         <Modal 
@@ -55,10 +180,25 @@ const Step5Screen = () => {
                     </View>
                 </TouchableWithoutFeedback>    
         </Modal>
-
             <View style={styles.infobg}>
                 <Button
-                    buttonStyle={styles.infoButtonAll}
+                    buttonStyle={[styles.infoButtontop,{backgroundColor:"#A7DCFF",}]}
+                    titleStyle={{}}
+                    title={
+                        <>               
+                            <Input
+                                placeholder="輸入冰箱名稱"
+                                containerStyle={{flex:1,marginHorizontal:10,marginTop:15,}}
+                                inputContainerStyle={{height:60,}}
+                                inputStyle={{fontSize:16,}}
+                                clearButtonMode="while-editing"
+                                value={refName}
+                                onChangeText={(text)=>setRefName(text)}>
+                            </Input>
+                        </>
+                    } />
+                <Button
+                    buttonStyle={[styles.infoButtonBottom,{backgroundColor:"#A7DEFF"}]}
                     titleStyle={styles.buttonTitle}
                     title={
                         <>
@@ -66,8 +206,6 @@ const Step5Screen = () => {
                             <Text style={styles.rightTitle}>{outConfig}</Text>
                         </>
                     } />
-
-
                 <Button
                     buttonStyle={[styles.infoButtontop,{backgroundColor:"#95ECFF"}]}
                     titleStyle={styles.buttonTitle}
@@ -121,6 +259,7 @@ const Step5Screen = () => {
                 </Button>
 
                 <Button
+                    loading={isLoading}
                     buttonStyle={styles.finishButton}
                     titleStyle={styles.finishTitle}
                     onPress={()=>setting()}
@@ -129,6 +268,7 @@ const Step5Screen = () => {
 
             </View>
         </SafeAreaView>
+        </TouchableWithoutFeedback>
     );
 };
 

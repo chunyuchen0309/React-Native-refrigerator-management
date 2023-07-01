@@ -266,6 +266,7 @@ const  style=StyleSheet.create({
       marginVertical:20,
       textAlign:'center',
       fontSize:20,
+      color: '#777'
   },
     nextButton:{
         backgroundColor:"#A9FF3C",

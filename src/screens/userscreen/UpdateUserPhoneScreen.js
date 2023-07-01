@@ -49,9 +49,8 @@ const UpdateUserPhoneScreen=()=>{
             setIsLoading(false);
             navigation.goBack();
         });
-
-        
     }
+    
     useEffect(()=>{
         setUserInfo(route.params?.userInfo);
         setUserPhone(route.params?.userInfo.phone);

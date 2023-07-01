@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRight, faCloudArrowUp, faEnvelope, faList, faLock, faPaperPlane, faPhone, faShare, faShareFromSquare, faSnowflake, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faChevronRight, faCloudArrowUp, faEnvelope, faList, faLock, faMoneyCheck, faPaperPlane, faPhone, faShare, faShareFromSquare, faSnowflake, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faCircleLeft, faIdCard,} from "@fortawesome/free-regular-svg-icons";
 import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/native";
 
@@ -183,7 +183,20 @@ const UserScreen=()=>{
                                     <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
                                 </View>
                             </>}>
-                    </Button>    
+                    </Button>
+                    <Button 
+                        buttonStyle={styles.accountButtoncenter}
+                        icon={<FontAwesomeIcon icon={faBriefcase} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
+                        titleStyle={styles.buttonTitle}
+                        onPress={()=>navigation.navigate('')}
+                        
+                        title={<>
+                                <Text>查看商業資訊</Text>
+                                <View style={styles.titleView_6}>
+                                    <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
+                                </View>
+                            </>}>
+                    </Button>     
                     <Button 
                         buttonStyle={styles.accountButtonBottom}
                         icon={<FontAwesomeIcon icon={faCloudArrowUp} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}

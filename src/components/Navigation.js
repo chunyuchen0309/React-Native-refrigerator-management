@@ -30,6 +30,9 @@ import Step2Screen from "../screens/create_refrigerator/Step2Screen";
 import Step1Screen from "../screens/create_refrigerator/Step1Screen";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import PostScreen from "../screens/PostScreen";
+import InvoiceScreen from "../screens/add_food/InvoiceScreen";
+import HandAddScreen from "../screens/add_food/HandAddScreen";
+import InvoiceToRefScreen from "../screens/add_food/InvoiceToRefScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -67,11 +70,7 @@ const HomeStack=({navigation,route})=>{
                     name="Home" 
                     component={HomeScreen}
                     options={{headerShown:false }} />
-                <Stack.Screen
-                    name="Qrcode"
-                    component={QrcodeScreen}
-                    options={{headerShown:false }}
-                    />
+                
                 <Stack.Screen
                     name="Step1"
                     component={Step1Screen}
@@ -160,13 +159,43 @@ const UserStack=({navigation,route})=>{
     );
 }
 
-const PostStack=()=>{
+const PostStack=({navigation,route})=>{
+    React.useLayoutEffect(() => {
+        const routeName = getFocusedRouteNameFromRoute(route);
+        //console.log(routeName)
+        if (routeName == "Qrcode" || routeName =="Invoice" || routeName =="HandAdd" || routeName=="InvoiceToRef") {
+            navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
+        } else {
+            navigation.setOptions({ tabBarStyle:{...style.tabBar,...style.shadow} });
+        }
+    }, [navigation, route]);
     return(
-        <Stack.Navigator>
-        <Stack.Screen
-            name="Post"
-            component={PostScreen}
-            options={{ headerShown: false }}/>
+        <Stack.Navigator initialRoutName="Post">
+            <Stack.Screen
+                name="Post"
+                component={PostScreen}
+                options={{ headerShown: false }}/>
+            <Stack.Screen
+                    name="Qrcode"
+                    component={QrcodeScreen}
+                    options={{headerShown:false }}
+                    />
+            <Stack.Screen
+                    name="Invoice"
+                    component={InvoiceScreen}
+                    options={{headerShown:false }}
+                    />
+            <Stack.Screen
+                    name="HandAdd"
+                    component={HandAddScreen}
+                    options={{headerShown:false }}
+                    />
+            <Stack.Screen
+                    name="InvoiceToRef"
+                    component={InvoiceToRefScreen}
+                    options={{headerShown:false }}
+                    />
+            
         </Stack.Navigator>
     );
 }

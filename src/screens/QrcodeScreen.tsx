@@ -24,25 +24,8 @@ const QrcodeScreen = () => {
   const [scan, setScan] = useState(true);
   const [invoice, setInvoice] = useState([]);
   const [result, setResult] = useState(new Set());
-
-  const result_mathod = () => {
-    let arr = Array.from(result); //set(）{}轉出為陣列
-    let output = arr.join().split('');
-    if (output[0] == '*') {
-      arr[2] = arr[0];
-      arr[0] = arr[1];
-      arr[1] = arr[2];
-      delete arr[2];
-      arr = arr.filter(el => el);
-    }
-    //console.log(arr.join());
-    Alert.alert(arr.join());
-    //清空array
-    result.clear();
-    arr.splice(0, arr.length);
-    invoice.splice(0, invoice.length);
-  }
-
+  const [invoiceInfo, setInvoiceInfo] = useState({});
+  
   const onSuccess = (e: { data: string; }) => {
     if (result.size != 2) {
       invoice.push(e.data);//= (e.data); //add e.data to paper[]
@@ -51,7 +34,36 @@ const QrcodeScreen = () => {
       });
     } else {
       setScan(false);
-      console.log("end");
+      console.log("掃描結束");
+      let arr = Array.from(result); //set(）{}轉出為陣列
+    //console.log(arr);
+    let output = arr.join().split('');
+    if (output[0] == '*') {
+      arr[2] = arr[0];
+      arr[0] = arr[1];
+      arr[1] = arr[2];
+      delete arr[2];
+      arr = arr.filter(el => el);
+    }
+    var re=/[^\u4e00-\u9fa5]/;
+    const s1=arr.join().split(":");
+    var s2=[];
+    for( let i =0; i<s1.length; i++){
+        var chineseRegex = /[\u4e00-\u9fa5]/g;
+        var chineseCharacters=s1[i].match(chineseRegex);
+        if (chineseCharacters) {
+            s2.push(chineseCharacters.join('')) 
+          }
+    }
+    var tempData=[];
+    for(let i=0;i<s2.length;i++){
+      tempData.push({"OldData":""+s2[i],"NewData":'',})
+    }
+    setInvoiceInfo({"Number":arr.join().substring(0,10),"Date":""+arr.join().substring(10,17),"Data":tempData,});
+    console.log(tempData);
+    result.clear();
+    arr.splice(0, arr.length);
+    invoice.splice(0, invoice.length);
     };
   };
 
@@ -60,14 +72,12 @@ const QrcodeScreen = () => {
     this.scanner.reactivate();
   };
 
-
   return (
     <SafeAreaView style={{flex:1}}>
     <QRCodeScanner
       onRead={onSuccess}
       ref={(node) => { this.scanner = node }} //編譯錯誤不影響
       cameraStyle={{ height: 350, width: 350,overflow: 'hidden',borderRadius:30,borderWidth:5,borderColor:"#FFA600"}}
-      
       containerStyle={{flex: 1, justifyContent: 'center', alignItems: 'center', }}
       showMarker={true}
       reactivate={scan}
@@ -75,7 +85,7 @@ const QrcodeScreen = () => {
       customMarker={
         <QrCodeMask
           lineDirection='vertical'
-          overlayOpacity={0.5}
+          overlayOpacity={0}
           height={250}
           edgeBorderWidth={4}
           edgeWidth={25}
@@ -97,7 +107,7 @@ const QrcodeScreen = () => {
           </Button>
           <Button
             buttonStyle={styles.qrButton}
-            onPress={() => result_mathod()}
+            onPress={() => navigation.navigate('Invoice',{"invoiceData":invoiceInfo})}
             title="掃描結果">
           </Button>
         </>
@@ -121,9 +131,9 @@ const styles = StyleSheet.create({
     //flex: 1,
     backgroundColor:'#8c9090',
     borderRadius:20,
-    marginVertical:2,
-    width:200,
-    height:50,
+    marginVertical:5,
+    width:250,
+    height:45,
 
   }
 });

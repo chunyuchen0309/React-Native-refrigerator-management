@@ -16,12 +16,7 @@ const InvoiceScreen=()=>{
 
     useEffect(()=>{
         setInvoiceInfo(route.params?.invoiceData);
-        //setInvoiceInfo(
-          //{
-        //"Number":"A1234567",
-        //"Date":"1130601",
-        //"Data":[{"OldData":"小美冰淇淋","NewData":""},{"OldData":"可口可樂","NewData":""},{"OldData":"雀巢檸檬茶","NewData":""},]
-        //});
+        //setInvoiceInfo({"Number":"A1234567","Date":"1130601","Data":[{"OldData":"apple","NewData":""},{"OldData":"banana","NewData":""},]});
     },[]);
 
     const deleteItem = (index) => { //回調函數

@@ -33,6 +33,7 @@ import PostScreen from "../screens/PostScreen";
 import InvoiceScreen from "../screens/add_food/InvoiceScreen";
 import HandAddScreen from "../screens/add_food/HandAddScreen";
 import InvoiceToRefScreen from "../screens/add_food/InvoiceToRefScreen";
+import HandToRefScreen from "../screens/add_food/HandToRefScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -163,7 +164,7 @@ const PostStack=({navigation,route})=>{
     React.useLayoutEffect(() => {
         const routeName = getFocusedRouteNameFromRoute(route);
         //console.log(routeName)
-        if (routeName == "Qrcode" || routeName =="Invoice" || routeName =="HandAdd" || routeName=="InvoiceToRef") {
+        if (routeName == "Qrcode" || routeName =="Invoice" || routeName =="HandAdd" || routeName=="InvoiceToRef" || routeName=="HandToRef") {
             navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
         } else {
             navigation.setOptions({ tabBarStyle:{...style.tabBar,...style.shadow} });
@@ -193,6 +194,11 @@ const PostStack=({navigation,route})=>{
             <Stack.Screen
                     name="InvoiceToRef"
                     component={InvoiceToRefScreen}
+                    options={{headerShown:false }}
+                    />
+            <Stack.Screen
+                    name="HandToRef"
+                    component={HandToRefScreen}
                     options={{headerShown:false }}
                     />
             

@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Alert, ImageBackground, SafeAreaView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
-import ItemBox from "./InvoiceItemBox";
 import { TouchableOpacity } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import dropdown from "../../style/Dropdown";
@@ -17,7 +16,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import refrigerator from "../../style/Refrigerator";
 import BoxContainer from "./BoxContainer";
-const InvoiceToRefScreen=()=>{
+const HandToRefScreen=()=>{
     //const [invoiceList,setInvoiceList]=useState([]);
     const route = useRoute();
     const {token}=useContext(AuthContext);
@@ -63,24 +62,23 @@ const InvoiceToRefScreen=()=>{
                 RefList.push({label:""+res.data.refrigeratorList[i].refrigerator_name
                     ,value:""+i})
             }
-
         }).catch(e=>{
             console.log(`getRefInfo error ${e}`);
         }).finally(()=>{
-            
         }
         );
     }
     useEffect(()=>{
         getRefInfo();
         setInvoiceInfo(route.params?.InvoiceInfo);
-        var tempData = route.params?.InvoiceInfo.Data;
+        var tempData = route.params?.InvoiceInfo;
         setAddList(prevList => {
             const updatedList = [...prevList];
             for (let i = 0; i < tempData.length; i++) {
             updatedList.push({
-                "OldData": tempData[i].OldData,
-                "NewData": tempData[i].NewData,
+                "OldData": tempData[i].foodName,
+                "Date": tempData[i].foodDate,
+                "FoodType":tempData[i].foodCatgory,
                 "Select": false,
             });
             }
@@ -233,12 +231,12 @@ const InvoiceToRefScreen=()=>{
               "container_row": Boxrow,
               "door": Door,
               "old_name": addList[i].OldData,
-              "custom_name": addList[i].NewData,
-              "expired_date": "",
+              "custom_name": "",
+              "expired_date": addList[i].Date,
               "amount": 1,
-              "type": "",
+              "type": addList[i].FoodType,
               "price": 0,
-              "addByMethod": "invoice",
+              "addByMethod": "normal",
             });
           }
         }
@@ -451,4 +449,4 @@ const styles=StyleSheet.create({
     
 })
 
-export default InvoiceToRefScreen;
+export default HandToRefScreen;

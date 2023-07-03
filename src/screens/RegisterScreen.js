@@ -5,8 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { faCircle, faCircleCheck, faCircleDot, faCircleExclamation, faEnvelopeOpen, faPhone, faUser } from "@fortawesome/free-solid-svg-icons";
-import { Keyboard, KeyboardAvoidingView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { faBuilding, faCircle, faCircleCheck, faCircleDot, faCircleExclamation, faEnvelopeOpen, faLocationPin, faMapPin, faMoneyCheck, faPhone, faUser } from "@fortawesome/free-solid-svg-icons";
+import { Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 
@@ -44,9 +44,11 @@ const RegisterScreen =()=>{
     return(
         <>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-
-        
         <SafeAreaView style={styles.container}>
+        <ScrollView
+        contentContainerStyle={styles.scrollView}
+        //bounces={false}
+        >
         <KeyboardAvoidingView behavior="position" enabled  >
         <Text style={{fontSize:40,color:"#919191", marginHorizontal:10,marginVertical:20}}>
             Register
@@ -124,9 +126,64 @@ const RegisterScreen =()=>{
                 onChangeText={text =>phoneBlur(text)}
                 clearButtonMode="while-editing"
                 />
-            
-            
+            {role==1?
+                <>
+                <Input
+                containerStyle={{height:80 ,width:350}}
+                disabledInputStyle={{ background: "#ddd" }}
+                inputContainerStyle={{height:45}}
+                inputStyle={{}}
+                leftIcon={<FontAwesomeIcon icon={ faBuilding} size={25} color="#404496" />}
+                labelStyle={{color:'#404496'}}
+                label="CompanyName"
+                value={phone}
+                //errorMessage={errorMessage[2]}
+                //onChangeText={text =>phoneBlur(text)}
+                clearButtonMode="while-editing"
+                />
+                <Input
+                containerStyle={{height:80 ,width:350}}
+                disabledInputStyle={{ background: "#ddd" }}
+                inputContainerStyle={{height:45}}
+                inputStyle={{}}
+                leftIcon={<FontAwesomeIcon icon={ faMapPin} size={25} color="#404496" />}
+                labelStyle={{color:'#404496'}}
+                label="CompanyAddress"
+                value={phone}
+                //errorMessage={errorMessage[2]}
+                //onChangeText={text =>phoneBlur(text)}
+                clearButtonMode="while-editing"
+                />
+                <Input
+                containerStyle={{height:80 ,width:350}}
+                disabledInputStyle={{ background: "#ddd" }}
+                inputContainerStyle={{height:45}}
+                inputStyle={{}}
+                leftIcon={<FontAwesomeIcon icon={ faMoneyCheck} size={25} color="#404496" />}
+                labelStyle={{color:'#404496'}}
+                label="GUI Number"
+                value={phone}
+                //errorMessage={errorMessage[2]}
+                //onChangeText={text =>phoneBlur(text)}
+                clearButtonMode="while-editing"
+                />
+                <Input
+                containerStyle={{height:80 ,width:350}}
+                disabledInputStyle={{ background: "#ddd" }}
+                inputContainerStyle={{height:45}}
+                inputStyle={{}}
+                leftIcon={<FontAwesomeIcon icon={ faPhone} size={25} color="#404496" />}
+                labelStyle={{color:'#404496'}}
+                label="CompanyPhone"
+                value={phone}
+                //errorMessage={errorMessage[2]}
+                //onChangeText={text =>phoneBlur(text)}
+                clearButtonMode="while-editing"
+                />
+                </>:
+                <>
 
+                </>}
             <View style={styles.twoButton}>
                 <Button 
                 title="Register"
@@ -165,8 +222,9 @@ const RegisterScreen =()=>{
                 onPress={()=>navigation.navigate('Login')}//to RegisterScreen
                 />
             </View>
+            
             </KeyboardAvoidingView>
-
+        </ScrollView>
         </SafeAreaView>
         </TouchableWithoutFeedback>
         </>
@@ -185,6 +243,8 @@ const styles = StyleSheet.create({
         flexDirection:'row', //水平排列
         //flexWrap:'nowrap',
         alignSelf:'center',
+        height:200,
+        //marginBottom:50,
         //justifyContent:'space-around',
         
     },
@@ -194,8 +254,11 @@ const styles = StyleSheet.create({
         //flexWrap:'nowrap',
         alignSelf:'flex-start',
         marginBottom:10
-
-
+    },
+    scrollView:{
+        justifyContent:'flex-start',
+        //alignItems:'center',
+        //flex:1,
     },
 
 });

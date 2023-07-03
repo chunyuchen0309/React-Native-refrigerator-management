@@ -14,7 +14,7 @@ import dropdown from "../../style/Dropdown";
 import { faBottleWater, faCheck, faChevronDown, faCircleInfo, faDrumstickBite, faLeaf, faLemon, faPizzaSlice, faShrimp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import DropDownPicker from "react-native-dropdown-picker";
-
+import DatePicker from 'react-native-date-picker'
 const HandAddScreen=()=>{
     //console.log("UpdateUserPhoneScreen");
     
@@ -23,7 +23,8 @@ const HandAddScreen=()=>{
     const [foodDate,setFoodDate]=useState("");
     const [foodCatgory,setFoodCatgory]=useState("");
     const [foodList,setFoodList]=useState([]);
-
+    const [date, setDate] = useState(new Date())
+    const [datePickerOpen, setDatePickerOpen] = useState(false);
     const [open, setOpen] = useState(false);
     const [foodCatgoryList, setFoodCatgoryList] = useState([
         { label: '蔬菜類', value: '蔬菜類' ,icon: () => <FontAwesomeIcon icon={faLeaf} color="#777" style={{left:10}} />},
@@ -35,15 +36,27 @@ const HandAddScreen=()=>{
         { label: '其他', value: '其他',icon: () => <FontAwesomeIcon icon={faCircleInfo} color="#777" style={{left:10} }/>},
     ]);
     const addFood=()=>{
+        
         setFoodList([...foodList,{"foodName":foodName,"foodDate":foodDate,"foodCatgory":foodCatgory}]);
+    }
+
+    const changeData=(date)=>{
+        
+        let datelist = date.split(/\s+/);
+        console.log(datelist);
+        let tempDate=datelist[3]+" "+datelist[1]+" "+datelist[2]
+        setFoodDate(""+tempDate)
     }
 
     useEffect(() => {
         setFoodName("");
         setFoodDate("");
         setFoodCatgory("");
+        setDate(new Date());
         console.log(foodList);
       }, [foodList]);
+    
+    //console.log(foodList);
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   
             <SafeAreaView style={Userstyle.safeAreaView}>
@@ -62,15 +75,31 @@ const HandAddScreen=()=>{
                         />
 
                         <Input
-                        label="有效日期/天"
+                        label="到期日期"
                         labelStyle={Userstyle.lable1}
                         containerStyle={[Userstyle.containerStyle1,{marginTop:0,marginBottom:30}]}
                         inputContainerStyle={Userstyle.inputContainerStyle1}
                         inputStyle={Userstyle.inputStyle1}
-                        keyboardType="numeric"
                         errorMessage="如未輸入則系統自行判定有效期限"
                         value={foodDate}
-                        onChangeText={text=>setFoodDate(text)}
+                        //onChangeText={text=>setFoodDate(text)}
+                        onPressIn={()=>{setDatePickerOpen(true)}}
+
+                        />
+                        <DatePicker
+                            //locale="zh"
+                            modal="false"
+                            mode="date"
+                            open={datePickerOpen}
+                            date={date}
+                            onConfirm={(date) => {
+                                setDatePickerOpen(false)
+                                changeData(""+date);
+                                
+                            }}
+                            onCancel={() => {
+                                setDatePickerOpen(false)
+                            }}
                         />
                     
                         <DropDownPicker
@@ -109,7 +138,7 @@ const HandAddScreen=()=>{
                         <Button
                         buttonStyle={styles.nextButton}
                         title="下一步"
-                        onPress={()=>{navigation.navigate("InvoiceToRef")}}
+                        onPress={()=>{navigation.navigate("HandToRef",{"InvoiceInfo":foodList})}}
                         />
 
                     </View>

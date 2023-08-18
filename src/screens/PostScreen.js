@@ -6,7 +6,7 @@ import Userstyle from "../style/UserStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faKeyboard, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import { useNavigation } from "@react-navigation/native";
-
+import { scale, moderateScale, verticalScale} from "./ScaleMethod";
 const PostScreen=()=>{
     const navigation=useNavigation()
     return(
@@ -14,7 +14,7 @@ const PostScreen=()=>{
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.infobg}>
                 <AnimatedLottieView
-                style={{alignSelf:'center',width:300}}
+                style={{alignSelf:'center',width:moderateScale(300)}}
                 source={require('../assets/package.json')}
                 autoPlay={true}
                 loop={false}>
@@ -24,15 +24,17 @@ const PostScreen=()=>{
                 onPress={
                     ()=>{navigation.navigate("Qrcode")}}
                 buttonStyle={Userstyle.buttonUpdate}
+                titleStyle={{fontSize:moderateScale(17)}}
                 title={"QRcode"}
-                icon={<FontAwesomeIcon icon={faQrcode} size={20} color="#FFFFFF" style={{marginHorizontal:5}}></FontAwesomeIcon>}
+                icon={<FontAwesomeIcon icon={faQrcode} size={moderateScale(20)} color="#FFFFFF" style={{marginHorizontal:moderateScale(5)}}></FontAwesomeIcon>}
                 >
                 </Button>
                 <Button
                 onPress={()=>{navigation.navigate("HandAdd")}}
-                buttonStyle={[Userstyle.buttonUpdate,{marginVertical:0,marginBottom:60,}]}
+                buttonStyle={[Userstyle.buttonUpdate,{marginVertical:moderateScale(0),marginBottom:moderateScale(60),}]}
+                titleStyle={{fontSize:moderateScale(17)}}
                 title={"手動增加"}
-                icon={<FontAwesomeIcon icon={faKeyboard} size={20} color="#FFFFFF" style={{marginHorizontal:5}}></FontAwesomeIcon>}
+                icon={<FontAwesomeIcon icon={faKeyboard} size={moderateScale(20)} color="#FFFFFF" style={{marginHorizontal:moderateScale(5)}}></FontAwesomeIcon>}
                 >
                 
                 </Button>
@@ -51,9 +53,9 @@ const styles =StyleSheet.create(
         },
         infobg:{
             backgroundColor:'#E4E4E4',
-            marginHorizontal:20,
-            marginTop:50,
-            borderRadius:20,
+            marginHorizontal:moderateScale(20),
+            marginTop:moderateScale(50),
+            borderRadius:moderateScale(20),
         },
     }
 

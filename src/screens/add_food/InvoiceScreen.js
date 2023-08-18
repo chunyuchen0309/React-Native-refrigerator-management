@@ -1,22 +1,24 @@
-import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDays, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { SafeAreaView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { Button, FAB, Text } from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
 import { FlashList } from "@shopify/flash-list";
 import ItemBox from "./InvoiceItemBox";
+import Modal from "react-native-modal";
+import { Image } from "react-native";
 
 const InvoiceScreen=()=>{
     //const [invoiceList,setInvoiceList]=useState([]);
     const route = useRoute();
     const [invoiceInfo, setInvoiceInfo] = useState({});
     const navigation=useNavigation();
-
+    const [modalVisible,setModalVisible]=useState(false);
     useEffect(()=>{
         setInvoiceInfo(route.params?.invoiceData);
-        //setInvoiceInfo({"Number":"A1234567","Date":"1130601","Data":[{"OldData":"apple","NewData":""},{"OldData":"banana","NewData":""},]});
+        //setInvoiceInfo({"Number":"A1234567","Date":"1130601","Data":[{"OldData":"統一糙米漿","NewData":""},{"OldData":"可口可樂","NewData":""},]});
     },[]);
 
     const deleteItem = (index) => { //回調函數
@@ -43,9 +45,55 @@ const InvoiceScreen=()=>{
     return(
         
         <SafeAreaView style={styles.safeAreaView}>
+        
+            <FAB
+                color="#A7DCFF"
+                style={{zIndex:2,
+                        top:20,
+                        right:-150,
+                        shadowColor:'black',
+                        shadowOffset:{
+                            width:0,
+                            height:3,},
+                        shadowOpacity:0.5,
+                        shadowRadius:3.5,
+                        elevation:3, }}
+                size="small"
+                icon={<FontAwesomeIcon icon={faLightbulb} color="#FFFFFF" size={20}></FontAwesomeIcon>}
+                onPress={()=>{setModalVisible(true)}}
+            >
+            </FAB>
+
+            <Modal 
+            animationIn={"zoomIn"}
+            animationInTiming={800}
+            animationOut={"zoomOut"}
+            animationOutTiming={800}
+            isVisible={modalVisible}
+            backdropOpacity={0.8} 
+            onBackdropPress={() => setModalVisible(false)}
+            >
+            <TouchableWithoutFeedback onPress={()=>setModalVisible(false)}>
+            
+                <View style={styles.modalView}>
+                    <Text style={styles.modalTitle}>操作步驟提示</Text>
+
+                    <View style={{justifyContent:'center',alignItems:'center'}}>
+                    <Image source={require('../../../Img/InvoiceHint.gif')} style={{width:350,height:300,}} 
+                    resizeMode="contain"
+                    
+                    />
+                    </View>
+                    
+                </View>
+                    
+            </TouchableWithoutFeedback>    
+            </Modal>
+            
             <Text style={styles.title}>
                 發票內容
             </Text>
+            
             <Button
             buttonStyle={styles.dateButton}
             //titleStyle={{alignSelf:'flex-start'}}
@@ -89,7 +137,7 @@ const styles=StyleSheet.create({
     title:{
         textAlign:'center',
         fontSize:25,
-        marginVertical:35,
+        marginVertical:20,
         color: '#777'
     },
     dateButton:{
@@ -116,6 +164,21 @@ const styles=StyleSheet.create({
         marginVertical:20,
         marginHorizontal:50,
         borderRadius:10,
+    },
+    modalView:{
+        borderRadius:10,
+        alignSelf:'center',
+        //justifyContent:'center',
+        backgroundColor:'#FFFFFF',
+        flex:1,
+        marginVertical:200,
+    },
+    modalTitle:{
+        marginTop:20,
+        marginBottom:20,
+        fontSize:30,
+        textAlign:'center',
+        color:"#777"
     },
 })
 

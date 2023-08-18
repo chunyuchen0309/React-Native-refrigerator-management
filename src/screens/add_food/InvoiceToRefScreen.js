@@ -18,7 +18,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import refrigerator from "../../style/Refrigerator";
 import BoxContainer from "./BoxContainer";
 const InvoiceToRefScreen=()=>{
-    //const [invoiceList,setInvoiceList]=useState([]);
     const route = useRoute();
     const {token}=useContext(AuthContext);
     const navigation=useNavigation();
@@ -40,16 +39,8 @@ const InvoiceToRefScreen=()=>{
     const [buttonDownDoor,setButtonDownDoor]=useState([]);//上層門分層渲染
     const [containerBoxCount,setContainerBoxCount]=useState([])//平面分層數量
 
-    const [choose,setChoose]=useState({Door:"",Outrow:'',InsideCol:"",InsideRow:''});
-    const [initialRender, setInitialRender] = useState(true);
+    const [choose,setChoose]=useState({Door:"",Outrow:'',InsideCol:"",InsideRow:''}); //選擇的位置
 
-    const goHome =()=>{
-        if(addList.length==0){
-            Alert.alert("新增完成");
-            navigation.navigate("Post");
-        }
-    }
-    
     const getRefInfo =()=>{
         axios.get(`${BASE_URL}/storage/refrigerator/info`,{
             headers: {
@@ -63,15 +54,13 @@ const InvoiceToRefScreen=()=>{
                 RefList.push({label:""+res.data.refrigeratorList[i].refrigerator_name
                     ,value:""+i})
             }
-
         }).catch(e=>{
             console.log(`getRefInfo error ${e}`);
         }).finally(()=>{
-            
         }
         );
     }
-    useEffect(()=>{
+    useEffect(()=>{ //初始仔入獲取冰箱資料以及食物資料
         getRefInfo();
         setInvoiceInfo(route.params?.InvoiceInfo);
         var tempData = route.params?.InvoiceInfo.Data;
@@ -86,10 +75,9 @@ const InvoiceToRefScreen=()=>{
             }
             return updatedList;
         });
-        
     },[]);
     
-    const handlePress=(index)=>{
+    const handlePress=(index)=>{ //更改addList被點擊後更改顏色以及判斷是否有選定食物
         //console.log("點擊"+index);
         addList[index].Select = !addList[index].Select; // 直接修改特定索引的值
         setAddList([...addList]); // 触发重新渲染
@@ -126,7 +114,7 @@ const InvoiceToRefScreen=()=>{
             onPress={() => handleButtonPress(index + Buttonindex,"freezerContainer")}
           />
         ));
-      };
+    };
       
     const renderDownCenter = () => { //冷藏
         var Buttonindex=1;
@@ -141,7 +129,7 @@ const InvoiceToRefScreen=()=>{
             onPress={() => handleButtonPress(index +Buttonindex,"coolerContainer")}
           />
         ));
-      };
+    };
 
     const renderTopDoor = () => { //冷凍門
         var Buttonindex=1;
@@ -156,7 +144,7 @@ const InvoiceToRefScreen=()=>{
             onPress={() => handleButtonPress(index + Buttonindex,"freezerDoorContainer")}
           />
         ));
-      };
+    };
     
     const renderDownDoor = () => { //冷藏門
         var Buttonindex=1;
@@ -171,7 +159,8 @@ const InvoiceToRefScreen=()=>{
             onPress={() => handleButtonPress(index + Buttonindex,"coolerDoorContainer")}
           />
         ));
-      };
+    };
+
     const RefDropdownSelect=()=>{ //初始化內部分層格數
         var selectedCount = parseInt(RefInfo.refrigeratorList[selectRef].freezerCount);
         setButtonTopCenter(Array(selectedCount).fill(null));
@@ -183,18 +172,14 @@ const InvoiceToRefScreen=()=>{
         setButtonDownDoor(Array(selectedCount).fill(null));
     }
 
-    const handleButtonPress = (buttonIndex,type) => { //內部分層點擊
-        
+    const handleButtonPress = (buttonIndex,type) => { //內部分層點擊 
         var tempType=type;
-
         if(tempType=="freezerDoorContainer" ||tempType=="coolerDoorContainer"){ //點擊門的情況
             //console.log("種類:"+tempType);
-            console.log(` 選擇第 ${buttonIndex} 層`);
-            
+            console.log(` 選擇第 ${buttonIndex} 層`);        
             var Boxcol=0;
             var Boxrow=0;
-            var Door=true;
-           
+            var Door=true;    
             bottomSheetRef.current.forceClose();
             upUserSelect(Boxcol,Boxrow,Door,buttonIndex);// 上傳
         }else{ //點擊內部的情況
@@ -209,9 +194,9 @@ const InvoiceToRefScreen=()=>{
             setContainerBoxCount(RefInfo.refrigeratorList[selectRef][tempType]);
             bottomSheetBoxRef.current.expand();
         }
-      };
+    };
 
-    const containerhandleButtonPress = (Boxcol,Boxrow) => { //平面分層點擊回傳
+    const containerhandleButtonPress = (Boxcol,Boxrow) => { //平面分層點擊回傳,子組件callback
         console.log(`第${Boxcol} 行 第 ${Boxrow} 列 `);
         
         bottomSheetBoxRef.current.forceClose();
@@ -219,7 +204,8 @@ const InvoiceToRefScreen=()=>{
         var Door=false;
         upUserSelect(Boxcol,Boxrow,Door);
     };
-      const upUserSelect = (Boxcol,Boxrow,Door,doorIndex) => {
+
+    const upUserSelect = (Boxcol,Boxrow,Door,doorIndex) => {
         console.log("上傳")
         //setUpDataInfo([]);
         var newDataInfo = []; // 用于存储新元素的临时数组
@@ -242,7 +228,6 @@ const InvoiceToRefScreen=()=>{
             });
           }
         }
-        //console.log(newDataInfo);
         axios({
             method:"POST",
             url:`${BASE_URL}/storage/item/add`,
@@ -261,11 +246,9 @@ const InvoiceToRefScreen=()=>{
             }
         }).catch(e=>{
             console.log(`add error ${e}`);
-        }).finally(()=>{
-            
+        }).finally(()=>{ 
         });
-        
-      };
+    };
     
     //console.log(upDataInfo);
     //console.log(addList);
@@ -317,13 +300,11 @@ const InvoiceToRefScreen=()=>{
             </DropDownPicker>
             </View>
             
-            
             <Button
             onPress={()=>{bottomSheetRef.current.expand();}}
             buttonStyle={styles.nextButton}
             title={"新增"}
-            >     
-            </Button>
+            />     
             <BottomSheet
                 backdropComponent={props => (<BottomSheetBackdrop {...props}
                                     opacity={0.8}
@@ -398,9 +379,7 @@ const InvoiceToRefScreen=()=>{
                 enablePanDownToClose={true}
                 ref={bottomSheetBoxRef}
             >
-            <Text style={styles.addText}>選擇平面存放區域</Text>
-            
-                
+            <Text style={styles.addText}>選擇平面存放區域</Text>    
                 {containerBoxCount? 
                 <>
                 <ImageBackground source={require('../../../Img/Under.png') } style={{height:200,marginVertical:80,}}>
@@ -409,7 +388,6 @@ const InvoiceToRefScreen=()=>{
                 </ImageBackground>
                 </> :
                 <>
-
                 </>
                 }
                 

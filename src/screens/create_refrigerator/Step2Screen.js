@@ -4,7 +4,7 @@ import { Button, FAB, Input, Text,} from "react-native-elements";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {faChevronDown, faQuestion,} from "@fortawesome/free-solid-svg-icons";
+import {faChevronDown, faLightbulb, faQuestion,} from "@fortawesome/free-solid-svg-icons";
 import dropdown from "../../style/Dropdown";
 import refrigerator from "../../style/Refrigerator";
 import { TouchableOpacity } from "react-native";
@@ -12,6 +12,8 @@ import { RefrigeratorContext } from "../../context/RefrigeratorContext";
 import AnimatedLottieView from "lottie-react-native";
 import { ChangeColor } from "../../assets/stepBarColor";
 import Modal from "react-native-modal";
+import { ScreenWidth } from "@rneui/base";
+import { scale, moderateScale, verticalScale} from "../ScaleMethod";
 const Step2Screen=()=>{
     //console.log("step2")
     const coldList = [{key:"1",value:"一層"},{key:"2",value:"二層"},{key:"3",value:"三層"},{key:"4",value:"四層"},{key:"5",value:"五層"}];
@@ -117,33 +119,44 @@ const Step2Screen=()=>{
                         
                 </TouchableWithoutFeedback>    
             </Modal>
-        <View style={style.titleView}>
-            <Text style={style.title}>
-                
-                Step2
-            </Text>
-            <FAB
-                icon={<FontAwesomeIcon icon={faQuestion} color="#FFAA00" size={25}></FontAwesomeIcon>}
-                size="small"
-                color="#D9D9D9"
-                onPress={() => setModalVisible(true)}
-                style={{ top: 0, left:110, zIndex: 2, }}>
+            <View style={style.titleView}>
+                <Text style={style.title}>
+                    Step2
+                </Text>
+                <FAB
+                    icon={<FontAwesomeIcon icon={faLightbulb} color="#FFFFFF" size={moderateScale(20)}></FontAwesomeIcon>}
+                    size="small"
+                    placement="right"
+                    color="#A7DCFF"
+                    onPress={() => setModalVisible(true)}
+                    style={{zIndex:2,
+                        //width:moderateScale(30),
+                        //height:moderateScale(30),
+                        right:moderateScale(20),
+                        bottom:moderateScale(20),
+                        backgroundColor:"#A7DCFF",
+                        shadowColor:'#10348D',
+                        shadowOffset:{
+                            width:0,
+                            height:moderateScale(5),},
+                        shadowOpacity:0.5,
+                        shadowRadius:moderateScale(3.5),
+                        elevation:moderateScale(5),}}/>
 
-            </FAB>
-
-            <View style={{flexDirection:'column'}}>
-                <AnimatedLottieView 
-                    ref={animationRef}
-                    style={{height:30,width:20}}
-                    source={require('../../assets/stepBar.json')} 
-                    autoPlay
-                    loop  
-                    speed={0.5}
-                    colorFilters={ChangeColor}
-                    progress={0.3}
-                />
+                <View style={{flexDirection:'column'}}>
+                    <AnimatedLottieView 
+                        ref={animationRef}
+                        style={{height:moderateScale(30)}}
+                        source={require('../../assets/stepBar.json')} 
+                        autoPlay
+                        loop  
+                        speed={0.5}
+                        colorFilters={ChangeColor}
+                        autoSize={true}
+                        progress={0.3}
+                        />
+                </View>
             </View>
-        </View>
 
             <View style={style.towDropdown}>
 
@@ -156,6 +169,7 @@ const Step2Screen=()=>{
                 save="key"
                 placeholder="冷凍分層"
                 arrowicon={<FontAwesomeIcon icon={faChevronDown}/>} 
+                dropdownTextStyles={{fontSize:moderateScale(15,0.1),}}
                 />
 
                 <SelectList 
@@ -167,15 +181,16 @@ const Step2Screen=()=>{
                 save="key"
                 placeholder="冷藏分層"
                 arrowicon={<FontAwesomeIcon icon={faChevronDown}/>} 
+                dropdownTextStyles={{fontSize:moderateScale(15,0.1),}}
                 />
             </View>
 
             {outConfig == "上層冷藏+下層冷凍"?
                 <>
-                    <View style={[refrigerator.outTop,{height:320}]}>
+                    <View style={[refrigerator.outTop,{flex:5}]}>
                         {renderDownCenter()}
                     </View>
-                    <View style={[refrigerator.outBotton,{height:180}]}>
+                    <View style={[refrigerator.outBotton,{flex:2}]}>
                         {renderTopCenter()}
                     </View>
                 </> : 
@@ -209,11 +224,11 @@ const  style=StyleSheet.create({
         flexWrap:'wrap',
     },
     title:{
-        marginLeft:40,
-        marginVertical:20,
+        marginVertical:moderateScale(20),
         textAlign:'center',
-        fontSize:20,
-        color: '#777'
+        fontSize:moderateScale(20),
+        color: '#777',
+        width:ScreenWidth,
     },
     nextButton:{
         backgroundColor:"#A9FF3C",
@@ -232,22 +247,22 @@ const  style=StyleSheet.create({
     },
     modalView:{
         opacity:1,
-        borderRadius:10,
+        borderRadius:moderateScale(10),
         alignSelf:'center',
         //justifyContent:'center',
         backgroundColor:'#FFFFFF',
-        width:280,
-        height:200,
+        width:moderateScale(280),
+        height:moderateScale(200),
     },
     modalTitle:{
-        marginVertical:20,
-        fontSize:30,
+        marginVertical:moderateScale(20),
+        fontSize:moderateScale(30),
         textAlign:'center',
     },
     modalContent:{
-        padding:10,
-        lineHeight:30,
-        fontSize:18,
+        padding:moderateScale(10),
+        lineHeight:moderateScale(30),
+        fontSize:moderateScale(18),
         color:'#8D8D8D',
         //textAlign:'center',
     }

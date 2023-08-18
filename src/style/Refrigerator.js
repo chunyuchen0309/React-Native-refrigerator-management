@@ -6,8 +6,8 @@ const  refrigerator =StyleSheet.create({
         marginHorizontal:60,
     },
     outTop:{ //最外層上
-        //flex:2,
-        height:180,
+        flex:2,
+        //height:180,
         paddingHorizontal:15,
         paddingVertical:15,
         marginHorizontal:60,
@@ -18,8 +18,8 @@ const  refrigerator =StyleSheet.create({
     },
     
     outBotton:{ //最外層下
-        //flex:5,
-        height:320,
+        flex:5,
+        //height:320,
         paddingHorizontal:15,
         paddingVertical:15,
         backgroundColor:"#D9D9D9",
@@ -30,8 +30,8 @@ const  refrigerator =StyleSheet.create({
 
     //final set only 4 place
     finallOutTop:{ 
-        flex:5,
-        height:180,
+        flex:8,
+        //height:180,
         paddingHorizontal:15,
         paddingVertical:15,
         marginLeft:20,
@@ -42,8 +42,8 @@ const  refrigerator =StyleSheet.create({
         marginBottom:10,
     },
     finallOutBotton:{ 
-        flex:5,
-        height:320,
+        flex:8,
+        //height:320,
         paddingHorizontal:15,
         paddingVertical:15,
         marginLeft:20,
@@ -54,7 +54,7 @@ const  refrigerator =StyleSheet.create({
         
     },
     finallOutDoorTop:{ //最外層門上
-        flex:1,
+        flex:2,
         paddingHorizontal:15,
         paddingVertical:15,
         marginRight:20,
@@ -64,7 +64,7 @@ const  refrigerator =StyleSheet.create({
         marginBottom:10,
     },
     finallOutDoorBotton:{ //最外層門下    
-        flex:1,
+        flex:2,
         paddingHorizontal:15,
         paddingVertical:15,
         marginRight:20,
@@ -78,16 +78,16 @@ const  refrigerator =StyleSheet.create({
     handleup:{ //把手上
         backgroundColor:"#808080",
         width:10,
-        height:80,
-       //marginLeft:20,
-        marginTop:30,
+        //height:80,
+        flex:1,
+        marginVertical:30,
     },
     handledown:{ //把手下
         backgroundColor:"#808080",
         width:10,
-        height:200,
-        //marginLeft:40,
-        marginTop:60,
+        
+        flex:1,
+        marginVertical:40,
     },
     topCenterButton:{ //上方分層
         backgroundColor:"#416BFF"

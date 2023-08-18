@@ -34,7 +34,7 @@ import InvoiceScreen from "../screens/add_food/InvoiceScreen";
 import HandAddScreen from "../screens/add_food/HandAddScreen";
 import InvoiceToRefScreen from "../screens/add_food/InvoiceToRefScreen";
 import HandToRefScreen from "../screens/add_food/HandToRefScreen";
-
+import NfcScreen from "../screens/NfcScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -58,7 +58,7 @@ const HomeStack=({navigation,route})=>{
     React.useLayoutEffect(() => {
         const routeName = getFocusedRouteNameFromRoute(route);
         //console.log(routeName)
-        if (routeName == "Qrcode" || routeName == "Step1" || routeName == "Step2"|| routeName == "Step3"|| routeName == "Step4"|| routeName == "Step5") {
+        if (routeName == "Qrcode" || routeName == "Step1" || routeName == "Step2"|| routeName == "Step3"|| routeName == "Step4"|| routeName == "Step5" || routeName=="Nfc") {
             navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
         } else {
             navigation.setOptions({ tabBarStyle:{...style.tabBar,...style.shadow} });
@@ -97,6 +97,11 @@ const HomeStack=({navigation,route})=>{
                     component={Step5Screen}
                     options={{headerShown:false }}
                     />
+                <Stack.Screen
+                    name="Nfc"
+                    component={NfcScreen}
+                    options={{headerShown:false}}
+                />
             </Stack.Navigator>
         </RefrigeratorProvider>
     );
@@ -164,7 +169,7 @@ const PostStack=({navigation,route})=>{
     React.useLayoutEffect(() => {
         const routeName = getFocusedRouteNameFromRoute(route);
         //console.log(routeName)
-        if (routeName == "Qrcode" || routeName =="Invoice" || routeName =="HandAdd" || routeName=="InvoiceToRef" || routeName=="HandToRef") {
+        if (routeName == "Qrcode" || routeName =="Invoice" || routeName =="HandAdd" || routeName=="InvoiceToRef" || routeName=="HandToRef" ) {
             navigation.setOptions({ tabBarStyle:{backgroundColor:"#C7E0F9",display:'none',} });
         } else {
             navigation.setOptions({ tabBarStyle:{...style.tabBar,...style.shadow} });
@@ -201,6 +206,7 @@ const PostStack=({navigation,route})=>{
                     component={HandToRefScreen}
                     options={{headerShown:false }}
                     />
+            
             
         </Stack.Navigator>
     );

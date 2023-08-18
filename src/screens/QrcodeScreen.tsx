@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { scale, moderateScale, verticalScale} from "./ScaleMethod";
 import {
   StyleSheet,
   Text,
@@ -27,6 +27,7 @@ const QrcodeScreen = () => {
   const [invoiceInfo, setInvoiceInfo] = useState({});
   
   const onSuccess = (e: { data: string; }) => {
+    console.log(e.data);
     if (result.size != 2) {
       invoice.push(e.data);//= (e.data); //add e.data to paper[]
       invoice.forEach(item => {
@@ -36,7 +37,7 @@ const QrcodeScreen = () => {
       setScan(false);
       console.log("掃描結束");
       let arr = Array.from(result); //set(）{}轉出為陣列
-    //console.log(arr);
+    console.log(arr);
     let output = arr.join().split('');
     if (output[0] == '*') {
       arr[2] = arr[0];
@@ -45,6 +46,7 @@ const QrcodeScreen = () => {
       delete arr[2];
       arr = arr.filter(el => el);
     }
+    //console.log(arr);
     var re=/[^\u4e00-\u9fa5]/;
     const s1=arr.join().split(":");
     var s2=[];
@@ -77,7 +79,7 @@ const QrcodeScreen = () => {
     <QRCodeScanner
       onRead={onSuccess}
       ref={(node) => { this.scanner = node }} //編譯錯誤不影響
-      cameraStyle={{ height: 350, width: 350,overflow: 'hidden',borderRadius:30,borderWidth:5,borderColor:"#FFA600"}}
+      cameraStyle={{ height: moderateScale(350), width: moderateScale(350),overflow: 'hidden',borderRadius:moderateScale(30),borderWidth:moderateScale(5),borderColor:"#FFA600"}}
       containerStyle={{flex: 1, justifyContent: 'center', alignItems: 'center', }}
       showMarker={true}
       reactivate={scan}
@@ -86,13 +88,14 @@ const QrcodeScreen = () => {
         <QrCodeMask
           lineDirection='vertical'
           overlayOpacity={0}
-          height={250}
-          edgeBorderWidth={4}
-          edgeWidth={25}
-          edgeHeight={25}
+          height={moderateScale(250)}
+          width={moderateScale(250)}
+          edgeBorderWidth={moderateScale(4)}
+          edgeWidth={moderateScale(25)}
+          edgeHeight={moderateScale(25)}
           lineColor='#FFA600'
           edgeColor='white'
-          lineSize={230}
+          lineSize={moderateScale(230)}
         />
       }
       topContent={
@@ -122,18 +125,18 @@ const QrcodeScreen = () => {
 const styles = StyleSheet.create({
   centerText: {
     flex: 1,
-    fontSize: 30,
-    marginTop:50,
+    fontSize: moderateScale(30),
+    marginTop:moderateScale(50),
     //padding: 32,
     color: '#777'
   },
   qrButton: {
     //flex: 1,
     backgroundColor:'#8c9090',
-    borderRadius:20,
-    marginVertical:5,
-    width:250,
-    height:45,
+    borderRadius:moderateScale(20),
+    marginVertical:moderateScale(5),
+    width:moderateScale(250),
+    height:moderateScale(45),
 
   }
 });

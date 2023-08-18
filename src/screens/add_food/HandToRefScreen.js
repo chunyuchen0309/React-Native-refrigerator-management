@@ -220,7 +220,8 @@ const HandToRefScreen=()=>{
       const upUserSelect = (Boxcol,Boxrow,Door,doorIndex) => {
         console.log("上傳")
         //setUpDataInfo([]);
-        var newDataInfo = []; // 用于存储新元素的临时数组
+        var newDataInfo = []; // 用于存储新元素的临时数组 
+        //addList[i].Date 臨時拿掉日期
         for (let i = 0; i < addList.length; i++) {
           if (addList[i].Select) {
             newDataInfo.push({
@@ -232,7 +233,7 @@ const HandToRefScreen=()=>{
               "door": Door,
               "old_name": addList[i].OldData,
               "custom_name": "",
-              "expired_date": addList[i].Date,
+              "expired_date": addList[i].Date, 
               "amount": 1,
               "type": addList[i].FoodType,
               "price": 0,
@@ -240,7 +241,7 @@ const HandToRefScreen=()=>{
             });
           }
         }
-        //console.log(newDataInfo);
+        console.log(newDataInfo);
         axios({
             method:"POST",
             url:`${BASE_URL}/storage/item/add`,
@@ -323,6 +324,7 @@ const HandToRefScreen=()=>{
             >     
             </Button>
             <BottomSheet
+
                 backdropComponent={props => (<BottomSheetBackdrop {...props}
                                     opacity={0.8}
                                     enableTouchThrough={false}
@@ -340,41 +342,46 @@ const HandToRefScreen=()=>{
             {  isfoodSelect && (selectRef != "") ?  RefInfo && RefInfo.refrigeratorList && RefInfo.refrigeratorList[selectRef].firstType == "cooler" ?
                 <>
                 <Text style={styles.addText}>選擇存放位置</Text>
-                <View style={styles.final}>
-                    <View style={[refrigerator.finallOutTop,{height:320}]}>
-                      {renderDownCenter()} 
+                <View style={{flex:1,marginBottom:40}}>
+                    <View style={styles.finalDown}>
+                        <View style={[refrigerator.finallOutTop,{}]}>
+                        {renderDownCenter()} 
+                        </View>
+                        <View style={refrigerator.finallOutDoorTop}>
+                        {renderDownDoor()}
+                        </View>
                     </View>
-                    <View style={refrigerator.finallOutDoorTop}>
-                      {renderDownDoor()}
-                    </View>
-                </View>
-                <View style={styles.final}>
-                    <View style={[refrigerator.finallOutBotton,{height:180}]}>
-                      {renderTopCenter()}  
-                    </View>
-                    <View style={refrigerator.finallOutDoorBotton}>
-                      {renderTopDoor()}
+                    <View style={styles.finalTop}>
+                        <View style={[refrigerator.finallOutBotton,{}]}>
+                        {renderTopCenter()}  
+                        </View>
+                        <View style={refrigerator.finallOutDoorBotton}>
+                        {renderTopDoor()}
+                        </View>
                     </View>
                 </View>
                 </> : 
                 <>
                 <Text style={styles.addText}>選擇存放位置</Text>
-                <View style={styles.final}>
-                    <View style={[refrigerator.finallOutTop]}>
-                        {renderTopCenter()}
+                <View style={{flex:1,marginBottom:40}}>
+                    <View style={styles.finalTop}>
+                        <View style={[refrigerator.finallOutTop]}>
+                            {renderTopCenter()}
+                        </View>
+                        <View style={refrigerator.finallOutDoorTop}>
+                            {renderTopDoor()}
+                        </View>
                     </View>
-                    <View style={refrigerator.finallOutDoorTop}>
-                        {renderTopDoor()}
+                    <View style={styles.finalDown}>
+                        <View style={[refrigerator.finallOutBotton]}>
+                            {renderDownCenter()}   
+                        </View>
+                        <View style={refrigerator.finallOutDoorBotton}>
+                            {renderDownDoor()}
+                        </View>
                     </View>
                 </View>
-                <View style={styles.final}>
-                    <View style={[refrigerator.finallOutBotton]}>
-                        {renderDownCenter()}   
-                    </View>
-                    <View style={refrigerator.finallOutDoorBotton}>
-                        {renderDownDoor()}
-                    </View>
-                </View>
+                
                 </>:
                 <>
                 <Text style={styles.addText}>必須選擇要存入的冰箱及食物</Text>
@@ -437,8 +444,13 @@ const styles=StyleSheet.create({
     bottomSheetHandle:{
         height:30,
     },
-    final:{
+    finalTop:{
         flexDirection:'row',
+        flex:5,
+    },
+    finalDown:{
+        flexDirection:'row',
+        flex:10,
     },
     addText:{
         textAlign:'center',

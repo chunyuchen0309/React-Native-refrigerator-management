@@ -1,35 +1,42 @@
 const { StyleSheet } = require("react-native");
-
+import { ScreenWidth } from "@rneui/base";
+import { scale, moderateScale, verticalScale} from "../screens/ScaleMethod";
 const dropdown =StyleSheet.create({
     box:{
-        marginHorizontal:60,
+        marginHorizontal:moderateScale(60),
+        fontSize:moderateScale(30),
+        
     },
     dropdown:{
-        marginHorizontal:60,
+        marginHorizontal:moderateScale(60),
         backgroundColor:"#C6C6C6",
+        
     },
     boxTwo:{
-        marginHorizontal:10,
-        width:180,
+        marginHorizontal:moderateScale(10),
+        width:moderateScale(180),
+        fontSize:moderateScale(30),
+        
     },
     dropdownTwo:{
-        width:180,
-        marginHorizontal:10,
+        width:moderateScale(180),
+        marginHorizontal:moderateScale(10),
         backgroundColor:"#C6C6C6",
-        height:150,
+        height:moderateScale(150),
+        
     },
     squareDropdown:{
         backgroundColor:'#FAFAFA',
-        height:200,
+        height:moderateScale(200),
         zIndex:1,
         borderRadius:0,
-        marginHorizontal:20,
+        marginHorizontal:moderateScale(20),
     },
     squareBox:{
-        //height:20,
-        width:310,
+        
+        //width:ScreenWidth*0.8,
+        //marginHorizontal:moderateScale(20),
         alignSelf:'center',
-        zIndex:1,
         borderRadius:0,
         borderWidth:0,
         backgroundColor:'#FAFAFA',
@@ -40,10 +47,11 @@ const dropdown =StyleSheet.create({
         elevation:1.5,
     },
     squareContainer:{
-        //height:20,
-        width:310,
+        //paddingHorizontal:moderateScale(20),
+        width:moderateScale(310,1.1),
+        //marginHorizontal:moderateScale(20),
         alignSelf:'center',
-        zIndex:1,
+        //zIndex:1,
         borderRadius:0,
         borderWidth:0,
         backgroundColor:'#FAFAFA',

@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { Alert, Image, ImageBackground,  SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, Image, ImageBackground,  SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import { Button,FAB, Text,} from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {faChevronDown,faQuestion,} from "@fortawesome/free-solid-svg-icons";
+import {faChevronDown,faLightbulb,faQuestion,} from "@fortawesome/free-solid-svg-icons";
 import dropdown from "../../style/Dropdown";
 import refrigerator from "../../style/Refrigerator";
 import { TouchableOpacity } from "react-native";
@@ -16,7 +16,8 @@ import AnimatedLottieView from "lottie-react-native";
 import { ChangeColor } from "../../assets/stepBarColor";
 import Modal from "react-native-modal";
 import { TouchableWithoutFeedback } from "react-native";
-
+import { ScreenHeight, ScreenWidth } from "@rneui/base";
+import { scale, moderateScale, verticalScale} from "../ScaleMethod";
 
 const Step4Screen=()=>{
     //console.log("step2")
@@ -101,18 +102,27 @@ const Step4Screen=()=>{
                 Step4
             </Text>
             <FAB
-                icon={<FontAwesomeIcon icon={faQuestion} color="#FFAA00" size={25}></FontAwesomeIcon>}
-                size="small"
-                color="#D9D9D9"
-                onPress={() => setModalVisible(true)}
-                style={{ top: 0, left:110, zIndex: 2, }}>
-
-            </FAB>
+                    icon={<FontAwesomeIcon icon={faLightbulb} color="#FFFFFF" size={moderateScale(20)}></FontAwesomeIcon>}
+                    size="small"
+                    placement="right"
+                    color="#A7DCFF"
+                    onPress={() => setModalVisible(true)}
+                    style={{zIndex:2,
+                            right:moderateScale(20),
+                            bottom:moderateScale(20),
+                            backgroundColor:"#A7DCFF",
+                            shadowColor:'#10348D',
+                            shadowOffset:{
+                                width:0,
+                                height:5,},
+                            shadowOpacity:0.5,
+                            shadowRadius:3.5,
+                            elevation:5,}}/>
 
             <View style={{flexDirection:'column'}}>
                 <AnimatedLottieView 
                     ref={animationRef}
-                    style={{height:30,width:20}}
+                    style={{height:moderateScale(30),width:moderateScale(20,)}}
                     source={require('../../assets/stepBar.json')} 
                     autoPlay
                     loop  
@@ -127,54 +137,61 @@ const Step4Screen=()=>{
 
                 <SelectList
                 boxStyles={dropdown.boxTwo}
-                dropdownStyles={[dropdown.dropdownTwo,{height:120}]}
+                dropdownStyles={[dropdown.dropdownTwo,{height:moderateScale(120,0.3)}]}
                 setSelected={(val)=>step4_freezingPlane(val)}
                 data={freezingPlaneList}
                 search={false}
                 save="key"
                 placeholder="冷凍平面分層"
                 arrowicon={<FontAwesomeIcon icon={faChevronDown}/>} 
+                dropdownTextStyles={{fontSize:moderateScale(15),}}
                 />
 
                 <SelectList 
                 boxStyles={dropdown.boxTwo}
-                dropdownStyles={[dropdown.dropdownTwo,{height:120}]}
+                dropdownStyles={[dropdown.dropdownTwo,{height:moderateScale(120,0.3)}]}
                 setSelected={(val)=>step4_coldPlane(val)}
                 data={coldPlaneList}
                 search={false}
                 save="key"
                 placeholder="冷藏平面分層"
                 arrowicon={<FontAwesomeIcon icon={faChevronDown}/>} 
+                dropdownTextStyles={{fontSize:moderateScale(15),}}
                 />
             </View>
 
             {outConfig == "上層冷藏+下層冷凍"?
                 <>
                 <>
-                <ImageBackground source={require('../../../Img/Under.png') } style={{height:200,marginVertical:30}}>
+                <ImageBackground source={require('../../../Img/Under.png') } style={{height:moderateScale(200),marginVertical:moderateScale(30)}}>
                     
                     <BoxDown number={coldBoxCount} clickIndex={handleButtonPress}>
                     </BoxDown>
                 </ImageBackground>
 
-                <ImageBackground source={require('../../../Img/Under.png') } style={{height:200,marginVertical:25}}>
+                <ImageBackground source={require('../../../Img/Under.png') } style={{height:moderateScale(200),marginVertical:moderateScale(30)}}>
                     <BoxUp number={freezingBoxCount} clickIndex={handleButtonPress}>
                     </BoxUp>
                 </ImageBackground>
                 </>
                 </> : 
                 <>
-                <ImageBackground source={require('../../../Img/Under.png') } style={{height:200,marginVertical:30}}>
+                <ScrollView
+                >
+                <ImageBackground source={require('../../../Img/Under.png') } style={{height:moderateScale(200,0.7),marginVertical:moderateScale(30,0.7)}}>
                     <BoxUp number={freezingBoxCount} clickIndex={handleButtonPress}>
                     </BoxUp>
                 </ImageBackground>
 
-                <ImageBackground source={require('../../../Img/Under.png') } style={{height:200,marginVertical:25}}>
+                <ImageBackground source={require('../../../Img/Under.png') } style={{height:moderateScale(200,0.7),marginVertical:moderateScale(30,0.7)}}>
                     <BoxDown number={coldBoxCount} clickIndex={handleButtonPress}>
                     </BoxDown> 
                 </ImageBackground>
+                </ScrollView>
                 </>
+                
             }
+
 
             <Button buttonStyle={style.nextButton}
             title="下一步" onPress={()=>ToNextPage()}>
@@ -197,45 +214,45 @@ const  style=StyleSheet.create({
         flexWrap:'wrap',
     },
     title:{
-        marginLeft:40,
-        marginVertical:20,
+        marginVertical:moderateScale(20),
         textAlign:'center',
-        fontSize:20,
-        color: '#777'
+        fontSize:moderateScale(20),
+        color: '#777',
+        width:ScreenWidth,
     },
       nextButton:{
           backgroundColor:"#A9FF3C",
-          marginVertical:20,
-          marginHorizontal:50,
-          borderRadius:10,
+          marginVertical:moderateScale(20),
+          marginHorizontal:moderateScale(50),
+          borderRadius:moderateScale(10),
       },
       towDropdown:{
         flexDirection:'row',
-        height:50,
+        height:moderateScale(50),
         justifyContent:'center',
-        marginHorizontal:30,
+        marginHorizontal:moderateScale(30),
         //backgroundColor:"#F3FA5E",
-        marginVertical:10,
+        marginVertical:moderateScale(10),
         zIndex:1,
       },
-    modalView:{
+      modalView:{
         opacity:1,
-        borderRadius:10,
+        borderRadius:moderateScale(10),
         alignSelf:'center',
         //justifyContent:'center',
         backgroundColor:'#FFFFFF',
-        width:280,
-        height:200,
+        width:moderateScale(280),
+        height:moderateScale(200),
     },
     modalTitle:{
-        marginVertical:20,
-        fontSize:30,
+        marginVertical:moderateScale(20),
+        fontSize:moderateScale(30),
         textAlign:'center',
     },
     modalContent:{
-        padding:10,
-        lineHeight:30,
-        fontSize:18,
+        padding:moderateScale(10),
+        lineHeight:moderateScale(30),
+        fontSize:moderateScale(18),
         color:'#8D8D8D',
         //textAlign:'center',
     }

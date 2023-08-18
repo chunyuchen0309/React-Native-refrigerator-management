@@ -1,5 +1,5 @@
 const { StyleSheet } = require("react-native");
-
+import { scale, moderateScale, verticalScale} from "../screens/ScaleMethod"
 const Userstyle =StyleSheet.create({
 
     safeAreaView:{
@@ -10,38 +10,41 @@ const Userstyle =StyleSheet.create({
 
     greyBg:{ //background
         backgroundColor:'#ECEAEA',
-        marginHorizontal:20,
-        borderRadius:20,
-        marginTop:100,
+        marginHorizontal:moderateScale(20),
+        borderRadius:moderateScale(20),
+        marginTop:moderateScale(100),
 
     },
-    containerStyle1:{ //all for title &input
-        paddingHorizontal:20,
-        marginTop:50,
-        marginBottom:100,
-    },
     lable1:{ //title
-        fontSize:18,
-        marginBottom:10,
+        fontSize:moderateScale(18),
+        marginBottom:moderateScale(10),
+    },
+    containerStyle1:{ //all for title &input
+        paddingHorizontal:moderateScale(20),
+        marginTop:moderateScale(50),
+        marginBottom:moderateScale(100),
+        
     },
     inputContainerStyle1:{ //input
+        height:moderateScale(45),
         backgroundColor:'#FAFAFA',
         shadowColor:'black',
-        shadowOffset:{width:0,height:2},
+        shadowOffset:{width:0,height:moderateScale(2)},
         shadowOpacity: 0.5,
-        shadowRadius: 1.5,
+        shadowRadius: moderateScale(1.5),
         elevation:1.5,
     },
     inputStyle1:{ //inside font
         color:'#878787',
-        marginHorizontal:20,
+        marginHorizontal:moderateScale(20),
+        fontSize:moderateScale(20),
     },
 
     buttonUpdate:{
-        marginHorizontal:20,
-        marginVertical:40,
-        marginBottom:20,
-        borderRadius:15,
+        marginHorizontal:moderateScale(20),
+        marginVertical:moderateScale(40),
+        marginBottom:moderateScale(20),
+        borderRadius:moderateScale(15),
         backgroundColor:'#8c9090',
     },
     towList:{
@@ -51,6 +54,14 @@ const Userstyle =StyleSheet.create({
         marginHorizontal:20,
         borderRadius:20,
         paddingVertical:20,
+    },
+    homeDateList:{
+        //flex:1,
+        backgroundColor:'#ECEAEA',
+        height:verticalScale(320),
+        marginHorizontal:moderateScale(20),
+        borderRadius:moderateScale(20),
+        paddingVertical:moderateScale(20),
     },
     listButton:{
         height:35,
@@ -71,10 +82,11 @@ const Userstyle =StyleSheet.create({
         fontSize:20,
     },
     list_outTitle:{
-        fontSize:25,
+        fontSize:moderateScale(25),
         textAlign:'center',
-        marginTop:60,
+        marginTop:moderateScale(60),
         marginBottom:5,
+        color:"#777",
     },
     deletebox:{
         height:35,

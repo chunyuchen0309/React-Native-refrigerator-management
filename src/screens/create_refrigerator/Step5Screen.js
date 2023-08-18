@@ -8,7 +8,7 @@ import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/n
 import { RefrigeratorContext } from "../../context/RefrigeratorContext";
 import Modal from "react-native-modal";
 import AnimatedLottieView from "lottie-react-native";
-
+import { scale, moderateScale, verticalScale} from "../ScaleMethod";
 const Step5Screen = () => {
     const [modalVisible,setModalVisible]=useState(false);
     const [refName,setRefName]=useState("");
@@ -155,7 +155,6 @@ const Step5Screen = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <SafeAreaView style={styles.safeAreaView}>
-
         <Modal 
             animationIn={"zoomIn"}
             animationInTiming={900}
@@ -180,6 +179,7 @@ const Step5Screen = () => {
                     </View>
                 </TouchableWithoutFeedback>    
         </Modal>
+
             <View style={styles.infobg}>
                 <Button
                     buttonStyle={[styles.infoButtontop,{backgroundColor:"#A7DCFF",}]}
@@ -188,9 +188,9 @@ const Step5Screen = () => {
                         <>               
                             <Input
                                 placeholder="輸入冰箱名稱"
-                                containerStyle={{flex:1,marginHorizontal:10,marginTop:15,}}
-                                inputContainerStyle={{height:60,}}
-                                inputStyle={{fontSize:16,}}
+                                containerStyle={{flex:1,marginHorizontal:moderateScale(10),marginTop:moderateScale(15),}}
+                                inputContainerStyle={{height:moderateScale(60),}}
+                                inputStyle={{fontSize:moderateScale(16),}}
                                 clearButtonMode="while-editing"
                                 value={refName}
                                 onChangeText={(text)=>setRefName(text)}>
@@ -279,61 +279,61 @@ const styles = StyleSheet.create({
     },
     infobg: {
         backgroundColor: '#E4E4E4',
-        marginHorizontal: 20,
-        marginTop: 50,
-        borderRadius: 20,
+        marginHorizontal: moderateScale(20),
+        marginTop: moderateScale(50),
+        borderRadius: moderateScale(20),
     },
     infoButtontop: {
-        height: 40,
+        height: moderateScale(40),
         justifyContent: 'flex-start',
         backgroundColor: '#A7DCFF',
-        marginHorizontal: 20,
-        marginTop: 50,
-        marginBottom: 3,
-        borderTopStartRadius: 10,
-        borderTopEndRadius: 10,
-        borderBottomStartRadius: 0,
-        borderBottomEndRadius: 0,
+        marginHorizontal: moderateScale(20),
+        marginTop: moderateScale(50),
+        marginBottom: moderateScale(3),
+        borderTopStartRadius: moderateScale(10),
+        borderTopEndRadius: moderateScale(10),
+        borderBottomStartRadius: moderateScale(0),
+        borderBottomEndRadius:moderateScale(0) ,
     },
     infoButtonAll: {
-        height: 40,
+        height: moderateScale(40),
         justifyContent: 'flex-start',
         backgroundColor: '#A7DCFF',
-        marginHorizontal: 20,
-        marginTop: 50,
-        marginBottom: 3,
-        borderTopStartRadius: 10,
-        borderTopEndRadius: 10,
-        borderBottomStartRadius: 10,
-        borderBottomEndRadius: 10,
+        marginHorizontal:moderateScale(20) ,
+        marginTop: moderateScale(50),
+        marginBottom: moderateScale(3),
+        borderTopStartRadius:moderateScale(10) ,
+        borderTopEndRadius:moderateScale(10),
+        borderBottomStartRadius: moderateScale(10),
+        borderBottomEndRadius:moderateScale(10),
     },
     infoButtoncenter: {
-        height: 40,
+        height: moderateScale(40),
         justifyContent: 'flex-start',
         backgroundColor: '#A7DCFF',
-        marginHorizontal: 20,
-        marginBottom: 3,
-        borderRadius: 0,
+        marginHorizontal: moderateScale(20),
+        marginBottom:moderateScale(3) ,
+        borderRadius:moderateScale(0) ,
     },
     infoButtonBottom: {
-        height: 40,
+        height: moderateScale(40),
         justifyContent: 'flex-start',
         backgroundColor: '#A7DCFF',
-        marginHorizontal: 20,
-        marginBottom: 3,
-        borderBottomStartRadius: 10,
-        borderBottomEndRadius: 10,
-        borderTopStartRadius: 0,
-        borderTopEndRadius: 0,
+        marginHorizontal: moderateScale(20),
+        marginBottom: moderateScale(3),
+        borderBottomStartRadius: moderateScale(10),
+        borderBottomEndRadius: moderateScale(10),
+        borderTopStartRadius: moderateScale(0),
+        borderTopEndRadius: moderateScale(0),
     },
     finishButton: {
-        height: 40,
+        height: moderateScale(40),
         justifyContent: 'flex-start',
         backgroundColor: '#A9FF3C',
-        marginHorizontal: 20,
-        marginVertical: 40,
+        marginHorizontal:moderateScale(20),
+        marginVertical: moderateScale(40),
         //marginBottom:3,
-        borderRadius: 10,
+        borderRadius: moderateScale(10),
     },
     finishTitle:{
         flex:1,
@@ -341,36 +341,36 @@ const styles = StyleSheet.create({
         textAlign:'center',
     },
     rightTitle: { 
-        marginRight:20,
+        marginRight:moderateScale(20),
         flex:1,
         textAlign: 'right',
         color: 'black',
-        fontSize: 15,
+        fontSize: moderateScale(15),
     },
     leftTitle: { 
-        marginLeft:20,
+        marginLeft:moderateScale(20),
         textAlign: 'left',
         color: 'black',
-        fontSize: 15,
+        fontSize: moderateScale(15),
     },
     modalView:{
-        opacity:0.8,
-        borderRadius:10,
+        opacity:moderateScale(0.8),
+        borderRadius:moderateScale(10),
         alignSelf:'center',
         //justifyContent:'center',
         backgroundColor:'#FFFFFF',
-        width:280,
-        height:200,
+        width:moderateScale(280),
+        height:moderateScale(200),
     },
     modalTitle:{
-        marginVertical:20,
-        fontSize:30,
+        marginVertical:moderateScale(20),
+        fontSize:moderateScale(30),
         textAlign:'center',
     },
     modalContent:{
-        padding:10,
-        lineHeight:30,
-        fontSize:18,
+        padding:moderateScale(10),
+        lineHeight:moderateScale(30),
+        fontSize:moderateScale(18),
         color:'#8D8D8D',
         //textAlign:'center',
     }

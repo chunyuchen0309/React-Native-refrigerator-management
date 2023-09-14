@@ -11,55 +11,32 @@ import { Keyboard } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 
-const UpdateUserRoleScreen=()=>{
+const LookModelScreenScreen=()=>{
     console.log("UpdateUserRoleScreen");
-    const [userRole,setUserRole]=useState("");
-    const [userInfo,setUserInfo]=useState("");
-    const route = useRoute();
-    const {token}=useContext(AuthContext);
+    const {token,lookModel,changeModel}=useContext(AuthContext);
     const [isLoading,setIsLoading]=useState(false);
     const navigation=useNavigation();
-
+    const [userLookModel,setUserLookModel]=useState();
     const Update=()=>{
-        setIsLoading(true);
-        //console.log(userRole+" and "+accountRole+" and "+token.token);
-
-        axios({
-            method:"PUT",
-            url:`${BASE_URL}/auth/modify`,
-            headers: {'Authorization': token.token},
-            data:{
-                name:userInfo.username,
-                phone:userInfo.phone,
-                role:userRole,
-            },
-        }).then(res=>{
-            console.log(res.data);
-            setIsLoading(false);
-        }).catch(e=>{
-            console.log(`UpdateUserName error ${e}`);
-            setIsLoading(false);
-            
-        }).finally(()=>{
-            setIsLoading(false);
-            navigation.goBack();
-        });
+        changeModel(userLookModel);
+        navigation.goBack();
     }
     useEffect(()=>{
-        setUserInfo(route.params?.userInfo);
-        setUserRole(route.params?.userInfo.role== "個人" ? 0:1 );
-    },[]);
+        setUserLookModel(lookModel);
+        console.log("當前狀態"+lookModel);
+    },[lookModel]);
+    
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   
             <SafeAreaView style={Userstyle.safeAreaView}>
                 <KeyboardAvoidingView behavior="position" enabled>
                     <View style={Userstyle.greyBg}>
-                    <View style={Userstyle.checkBoxView}>
+                    <View style={[Userstyle.checkBoxView,{marginHorizontal:0,justifyContent:'center'}]}>
                         <CheckBox
                         //disabled={true}
-                            checked={userRole == 1}
-                            onPress={()=>setUserRole(0)}
-                            title="個人"
+                            checked={userLookModel==false}
+                            onPress={()=>setUserLookModel(true)}
+                            title="一般模式"
                             textStyle={{color:"#919191"}}
                             containerStyle={{backgroundColor:'transparent',borderColor:'transparent',}}
                             checkedIcon={<FontAwesomeIcon icon={faSquare}  size={40} color="#919191"  />}
@@ -67,9 +44,9 @@ const UpdateUserRoleScreen=()=>{
                         />
                         <CheckBox
                         //disabled={true}
-                            checked={userRole == 0}
-                            onPress={()=>setUserRole(1)}
-                            title="商業"
+                            checked={userLookModel}
+                            onPress={()=>setUserLookModel(false)}
+                            title="簡易模式"
                             textStyle={{color:"#919191"}}
                             containerStyle={{backgroundColor:'transparent',borderColor:'transparent',}}
                             checkedIcon={<FontAwesomeIcon icon={faSquare} size={40} color="#919191"/>}
@@ -90,4 +67,4 @@ const UpdateUserRoleScreen=()=>{
 };
 
 
-export default UpdateUserRoleScreen;
+export default LookModelScreenScreen;

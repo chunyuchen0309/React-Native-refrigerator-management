@@ -9,7 +9,9 @@ import { FlashList } from "@shopify/flash-list";
 import ItemBox from "./InvoiceItemBox";
 import Modal from "react-native-modal";
 import { Image } from "react-native";
-
+import { scale, moderateScale, verticalScale} from "../ScaleMethod";
+import modal_fab from "../../style/Modal&FAB";
+import { ScreenWidth } from "@rneui/base";
 const InvoiceScreen=()=>{
     //const [invoiceList,setInvoiceList]=useState([]);
     const route = useRoute();
@@ -21,9 +23,26 @@ const InvoiceScreen=()=>{
         //setInvoiceInfo({"Number":"A1234567","Date":"1130601","Data":[{"OldData":"統一糙米漿","NewData":""},{"OldData":"可口可樂","NewData":""},]});
     },[]);
 
+    useEffect(() => { //設置標題右側按鈕
+        navigation.setOptions( 
+            {
+                headerRight: () => (
+                <FAB
+                icon={<FontAwesomeIcon icon={faLightbulb} color="#FFFFFF" size={20}></FontAwesomeIcon>}
+                size="small"
+                placement="right"
+                color="#A7DCFF"
+                onPress={() => setModalVisible(true)}
+                style={modal_fab.headerfab}/>
+                ),
+            }
+        );
+    }, []);
+
     const deleteItem = (index) => { //回調函數
         console.log("刪除call")
-        const updatedData=invoiceInfo.Data.filter((item, i) => i !== index);
+        const updatedData=invoiceInfo.Data.filter((item, i) => i !== index); 
+        //filter 方法接受一個回調函數，這個回調函數對陣列中的每個元素執行判斷，如果回傳 true，該元素將被保留，否則將被移除
         setInvoiceInfo({ ...invoiceInfo, Data: updatedData });
         //console.log("刪除的陣列 : "+invoiceInfo.Data);
       };
@@ -32,6 +51,7 @@ const InvoiceScreen=()=>{
         const updatedData = JSON.parse(JSON.stringify(invoiceInfo.Data));//深拷貝
         updatedData[index].NewData = changeData;
         setInvoiceInfo({ ...invoiceInfo, Data: updatedData });
+        //展開運算子 複製原來的結構，並改寫其中的Data內容
     }
 
     const addDate=()=>{
@@ -45,67 +65,39 @@ const InvoiceScreen=()=>{
     return(
         
         <SafeAreaView style={styles.safeAreaView}>
-        
-            <FAB
-                color="#A7DCFF"
-                style={{zIndex:2,
-                        top:20,
-                        right:-150,
-                        shadowColor:'black',
-                        shadowOffset:{
-                            width:0,
-                            height:3,},
-                        shadowOpacity:0.5,
-                        shadowRadius:3.5,
-                        elevation:3, }}
-                size="small"
-                icon={<FontAwesomeIcon icon={faLightbulb} color="#FFFFFF" size={20}></FontAwesomeIcon>}
-                onPress={()=>{setModalVisible(true)}}
-            >
-            </FAB>
-
             <Modal 
-            animationIn={"zoomIn"}
-            animationInTiming={800}
-            animationOut={"zoomOut"}
-            animationOutTiming={800}
-            isVisible={modalVisible}
-            backdropOpacity={0.8} 
-            onBackdropPress={() => setModalVisible(false)}
-            >
-            <TouchableWithoutFeedback onPress={()=>setModalVisible(false)}>
-            
-                <View style={styles.modalView}>
-                    <Text style={styles.modalTitle}>操作步驟提示</Text>
-
-                    <View style={{justifyContent:'center',alignItems:'center'}}>
-                    <Image source={require('../../../Img/InvoiceHint.gif')} style={{width:350,height:300,}} 
-                    resizeMode="contain"
-                    
-                    />
-                    </View>
-                    
-                </View>
-                    
-            </TouchableWithoutFeedback>    
+                animationIn={"fadeIn"}
+                animationInTiming={800}
+                animationOut={"fadeOut"}
+                animationOutTiming={800}
+                isVisible={modalVisible}
+                backdropOpacity={0.9} 
+                onBackdropPress={() => setModalVisible(false)}
+                >
+                <TouchableWithoutFeedback onPress={()=>setModalVisible(false)}> 
+                    <View style={[modal_fab.creatRefModalView,{justifyContent:'center'}]}>
+                        <View style={{justifyContent:'center',alignItems:'center',marginBottom:moderateScale(90)}}>
+                        <Image 
+                            source={require('../../../Img/InvoiceHint.gif')} 
+                            style={{width:moderateScale(500),height:moderateScale(440),}} 
+                            resizeMode="contain"
+                        />
+                        </View>         
+                    </View>             
+                </TouchableWithoutFeedback>    
             </Modal>
             
-            <Text style={styles.title}>
-                發票內容
-            </Text>
-            
             <Button
-            buttonStyle={styles.dateButton}
-            //titleStyle={{alignSelf:'flex-start'}}
-            icon={<FontAwesomeIcon icon={faCalendarDays} color="#FFFFFF" size={25}></FontAwesomeIcon>}
-            title={<>
-                <Text style={styles.dateTitle}>購買日期</Text>
-                <Text style={styles.dateTitleLeft}>{addDate()}</Text>
-                </>}>     
+                buttonStyle={styles.dateButton}
+                //titleStyle={{alignSelf:'flex-start'}}
+                icon={<FontAwesomeIcon icon={faCalendarDays} color="#FFFFFF" size={moderateScale(23)}></FontAwesomeIcon>}
+                title={<>
+                    <Text style={styles.dateTitle}>購買日期</Text>
+                    <Text style={styles.dateTitleLeft}>{addDate()}</Text>
+                    </>}>     
             </Button>
-            <View style={[Userstyle.towList,{height:400,marginVertical:20,paddingHorizontal:20,}]}>
-                <FlashList
-                
+            <View style={[Userstyle.towList,{height:moderateScale(400),marginVertical:moderateScale(20),paddingHorizontal:moderateScale(20),}]}>
+                <FlashList      
                 data={invoiceInfo.Data}
                 estimatedItemSize={20}
                 renderItem={({item,index})=>(
@@ -136,49 +128,58 @@ const styles=StyleSheet.create({
     },
     title:{
         textAlign:'center',
-        fontSize:25,
-        marginVertical:20,
-        color: '#777'
+        fontSize:moderateScale(25),
+        marginVertical:moderateScale(20),
+        color: '#777',
+        width:ScreenWidth,
     },
     dateButton:{
-        borderRadius:10,
-        height:50,
-        marginHorizontal:20,
+        borderRadius:moderateScale(10),
+        height:moderateScale(50),
+        marginHorizontal:moderateScale(20),
         backgroundColor:"#8C9090",
         justifyContent: 'flex-start',
+        marginTop:moderateScale(20),
     },
     dateTitle:{
-        marginStart:5,
-        fontSize:25,
+        marginStart:moderateScale(5),
+        fontSize:moderateScale(23),
         color:"#FFFFFF"
     },
     dateTitleLeft:{
-        width:200,
+        width:moderateScale(200),
         textAlign:'right',
         //backgroundColor:'black',
-        fontSize:25,
+        flex:1,
+        fontSize:moderateScale(25),
         color:"#FFFFFF",
     },
     nextButton:{
         backgroundColor:"#A9FF3C",
-        marginVertical:20,
-        marginHorizontal:50,
-        borderRadius:10,
+        marginVertical:moderateScale(20),
+        marginHorizontal:moderateScale(50),
+        borderRadius:moderateScale(10),
     },
     modalView:{
-        borderRadius:10,
+        borderRadius:moderateScale(10),
         alignSelf:'center',
         //justifyContent:'center',
         backgroundColor:'#FFFFFF',
-        flex:1,
-        marginVertical:200,
+        height:moderateScale(400),
+        //flex:1,
+        marginVertical:moderateScale(200),
     },
     modalTitle:{
-        marginTop:20,
-        marginBottom:20,
-        fontSize:30,
+        marginTop:moderateScale(20),
+        marginBottom:moderateScale(20),
+        fontSize:moderateScale(30),
         textAlign:'center',
         color:"#777"
+    },
+    titleView:{
+        flexDirection:'row',
+        justifyContent:'center',
+        flexWrap:'wrap',
     },
 })
 

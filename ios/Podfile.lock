@@ -385,6 +385,8 @@ PODS:
     - React-Core
   - react-native-date-picker (4.2.13):
     - React-Core
+  - react-native-netinfo (9.4.1):
+    - React-Core
   - react-native-nfc-manager (3.14.5):
     - React-Core
   - react-native-safe-area-context (4.5.1):
@@ -393,6 +395,8 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
+  - react-native-slider (4.4.3):
+    - React-Core
   - React-perflogger (0.71.6)
   - React-RCTActionSheet (0.71.6):
     - React-Core/RCTActionSheetHeaders (= 0.71.6)
@@ -526,7 +530,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.20.0):
+  - RNScreens (3.21.1):
     - React-Core
     - React-RCTImage
   - RNSVG (13.9.0):
@@ -564,8 +568,10 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-nfc-manager (from `../node_modules/react-native-nfc-manager`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -663,10 +669,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-nfc-manager:
     :path: "../node_modules/react-native-nfc-manager"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -760,8 +770,10 @@ SPEC CHECKSUMS:
   React-logger: 9332c3e7b4ef007a0211c0a9868253aac3e1da82
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-date-picker: 04e866ba4e7857f83abd504ad42e787f0f02ae00
+  react-native-netinfo: fefd4e98d75cbdd6e85fc530f7111a8afdf2b0c5
   react-native-nfc-manager: 00700a5cd081bf78e2f33fbf84b8610aef4a832c
   react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
+  react-native-slider: 1cdd6ba29675df21f30544253bf7351d3c2d68c4
   React-perflogger: 43392072a5b867a504e2b4857606f8fc5a403d7f
   React-RCTActionSheet: c7b67c125bebeda9fb19fc7b200d85cb9d6899c4
   React-RCTAnimation: c2de79906f607986633a7114bee44854e4c7e2f5
@@ -783,7 +795,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 42ec7c28dd02d540ed6c9159c57a98ff016492dc
   RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
   RNReanimated: 9976fbaaeb8a188c36026154c844bf374b3b7eeb
-  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNScreens: d3675ab2878704de70c9dae57fa5d024802404cc
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Yoga: ba09b6b11e6139e3df8229238aa794205ca6a02a

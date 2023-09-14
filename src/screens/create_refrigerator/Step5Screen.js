@@ -32,7 +32,7 @@ const Step5Screen = () => {
                     "compartment_row":freezingPlaneCount==4? 2:freezingPlaneCount==6? 2:freezingPlaneCount==9? 3:3,
                     });
             }
-            for(var i=(freezingCount+1);i<=(coldCount+freezingCount);i++){
+            for(var i=(Number(freezingCount)+1);i<=(Number(coldCount)+Number(freezingCount));i++){
                 upInfo.push(
                     {
                     "type":"cooler",
@@ -43,7 +43,7 @@ const Step5Screen = () => {
                     "compartment_row":coldPlaneCount==4? 2:coldPlaneCount==6? 2:coldPlaneCount==9? 3:3,
                     });
             }
-            for(var i=1;i<=freezingDoorCount;i++){
+            for(var i=1;i<=Number(freezingDoorCount);i++){
                 upInfo.push(
                     {
                     "type":"freezer",
@@ -54,7 +54,7 @@ const Step5Screen = () => {
                     "compartment_row":1,
                     });
             }
-            for(var i=(freezingDoorCount+1);i<=(coldDoorCount+freezingDoorCount);i++){
+            for(var i=(Number(freezingDoorCount)+1);i<=(Number(coldDoorCount)+Number(freezingDoorCount));i++){
                 upInfo.push(
                     {
                     "type":"cooler",
@@ -67,7 +67,7 @@ const Step5Screen = () => {
             }
             console.log(upInfo);
         }else{
-            for(var i=1;i<=coldCount;i++){
+            for(var i=1;i<=Number(coldCount);i++){
                 upInfo.push(
                     {
                     "type":"cooler",
@@ -78,7 +78,7 @@ const Step5Screen = () => {
                     "compartment_row":coldPlaneCount==4? 2:coldPlaneCount==6? 2:coldPlaneCount==9? 3:3,
                     });
             }
-            for(var i=(coldCount+1);i<=(freezingCount+coldCount);i++){
+            for(var i=(Number(coldCount)+1);i<=(Number(freezingCount)+Number(coldCount));i++){
                 upInfo.push(
                     {
                     "type":"freezer",
@@ -89,7 +89,7 @@ const Step5Screen = () => {
                     "compartment_row":freezingPlaneCount==4? 2:freezingPlaneCount==6? 2:freezingPlaneCount==9? 3:3,
                     });
             }
-            for(var i=1;i<=coldDoorCount;i++){
+            for(var i=1;i<=Number(coldDoorCount);i++){
                 upInfo.push(
                     {
                     "type":"cooler",
@@ -100,7 +100,7 @@ const Step5Screen = () => {
                     "compartment_row":1,
                     });
             }
-            for(var i=(1+coldDoorCount);i<=(coldDoorCount+freezingDoorCount);i++){
+            for(var i=(1+Number(coldDoorCount));i<=(Number(coldDoorCount)+Number(freezingDoorCount));i++){
                 upInfo.push(
                     {
                     "type":"freezer",
@@ -182,7 +182,7 @@ const Step5Screen = () => {
 
             <View style={styles.infobg}>
                 <Button
-                    buttonStyle={[styles.infoButtontop,{backgroundColor:"#A7DCFF",}]}
+                    buttonStyle={[styles.infoButtontop,{backgroundColor:"#A7DCFF",borderWidth:moderateScale(2),borderColor:"#FF9900"}]}
                     titleStyle={{}}
                     title={
                         <>               

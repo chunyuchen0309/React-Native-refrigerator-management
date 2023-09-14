@@ -7,14 +7,18 @@ const Userstyle =StyleSheet.create({
         justifyContent:'flex-start',
         //alignItems:'center'
     },
-
-    greyBg:{ //background
+    /**
+     * 灰色背景
+     */
+    greyBg:{ 
         backgroundColor:'#ECEAEA',
         marginHorizontal:moderateScale(20),
         borderRadius:moderateScale(20),
         marginTop:moderateScale(100),
-
     },
+    /**
+     * 輸入欄位標題
+     */
     lable1:{ //title
         fontSize:moderateScale(18),
         marginBottom:moderateScale(10),
@@ -23,7 +27,9 @@ const Userstyle =StyleSheet.create({
         paddingHorizontal:moderateScale(20),
         marginTop:moderateScale(50),
         marginBottom:moderateScale(100),
-        
+    },
+    containerStyle2:{ //all for title &input
+        paddingHorizontal:moderateScale(20),
     },
     inputContainerStyle1:{ //input
         height:moderateScale(45),
@@ -39,7 +45,9 @@ const Userstyle =StyleSheet.create({
         marginHorizontal:moderateScale(20),
         fontSize:moderateScale(20),
     },
-
+    /**
+     * 上傳按鈕
+     */
     buttonUpdate:{
         marginHorizontal:moderateScale(20),
         marginVertical:moderateScale(40),
@@ -50,92 +58,84 @@ const Userstyle =StyleSheet.create({
     towList:{
         //flex:1,
         backgroundColor:'#ECEAEA',
-        height:200,
-        marginHorizontal:20,
-        borderRadius:20,
-        paddingVertical:20,
-    },
-    homeDateList:{
-        //flex:1,
-        backgroundColor:'#ECEAEA',
-        height:verticalScale(320),
+        height:moderateScale(200),
         marginHorizontal:moderateScale(20),
         borderRadius:moderateScale(20),
         paddingVertical:moderateScale(20),
     },
     listButton:{
-        height:35,
-        marginHorizontal:20,
-        marginBottom:2.5,
+        height:moderateScale(35),
+        marginHorizontal:moderateScale(20),
+        marginBottom:moderateScale(2.5),
         borderRadius:0,
         backgroundColor:'#FAFAFA',
         shadowColor:'black',
-        shadowOffset:{width:0,height:2},
+        shadowOffset:{width:0,height:moderateScale(2)},
         shadowOpacity: 0.5,
         shadowRadius: 1.5,
-        elevation:1.5,
+        elevation:moderateScale(1.5),
     },
     listTitle:{
-        paddingTop:5,
+        paddingTop:moderateScale(5),
         textAlign:'center',
         color:'#878787',
-        fontSize:20,
+        fontSize:moderateScale(20),
     },
     list_outTitle:{
         fontSize:moderateScale(25),
         textAlign:'center',
         marginTop:moderateScale(60),
-        marginBottom:5,
+        marginBottom:moderateScale(5),
         color:"#777",
     },
     deletebox:{
-        height:35,
-        width:50,
+        height:moderateScale(35),
+        width:moderateScale(50),
         alignItems:'center',
         justifyContent:'center',
-        marginHorizontal:20,
-        marginBottom:2.5,
-        marginLeft:-20,
+        marginHorizontal:moderateScale(20),
+        marginBottom:moderateScale(2.5),
+        marginLeft:moderateScale(-20),
         borderRadius:0,
         backgroundColor:'#FF3F3F',
         shadowColor:'black',
-        shadowOffset:{width:0,height:2},
+        shadowOffset:{width:0,height:moderateScale(2)},
         shadowOpacity: 0.5,
         shadowRadius: 1.5,
-        elevation:1.5,
+        elevation:moderateScale(1.5),
     },
     deleteInvoicebox:{
         flex:1,
-        height:50,
+        height:moderateScale(50),
         alignItems:'center',
         justifyContent:'center',
-        marginBottom:2.5,
+        marginBottom:moderateScale(2.5),
         borderRadius:0,
         backgroundColor:'#FF3F3F',
         shadowColor:'black',
-        shadowOffset:{width:0,height:2},
+        shadowOffset:{width:0,height:moderateScale(2)},
         shadowOpacity: 0.5,
         shadowRadius: 1.5,
-        elevation:1.5,
+        elevation:moderateScale(1.5),
     },
     deletetext:{
         color:"#FFFFFF",
-        fontSize:15,
+        fontSize:moderateScale(15),
     },
     checkBoxView:{
-        marginHorizontal:50,
-        marginVertical:45,
+        marginHorizontal:moderateScale(50),
+        marginVertical:moderateScale(45),
         flexDirection:'row',
     },
     whitebg:{
         backgroundColor:'#FFFFFF',
-        marginHorizontal:15,
-        borderRadius:20,
-        marginTop:-60,
-        paddingVertical:30,
+        marginHorizontal:moderateScale(15),
+        borderRadius:moderateScale(20),
+        marginTop:moderateScale(-60),
+        paddingVertical:moderateScale(30),
     },
     PasswordcontainerStyle:{ //all for title &input
-        paddingHorizontal:20,
+        paddingHorizontal:moderateScale(20),
     },
 });
 

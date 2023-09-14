@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
+import { Image, KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
 import { Button, FAB, Input,} from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
@@ -11,14 +11,17 @@ import { Keyboard } from "react-native";
 import { text } from "@fortawesome/fontawesome-svg-core";
 import { SelectList } from "react-native-dropdown-select-list";
 import dropdown from "../../style/Dropdown";
-import { faBottleWater, faBox, faBoxOpen, faCheck, faChevronDown, faCircleInfo, faDrumstickBite, faLeaf, faLemon, faPizzaSlice, faSeedling, faShrimp } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleUp, faBottleWater, faBox, faBoxOpen, faCheck, faChevronDown, faCircleInfo, faDrumstickBite, faLeaf, faLemon, faLightbulb, faPizzaSlice, faSeedling, faShrimp, faTruckPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import DropDownPicker from "react-native-dropdown-picker";
 import DatePicker from 'react-native-date-picker';
 import { scale, moderateScale, verticalScale} from "../ScaleMethod";
+import modal_fab from "../../style/Modal&FAB";
+import Modal from "react-native-modal";
+import { Text } from "react-native";
 const HandAddScreen=()=>{
     //console.log("UpdateUserPhoneScreen");
-    
+    const [modalVisible,setModalVisible]=useState(false);
     const navigation=useNavigation();
     const [foodName,setFoodName]=useState("");
     const [foodDate,setFoodDate]=useState("");
@@ -29,19 +32,30 @@ const HandAddScreen=()=>{
     const [open, setOpen] = useState(false);
     const [month,setMonth] =useState(["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
     const [foodCatgoryList, setFoodCatgoryList] = useState([
-        { label: '蔬菜類', value: '蔬菜類' ,icon: () => <FontAwesomeIcon icon={faSeedling} color="#777" style={{left:10}} />},
-        { label: '肉類', value: '肉類' ,icon: () => <FontAwesomeIcon icon={faDrumstickBite} color="#777" style={{left:10}} />},
-        { label: '海鮮', value: '海鮮類' ,icon: () => <FontAwesomeIcon icon={faShrimp} color="#777" style={{left:10}} />},
-        { label: '飲品類', value: '飲品類' ,icon: () => <FontAwesomeIcon icon={faBottleWater} color="#777" style={{left:10}} />},
-        { label: '水果類', value: '水果類' ,icon: () => <FontAwesomeIcon icon={faLemon} color="#777" style={{left:10}} />},
-        { label: '加工食品類', value: '加工食品類',icon: () => <FontAwesomeIcon icon={faPizzaSlice} color="#777" style={{left:10}} />},
-        { label: '其他', value: '其他',icon: () => <FontAwesomeIcon icon={faCircleInfo} color="#777" style={{left:10} }/>},
+        { label: '蔬菜類', value: 'b9db4f16-8eb5-4de7-b028-739df646e9af' ,icon: () => <Image source={require("../../../Img/foodpic/蔬菜.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '肉類', value: '50164000-6332-4b8e-bda4-50a7d0392e1b' ,icon: () => <Image source={require("../../../Img/foodpic/肉類.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '海鮮', value: 'cc1b00f1-d6c1-47dd-954d-c5d8613ec288' ,icon: () => <Image source={require("../../../Img/foodpic/海鮮.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '飲品類', value: 'e2eec36b-7ac9-445e-ae35-04cba2c615e9' ,icon: () => <Image source={require("../../../Img/foodpic/飲料.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '水果類', value: '3ec0a82a-2661-4e6b-a2ff-3412c2407307' ,icon: () => <Image source={require("../../../Img/foodpic/水果.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '加工食品類', value: 'b014bd14-6f5e-46d0-a166-80dbf0a15740',icon: () => <Image source={require("../../../Img/foodpic/加工食品.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '冰品', value: 'f30cb1da-9482-4f74-a8d6-756158468a7f',icon: () => <Image source={require("../../../Img/foodpic/冰品.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '甜點', value: 'fbc120bc-0192-41f3-b996-f3df43ba1122',icon: () => <Image source={require("../../../Img/foodpic/甜點.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '奶製品', value: '9b7491dd-8ff7-4da5-9b7d-3b1a53d6d4f1',icon: () => <Image source={require("../../../Img/foodpic/奶製品.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '豆類', value: '34d184a7-c6d8-469e-b6be-9d76c0496ac2',icon: () => <Image source={require("../../../Img/foodpic/豆類.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '雞蛋', value: '6c1f58ac-2925-4423-8db5-d5277da6a0e2',icon: () => <Image source={require("../../../Img/foodpic/雞蛋.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
+        { label: '剩菜', value: '35eed315-948e-4439-8980-cb030d1b2d81',icon: () => <Image source={require("../../../Img/foodpic/剩菜.png")} resizeMode={"cover"} style={styles.iconImg}></Image>},
     ]);
+
+    const {token,}=useContext(AuthContext);
     const addFood=()=>{
         //增加項目
         setFoodList([...foodList,{"foodName":foodName,"foodDate":foodDate,"foodCatgory":foodCatgory}]);
     }
-
+    /**
+     * 
+     * @param {*} date 
+     * 更改日期
+     */
     const changeData=(date)=>{
         console.log(date);
         let datelist = date.split(/\s+/);
@@ -51,7 +65,40 @@ const HandAddScreen=()=>{
         setFoodDate(tempDate);
     }
 
+    /**
+     * 取得食物分類ID
+     */
+    const getFoodCatgoryList =()=>{
+        axios.get(`${BASE_URL}/storage/category`,{
+            headers: {
+                'Authorization': token.token
+              }
+        }).then(async res=>{
+            console.log(res.data);
+        }).catch(async e=>{       
+        });
+    }
+
+    useEffect(() => { //設置標題右側按鈕
+        navigation.setOptions( 
+            {
+                headerRight: () => (
+                <FAB
+                icon={<FontAwesomeIcon icon={faLightbulb} color="#FFFFFF" size={20}></FontAwesomeIcon>}
+                size="small"
+                placement="right"
+                color="#A7DCFF"
+                onPress={() => setModalVisible(true)}
+                style={modal_fab.headerfab}/>
+                ),
+            }
+        );
+    }, []);
+    
+
+
     useEffect(() => {
+        //getFoodCatgoryList();
         setFoodName("");
         setFoodDate("");
         setFoodCatgory("");
@@ -59,29 +106,44 @@ const HandAddScreen=()=>{
         console.log(foodList);
       }, [foodList]);
     
-    //console.log(foodList);
+    console.log(foodList);
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   
             <SafeAreaView style={Userstyle.safeAreaView}>
                 <KeyboardAvoidingView behavior="position" enabled>
+                <Modal
+                    animationIn={"fadeIn"}
+                    animationInTiming={800}
+                    animationOut={"fadeOut"}
+                    animationOutTiming={800}
+                    isVisible={modalVisible}
+                    backdropOpacity={0.9} 
+                    onBackdropPress={() => setModalVisible(false)}
+                    >
+                    <TouchableWithoutFeedback onPress={()=>setModalVisible(false)}> 
+                        <View style={{flex:1,justifyContent:'flex-end',marginBottom:moderateScale(80)}}>
+                            <Button
+                                buttonStyle={[Userstyle.buttonUpdate,]}
+                                title="新增食物"
+                                titleStyle={{fontSize:moderateScale(20)}}
+                                onPress={()=>{addFood()}}
+                                />
+                            <View style={{flexDirection:'row',flexWrap:'nowrap',marginHorizontal:moderateScale(20)}}>
+                                <Image source={require('../../../Img/arrow.png')}></Image>
+                                <Text style={modal_fab.modalTitle}>完成輸入後按下新增按鈕即可新增該食物資訊</Text>
+                            </View> 
+                        </View>                                
+                    </TouchableWithoutFeedback>    
+                </Modal>
                     <View style={{height:moderateScale(100)}}>
                         <FAB 
                             color={foodList.length>0?"#0080D5":"#A7DCFF"}
-                            upperCase
-                            style={{right:moderateScale(10),
-                                backgroundColor:"#A7DCFF",
-                                shadowColor:'#10348D',
-                                shadowOffset:{
-                                    width:0,
-                                    height:moderateScale(5),},
-                                shadowOpacity:0.5,
-                                shadowRadius:3.5,
-                                elevation:5,}}
+                            style={[modal_fab.headerfab,{bottom:moderateScale(0)}]}
                             visible={true}
+                            //size="small"
                             placement="right"
                             icon={<FontAwesomeIcon icon={foodList.length>0?faBox:faBoxOpen} color="#FFFFFF" size={25}></FontAwesomeIcon>}
                             title={foodList.length}>
-
                         </FAB>
                     </View>
                     <View style={[Userstyle.greyBg,{marginTop:0}]}>
@@ -110,7 +172,7 @@ const HandAddScreen=()=>{
 
                         />
                         <DatePicker
-                            //locale="zh"
+                            title={"選擇食物過期日期"}
                             modal
                             mode="date"
                             open={datePickerOpen}
@@ -125,32 +187,37 @@ const HandAddScreen=()=>{
                             }}
                         />
                     
-                        <DropDownPicker
-                            onPress={Keyboard.dismiss}
-                            placeholder="選擇食物種類"
-                            style={dropdown.squareBox}
-                            containerStyle={dropdown.squareContainer}
-                            textStyle={{fontSize:moderateScale(18),color:'#777'}}
-                            placeholderStyle={{color:'#777'}}
-                            searchable={true}
-                            searchPlaceholder="搜尋"
-                            searchPlaceholderTextColor="#777"
-                            //searchContainerStyle={{alignSelf:'center',justifyContent:'center',flex:1,}}
-                            searchTextInputStyle={{color: "#777",borderColor:'transparent',fontSize:moderateScale(17),}}
-                            dropDownContainerStyle={{borderRadius:0}}
-                            listItemLabelStyle={{paddingTop:moderateScale(5),color: "#777",fontSize:moderateScale(15),height:moderateScale(20),paddingLeft:moderateScale(10),}}
-                            selectedItemLabelStyle={{fontWeight:"bold",color:'#777'}}
-                            selectedItemContainerStyle={{backgroundColor: "#FFC55A"}}
-                            TickIconComponent={({style}) => <FontAwesomeIcon icon={faCheck} color="#777" style={style} />}
-                            iconContainerStyle={{marginRight: moderateScale(15)}}
-                            open={open}
-                            setOpen={setOpen}
-                            value={foodCatgory}
-                            setValue={setFoodCatgory}
-                            items={foodCatgoryList}    
-                            //setItems={setFoodCatgoryList}
-                        >
-                        </DropDownPicker>
+                <DropDownPicker             
+                    //controller={(instance) => dropDownRef.current = instance}
+                    zIndex={9000}
+                    onPress={Keyboard.dismiss}
+                    placeholder="選擇食物種類"
+                    style={dropdown.squareBox}
+                    containerStyle={dropdown.squareContainer}
+                    textStyle={{fontSize:moderateScale(18),color:'#777',fontWeight:'500'}}
+                    placeholderStyle={{color:'#777',fontWeight:'500'}}
+                    searchable={false}
+                    dropDownContainerStyle={{borderRadius:0,}} //下拉選單外誆
+                    listItemLabelStyle={{color: "#777",fontSize:moderateScale(17,0.5)}} //下方item內容文字
+                    listItemContainerStyle={{height:moderateScale(35)}} //下方item高度 
+                    selectedItemLabelStyle={{fontWeight:"bold",color:'#777'}} //選擇後的item文字
+                    selectedItemContainerStyle={{backgroundColor: "#FFC55A"}} //選擇後的item高度＆背景
+                    TickIconComponent={({style}) => <FontAwesomeIcon icon={faCheck} color="#777" style={style} />} //選擇到的item右方勾勾
+                    listParentContainerStyle={{paddingLeft: moderateScale(20)}}
+                    listParentLabelStyle={{fontWeight: "bold"}}
+                    listChildContainerStyle={{}}
+                    //iconContainerStyle={{paddingLeft:moderateScale(0)}} //item左方icon設定
+                    maxHeight={moderateScale(250)}
+                    open={open}
+                    setOpen={setOpen}
+                    value={foodCatgory}
+                    setValue={setFoodCatgory}
+                    items={foodCatgoryList}
+                    closeOnBackPressed={true}
+                    closeAfterSelecting={true}
+                    ArrowUpIconComponent={({style}) => <FontAwesomeIcon icon={faAngleUp} color="#777" size={moderateScale(20)} style={style} />}
+                    ArrowDownIconComponent={({style}) => <FontAwesomeIcon icon={faAngleDown} color="#777" size={moderateScale(20)} style={style} />}>
+                </DropDownPicker>
                           
                         <Button
                         buttonStyle={[Userstyle.buttonUpdate,]}
@@ -180,6 +247,13 @@ const styles=StyleSheet.create({
         marginBottom:moderateScale(50),
         marginHorizontal:moderateScale(20),
         borderRadius:moderateScale(20),
+    },
+    iconImg:{
+        //flex:1,
+        //backgroundColor:"black",
+        width:moderateScale(20),
+        height:moderateScale(20),
+        //marginVertical:moderateScale(),
     },
 });
 

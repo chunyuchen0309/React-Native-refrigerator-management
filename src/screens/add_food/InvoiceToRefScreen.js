@@ -222,7 +222,7 @@ const InvoiceToRefScreen=()=>{
               "custom_name": addList[i].NewData,
               "expired_date": "",
               "amount": 1,
-              "type": "",
+              "categoryId": "",
               "price": 0,
               "addByMethod": "invoice",
             });
@@ -255,9 +255,7 @@ const InvoiceToRefScreen=()=>{
     
     return(   
         <SafeAreaView style={styles.safeAreaView}>
-            <Text style={styles.title}>
-                存入冰箱
-            </Text>
+            
             <View style={[Userstyle.towList,{height:300,marginVertical:20,paddingHorizontal:20,}]}>
                 <FlashList
                 data={addList}

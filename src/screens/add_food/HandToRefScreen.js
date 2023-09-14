@@ -16,6 +16,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import refrigerator from "../../style/Refrigerator";
 import BoxContainer from "./BoxContainer";
+import { scale, moderateScale, verticalScale} from "../ScaleMethod";
 const HandToRefScreen=()=>{
     //const [invoiceList,setInvoiceList]=useState([]);
     const route = useRoute();
@@ -119,7 +120,7 @@ const HandToRefScreen=()=>{
         return buttonTopCenter.map((_, index) => (
           <TouchableOpacity
             key={index}
-            style={{flex: 1, backgroundColor: "#416BFF",marginVertical:2,borderRadius:10,}}
+            style={{flex: 1, backgroundColor: "#416BFF",marginVertical:moderateScale(2),borderRadius:moderateScale(10),}}
             //title={`Button ${index + 1}`}
             onPress={() => handleButtonPress(index + Buttonindex,"freezerContainer")}
           />
@@ -134,7 +135,7 @@ const HandToRefScreen=()=>{
         return buttonDownCenter.map((_, index) => (
           <TouchableOpacity
             key={index}
-            style={index === buttonDownCenter.length - 1 ?{flex: 2, backgroundColor: "#95ECFF",marginVertical:3,borderRadius:10,}:{flex: 1, backgroundColor: "#95ECFF",marginVertical:3,borderRadius:10,}}
+            style={index === buttonDownCenter.length - 1 ?{flex: 2, backgroundColor: "#95ECFF",marginVertical:moderateScale(3),borderRadius:moderateScale(10),}:{flex: 1, backgroundColor: "#95ECFF",marginVertical:moderateScale(3),borderRadius:moderateScale(10),}}
             //title={`Button ${index + 1}`}
             onPress={() => handleButtonPress(index +Buttonindex,"coolerContainer")}
           />
@@ -149,7 +150,7 @@ const HandToRefScreen=()=>{
         return buttonTopDoor.map((_, index) => (
           <TouchableOpacity
             key={index}
-            style={{flex: 1, backgroundColor: "#CDCFFF",marginVertical:2,borderRadius:10,}}
+            style={{flex: 1, backgroundColor: "#CDCFFF",marginVertical:moderateScale(2),borderRadius:moderateScale(10),}}
             //title={`Button ${index + 1}`}
             onPress={() => handleButtonPress(index + Buttonindex,"freezerDoorContainer")}
           />
@@ -164,7 +165,7 @@ const HandToRefScreen=()=>{
         return buttonDownDoor.map((_, index) => (
           <TouchableOpacity
             key={index}
-            style={{flex: 1, backgroundColor: "#CDCFFF",marginVertical:2,borderRadius:10,}}
+            style={{flex: 1, backgroundColor: "#CDCFFF",marginVertical:moderateScale(2),borderRadius:moderateScale(10),}}
             //title={`Button ${index + 1}`}
             onPress={() => handleButtonPress(index + Buttonindex,"coolerDoorContainer")}
           />
@@ -189,8 +190,8 @@ const HandToRefScreen=()=>{
             //console.log("種類:"+tempType);
             console.log(` 選擇第 ${buttonIndex} 層`);
             
-            var Boxcol=0;
-            var Boxrow=0;
+            var Boxcol=1;
+            var Boxrow=1;
             var Door=true;
            
             bottomSheetRef.current.forceClose();
@@ -235,7 +236,7 @@ const HandToRefScreen=()=>{
               "custom_name": "",
               "expired_date": addList[i].Date, 
               "amount": 1,
-              "type": addList[i].FoodType,
+              "categoryId": addList[i].FoodType,
               "price": 0,
               "addByMethod": "normal",
             });
@@ -271,10 +272,8 @@ const HandToRefScreen=()=>{
     
     return(   
         <SafeAreaView style={styles.safeAreaView}>
-            <Text style={styles.title}>
-                存入冰箱
-            </Text>
-            <View style={[Userstyle.towList,{height:300,marginVertical:20,paddingHorizontal:20,}]}>
+            
+            <View style={[Userstyle.towList,{height:moderateScale(400),marginVertical:moderateScale(20),paddingHorizontal:moderateScale(20),}]}>
                 <FlashList
                 data={addList}
                 estimatedItemSize={20}
@@ -283,8 +282,8 @@ const HandToRefScreen=()=>{
                     <TouchableOpacity
                     onPress={()=>{handlePress(index)}}     
                     >
-                    <View style={[Userstyle.listButton,{height:45,marginHorizontal:0,backgroundColor:item.Select?'#FBD589':'#FAFAFA'}]}>
-                        <Text style={[Userstyle.listTitle,{textAlign:"left",marginStart:10,paddingTop:10,}]}>
+                    <View style={[Userstyle.listButton,{height:moderateScale(45),marginHorizontal:0,backgroundColor:item.Select?'#FBD589':'#FAFAFA'}]}>
+                        <Text style={[Userstyle.listTitle,{textAlign:"left",marginStart:moderateScale(10),paddingTop:moderateScale(10),}]}>
                             {item.NewData?item.NewData:item.OldData}
                         </Text>
                     </View>
@@ -293,19 +292,19 @@ const HandToRefScreen=()=>{
                     }}>
                 </FlashList>
             </View>
-            <View style={{height:200}}>
+            <View style={{height:moderateScale(200)}}>
             <DropDownPicker
                 placeholder="選擇存入冰箱"
                 style={[dropdown.squareBox,{zIndex:0,}]}
                 containerStyle={[dropdown.squareContainer,{zIndex:0}]}
-                textStyle={{fontSize:15,color:'#777'}}
+                textStyle={{fontSize:moderateScale(15),color:'#777'}}
                 placeholderStyle={{color:'#777'}}
-                dropDownContainerStyle={{borderRadius:0,height:150}}
-                listItemLabelStyle={{paddingTop:5,color: "#777",fontSize:15,height:25,paddingLeft:10,}}
+                dropDownContainerStyle={{borderRadius:0,height:moderateScale(150)}}
+                listItemLabelStyle={{paddingTop:5,color: "#777",fontSize:moderateScale(15),height:moderateScale(25),paddingLeft:moderateScale(10),}}
                 selectedItemLabelStyle={{fontWeight:"bold",color:'#777'}}
                 selectedItemContainerStyle={{backgroundColor: "#FFC55A"}}
                 TickIconComponent={({style}) => <FontAwesomeIcon icon={faCheck} color="#777" style={style} />}
-                iconContainerStyle={{marginRight: 15}}
+                iconContainerStyle={{marginRight: moderateScale(15)}}
                 open={open}
                 setOpen={setOpen}
                 value={selectRef}
@@ -332,7 +331,7 @@ const HandToRefScreen=()=>{
                                     disappearsOnIndex={-1}
                                     style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]} />)}
                 handleStyle={styles.bottomSheetHandle}
-                handleIndicatorStyle={{backgroundColor:"#FFAA00",height:5,width:50,}}
+                handleIndicatorStyle={{backgroundColor:"#FFAA00",height:moderateScale(5),width:moderateScale(50),}}
                 index={-1}
                 snapPoints={['80%']}
                 enablePanDownToClose={true}
@@ -342,7 +341,7 @@ const HandToRefScreen=()=>{
             {  isfoodSelect && (selectRef != "") ?  RefInfo && RefInfo.refrigeratorList && RefInfo.refrigeratorList[selectRef].firstType == "cooler" ?
                 <>
                 <Text style={styles.addText}>選擇存放位置</Text>
-                <View style={{flex:1,marginBottom:40}}>
+                <View style={{flex:1,marginBottom:moderateScale(40)}}>
                     <View style={styles.finalDown}>
                         <View style={[refrigerator.finallOutTop,{}]}>
                         {renderDownCenter()} 
@@ -363,7 +362,7 @@ const HandToRefScreen=()=>{
                 </> : 
                 <>
                 <Text style={styles.addText}>選擇存放位置</Text>
-                <View style={{flex:1,marginBottom:40}}>
+                <View style={{flex:1,marginBottom:moderateScale(40)}}>
                     <View style={styles.finalTop}>
                         <View style={[refrigerator.finallOutTop]}>
                             {renderTopCenter()}
@@ -397,7 +396,7 @@ const HandToRefScreen=()=>{
                                     disappearsOnIndex={-1}
                                     style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]} />)}
                 handleStyle={styles.bottomSheetHandle}
-                handleIndicatorStyle={{backgroundColor:"#FFAA00",height:5,width:50,}}
+                handleIndicatorStyle={{backgroundColor:"#FFAA00",height:moderateScale(5),width:moderateScale(50),}}
                 index={-1}
                 snapPoints={['60%']}
                 enablePanDownToClose={true}
@@ -408,7 +407,7 @@ const HandToRefScreen=()=>{
                 
                 {containerBoxCount? 
                 <>
-                <ImageBackground source={require('../../../Img/Under.png') } style={{height:200,marginVertical:80,}}>
+                <ImageBackground source={require('../../../Img/Under.png') } style={{height:moderateScale(200),marginVertical:moderateScale(80),}}>
                     <BoxContainer number={containerBoxCount} clickIndex={containerhandleButtonPress}>
                     </BoxContainer>
                 </ImageBackground>
@@ -430,19 +429,19 @@ const styles=StyleSheet.create({
     },
     title:{
         textAlign:'center',
-        fontSize:25,
-        marginVertical:35,
+        fontSize:moderateScale(25),
+        marginVertical:moderateScale(35),
         color: '#777'
     },
     nextButton:{
         backgroundColor:"#A9FF3C",
         //marginTop:,
-        marginHorizontal:50,
-        borderRadius:10,
+        marginHorizontal:moderateScale(50),
+        borderRadius:moderateScale(10),
         zIndex:0,
     },
     bottomSheetHandle:{
-        height:30,
+        height:moderateScale(30),
     },
     finalTop:{
         flexDirection:'row',
@@ -454,9 +453,9 @@ const styles=StyleSheet.create({
     },
     addText:{
         textAlign:'center',
-        fontSize:20,
+        fontSize:moderateScale(20),
         color:'#777',
-        marginVertical:10,
+        marginVertical:moderateScale(10),
     }
     
 })

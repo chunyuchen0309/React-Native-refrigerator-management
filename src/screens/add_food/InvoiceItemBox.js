@@ -48,7 +48,7 @@ const ItemBox = (props) => {
   };
   const changeDone=()=>{
     setModalVisible(false),
-    props.changeDone(props.index,changeIndex);
+    props.changeDone(props.index,changeIndex);//呼叫父元素組建並回傳更改的index及值
     swipeableRef.current.close();
   }
 

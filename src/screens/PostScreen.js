@@ -14,6 +14,8 @@ const PostScreen=()=>{
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.infobg}>
                 <AnimatedLottieView
+                accessible={false}
+                accessibilityRole={"none"}
                 style={{alignSelf:'center',width:moderateScale(300)}}
                 source={require('../assets/package.json')}
                 autoPlay={true}
@@ -21,8 +23,11 @@ const PostScreen=()=>{
                     
                 </AnimatedLottieView>
                 <Button
-                onPress={
-                    ()=>{navigation.navigate("Qrcode")}}
+                accessible={true}
+                accessibilityRole={"none"}
+                accessibilityLabel={"前往QRcode掃描發票按鈕"}
+                //accessibilityHint={"顯示已過期食物列表按鈕"}
+                onPress={()=>{navigation.navigate("Qrcode")}}
                 buttonStyle={Userstyle.buttonUpdate}
                 titleStyle={{fontSize:moderateScale(17)}}
                 title={"QRcode"}
@@ -30,6 +35,9 @@ const PostScreen=()=>{
                 >
                 </Button>
                 <Button
+                accessible={true}
+                accessibilityRole={"none"}
+                accessibilityLabel={"前往手動新增按鈕"}
                 onPress={()=>{navigation.navigate("HandAdd")}}
                 buttonStyle={[Userstyle.buttonUpdate,{marginVertical:moderateScale(0),marginBottom:moderateScale(60),}]}
                 titleStyle={{fontSize:moderateScale(17)}}

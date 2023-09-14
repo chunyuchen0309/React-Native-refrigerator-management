@@ -1,34 +1,27 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, Switch, View } from "react-native";
+import { Alert, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Switch, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBriefcase, faChevronRight, faCloudArrowUp, faEnvelope, faList, faLock, faMoneyCheck, faPaperPlane, faPhone, faShare, faShareFromSquare, faSnowflake, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faChartLine, faChevronRight, faCloudArrowUp, faEnvelope, faFingerprint, faList, faLock, faMoneyCheck, faPaperPlane, faPhone, faShare, faShareFromSquare, faSnowflake, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faCircleLeft, faIdCard,} from "@fortawesome/free-regular-svg-icons";
 import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/native";
 import { scale, moderateScale, verticalScale} from "./ScaleMethod";
 import messaging from '@react-native-firebase/messaging';
 
 const UserScreen=()=>{
-    //123
-    useFocusEffect(
+
+    useFocusEffect( //載入該頁面時都會重新抓取資料
         React.useCallback(()=>{
             getUserInfo();
         },[])
     )
-    /*useEffect(()=>{
-         getUserInfo();
-    },[]);*/
-    console.log('userScreen');
-    const [refreshing, setRefreshing] = useState(false);
-    const [userInfo,setUserInfo]=useState({});
-    const {token,logout}=useContext(AuthContext);
-    const [role,setRole]=useState("");
+   
+    const {token,logout,isLoading,userInfo,getUserInfoMethod,setIsLoading}=useContext(AuthContext);
     const iconSize=moderateScale(18);
     const textSize=moderateScale(14);
-    const [switchChange,setSwitchChange]=useState(true);
     const navigation=useNavigation();
 
     const getFCMToken = async () => {
@@ -50,25 +43,13 @@ const UserScreen=()=>{
           console.log(e);
         }
       };
-
-    const getUserInfo =()=>{
-        axios.get(`${BASE_URL}/auth/getInfo`,{
-            headers: {
-                'Authorization': token.token
-              }
-        }).then(res=>{
-            console.log(res.data);
-            setUserInfo(res.data);
-            res.data.role == "0" ? setRole('個人') : setRole('商業');
-            setRefreshing(false);
-        }).catch(e=>{
-            console.log(`getInfo error ${e}`);
-            setRefreshing(false);
-        });
+    const getUserInfo =async()=>{
+        getUserInfoMethod();//取得用戶資訊
+        console.log(userInfo);
     }
 
     const onRefresh =useCallback(()=>{ // 避免不必要的渲染使用
-        setRefreshing(true);
+        setIsLoading(true);
         getUserInfo();
     },[]);
     //console.log(switchChange);
@@ -77,11 +58,14 @@ const UserScreen=()=>{
             <ScrollView
                 contentContainerStyle={styles.scrollView}
                 refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                <RefreshControl refreshing={isLoading} onRefresh={onRefresh}/>
                 }>
 
                 <View style={styles.infobg}>
-                    <Button 
+                    <Button
+                        accessible={true}
+                        accessibilityHint="前往名稱設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.infoButtontop}
                         icon={<FontAwesomeIcon icon={faUser} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -89,8 +73,7 @@ const UserScreen=()=>{
                         title={
                             <>
                                 <Text style={{fontSize:textSize}}>名稱</Text>
-                                
-                                    <View style={styles.titleView}>
+                                    <View style={styles.titleView}>       
                                         <Text style={styles.leftTitle}>{userInfo.username}</Text>
                                         <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
                                     </View>
@@ -110,6 +93,9 @@ const UserScreen=()=>{
                             </>}>
                     </Button>
                     <Button 
+                        accessible={true}
+                        accessibilityHint="前往電話設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.infoButtoncenter}
                         icon={<FontAwesomeIcon icon={faPhone} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -123,6 +109,9 @@ const UserScreen=()=>{
                             </>}>
                     </Button>
                     <Button 
+                        accessible={true}
+                        accessibilityLabel="前往密碼設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.infoButtoncenter}
                         icon={<FontAwesomeIcon icon={faLock} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -135,6 +124,24 @@ const UserScreen=()=>{
                             </>}>
                     </Button>
                     <Button 
+                        accessible={true}
+                        accessibilityLabel="前往操作模式設定按鈕"
+                        accessibilityRole="none"
+                        buttonStyle={styles.infoButtoncenter}
+                        icon={<FontAwesomeIcon icon={faFingerprint} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
+                        titleStyle={styles.buttonTitle}
+                        onPress={()=>navigation.navigate('LookModelScreen')}
+                        title={<>
+                                <Text style={{fontSize:textSize}}>操作模式</Text>
+                                <View style={styles.titleView_4}>
+                                    <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
+                                </View>
+                            </>}>
+                    </Button>
+                    <Button 
+                        accessible={true}
+                        accessibilityLabel="前往用戶類型設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.infoButtonBottom}
                         icon={<FontAwesomeIcon icon={faIdCard} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -142,13 +149,16 @@ const UserScreen=()=>{
                         title={<>
                                 <Text style={{fontSize:textSize}}> 用戶類型</Text>
                                 <View style={styles.titleView_4}>
-                                    <Text style={styles.leftTitle}>{role}</Text>
+                                    <Text style={styles.leftTitle}>{userInfo.role}</Text>
                                     <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
                                 </View>
                             </>}>
                     </Button>
                     
                     <Button 
+                        accessible={true}
+                        accessibilityHint="前往用戶帳號設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.accountButtontop}
                         icon={<FontAwesomeIcon icon={faSnowflake} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -163,6 +173,9 @@ const UserScreen=()=>{
                     </Button>
                     
                     <Button 
+                        accessible={true}
+                        accessibilityLabel="前往共用請求設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.accountButtoncenter}
                         icon={<FontAwesomeIcon icon={faShare} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -175,6 +188,9 @@ const UserScreen=()=>{
                             </>}>
                     </Button>
                     <Button 
+                        accessible={true}
+                        accessibilityLabel="前往查看共用用戶設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.accountButtoncenter}
                         icon={<FontAwesomeIcon icon={faList} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -188,6 +204,25 @@ const UserScreen=()=>{
                             </>}>
                     </Button>
                     <Button 
+                        accessible={true}
+                        accessibilityLabel="前往用升級方案設定按鈕"
+                        accessibilityRole="none"
+                        buttonStyle={styles.accountButtoncenter}
+                        icon={<FontAwesomeIcon icon={faChartLine} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
+                        titleStyle={styles.buttonTitle}
+                        onPress={()=>navigation.navigate('UpMethod')}
+                        
+                        title={<>
+                                <Text style={{fontSize:textSize}}>升級方案</Text>
+                                <View style={styles.titleView_6}>
+                                    <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
+                                </View>
+                            </>}>
+                    </Button>   
+                    <Button 
+                        accessible={true}
+                        accessibilityLabel="前往商業資訊按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.accountButtoncenter}
                         icon={<FontAwesomeIcon icon={faBriefcase} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -201,12 +236,15 @@ const UserScreen=()=>{
                             </>}>
                     </Button>     
                     <Button 
+                        accessible={true}
+                        accessibilityLabel="開啟通知設定按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.accountButtonBottom}
                         icon={<FontAwesomeIcon icon={faCloudArrowUp} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
                         onPress={()=>getFCMToken()}
                         title={<>
-                                <Text style={{fontSize:textSize}}>上傳FCM</Text>
+                                <Text style={{fontSize:textSize}}>開啟通知設定</Text>
                                 <View style={styles.titleView_4}>
                                     <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
                                 </View>
@@ -214,6 +252,9 @@ const UserScreen=()=>{
                     </Button>
 
                     <Button 
+                        accessible={true}
+                        accessibilityLabel="登出按鈕"
+                        accessibilityRole="none"
                         buttonStyle={styles.logoutButton}
                         icon={<FontAwesomeIcon icon={faCircleLeft} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
                         titleStyle={styles.buttonTitle}
@@ -225,9 +266,7 @@ const UserScreen=()=>{
                                 </View>
                             </>}>
                     </Button>
-                </View>
-                
-                
+                </View>    
             </ScrollView>
         </SafeAreaView>
         
@@ -243,7 +282,7 @@ const styles =StyleSheet.create({
     infobg:{
         backgroundColor:'#E4E4E4',
         marginHorizontal:moderateScale(20),
-        marginTop:moderateScale(50),
+        marginTop:moderateScale(10),
         marginBottom:moderateScale(50),
         borderRadius:moderateScale(20),
         paddingVertical:moderateScale(50),

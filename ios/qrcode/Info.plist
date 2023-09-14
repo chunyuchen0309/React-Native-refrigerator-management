@@ -30,6 +30,7 @@
 	<true/>
 	<key>NFCReaderUsageDescription</key>
 	<string>We need to use NFC</string>
+	
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -41,6 +42,7 @@
 			</dict>
 		</dict>
 	</dict>
+	
 	<key>NSCameraUsageDescription</key>
 	<string>Your message to user when the camera is accessed for the first time</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

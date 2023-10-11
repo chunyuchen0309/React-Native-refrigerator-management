@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Button, Input,} from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
@@ -8,31 +8,38 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 import { TouchableWithoutFeedback } from "react-native";
 import { Keyboard } from "react-native";
+import { TextInput } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { modifyAccountNameApi, removeError,} from "../../store/userSlice";
 
 const UpdateAccountnameScreen=()=>{
-    console.log("UpdateAccountnameScreen");
+    //console.log("UpdateAccountnameScreen");
+    const state = useSelector(state => state.userInfo);
     const [accountName,setAccountName]=useState("");
-    const [username,setUserName]=useState("");
-    const route = useRoute();
-    const {token}=useContext(AuthContext);
     const [isLoading,setIsLoading]=useState(false);
     const navigation=useNavigation();
-
+    const dispatch = useDispatch()
     const handleAccountNameChange = useCallback((text) => {
         setAccountName(text);
-      }, []);
-
-
-    const Update=()=>{
+    }, []);
+    const Update=async ()=>{
         setIsLoading(true);
         //console.log(username+" and "+accountName+" and "+token.token);
-
-        axios({
+        var data={
+            username:state.info.username,
+            account_name:accountName
+            }
+        await dispatch(modifyAccountNameApi(
+            {"modifydata": data }
+            ));
+        setIsLoading(false);
+        navigation.goBack();
+        /*axios({
             method:"PUT",
             url:`${BASE_URL}/account/modify`,
-            headers: {'Authorization': token.token},
+            headers: {'Authorization': state.token},
             data:{
-                username:username,
+                username:state.info.username,
                 account_name:accountName
             },
         }).then(res=>{
@@ -45,28 +52,39 @@ const UpdateAccountnameScreen=()=>{
         }).finally(()=>{
             setIsLoading(false);
             navigation.goBack();
-        });
-
-        
+        });*/
     }
     useEffect(()=>{
-        setAccountName(route.params?.accountName);
-        setUserName(route.params?.username);
+        setAccountName(state.info.accountName);
     },[]);
+
+    useEffect(()=>{
+        if(state.error){
+            Alert.alert("請連結網路已變更新");
+            dispatch(removeError());
+        }
+    },[state.error]);
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   
             <SafeAreaView style={Userstyle.safeAreaView}>
                 <KeyboardAvoidingView behavior="position" enabled>
                     <View style={Userstyle.greyBg}>
-                        <Input
-                        label="冰箱名稱"
-                        labelStyle={Userstyle.lable1}
-                        containerStyle={Userstyle.containerStyle1}
-                        inputContainerStyle={Userstyle.inputContainerStyle1}
-                        inputStyle={Userstyle.inputStyle1}
-                        value={accountName}
-                        onChangeText={handleAccountNameChange}
+                        
+                        <Text style={Userstyle.textLabel}
+                        accessible={false}
+                        accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                        accessibilityState={{ disabled: true }} >
+                            帳戶名稱
+                        </Text>
+                        <TextInput
+                            selectionColor='#777'
+                            accessibilityLabel="帳戶名稱"
+                            accessible={true}
+                            style={Userstyle.textContainerStyle}
+                            value={accountName}
+                            onChangeText={handleAccountNameChange}
+                            multiline={false}   
                         />
                     
                         <Button

@@ -10,8 +10,12 @@ import { Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TouchableWithou
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 
-
-
+import { scale, moderateScale, verticalScale} from "./ScaleMethod.js";
+import modal_fab from "../style/Modal&FAB";
+import Modal from "react-native-modal";
+import AnimatedLottieView from "lottie-react-native";
+import { TouchableOpacity } from "react-native";
+import { ScreenWidth } from "@rneui/base";
 const RegisterScreen =()=>{
 
     const [name,setName]=useState("");
@@ -23,8 +27,8 @@ const RegisterScreen =()=>{
     const navigation=useNavigation("");
     //const selectIndex="0"
      //取得AuthContext
-
-    const {isLoading,register}=useContext(AuthContext);
+     const [modalVisible,setModalVisible]=useState(false);
+    const {isLoading,register,changeModel}=useContext(AuthContext);
 
     const nameBlur=(text)=>{
         setName(text);
@@ -44,188 +48,139 @@ const RegisterScreen =()=>{
     return(
         <>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <SafeAreaView style={styles.container}>
-        <ScrollView
-        contentContainerStyle={styles.scrollView}
-        //bounces={false}
-        >
-        <KeyboardAvoidingView behavior="position" enabled  >
-        <Text style={{fontSize:40,color:"#919191", marginHorizontal:10,marginVertical:20}}>
-            Register
-        </Text>
-        <View style={styles.radioButton}>
-            <CheckBox
-                checked={role === 1}
-                onPress={()=>setRole(0)}
-                title="Personal"
-                textStyle={{color:"#919191"}}
-                containerStyle={{backgroundColor:'transparent',borderColor:'transparent',marginLeft:-1}}
-                checkedIcon={<FontAwesomeIcon icon={faCircleDot}  size={20} color="#919191"  />}
-                uncheckedIcon={<FontAwesomeIcon icon={faCircleCheck} size={20} color="#F49F0C"/>}
-            />
-            <CheckBox
-                checked={role === 0}
-                onPress={()=>setRole(1)}
-                title="business"
-                textStyle={{color:"#919191"}}
-                containerStyle={{backgroundColor:'transparent',borderColor:'transparent',marginLeft:-1}}
-                checkedIcon={<FontAwesomeIcon icon={faCircleDot} size={20} color="#919191"/>}
-                uncheckedIcon={<FontAwesomeIcon icon={faCircleCheck} size={20} color="#F49F0C"/>}
-            />
-            </View>
-            <Input 
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                leftIcon={<FontAwesomeIcon icon={ faUser } size={25} color="#919191"/>}
-                inputStyle={{}}
-                label="Username"
-                errorMessage={errorMessage[0]}
-                onChangeText={text =>nameBlur(text)}
-                value={name}
-                clearButtonMode="while-editing"
-                 />
+            <SafeAreaView style={styles.container}>
+                <Modal 
+                        animationIn={"fadeIn"}
+                        animationInTiming={800}
+                        animationOut={"fadeOut"}
+                        animationOutTiming={100}
+                        isVisible={modalVisible}
+                        backdropOpacity={0.9} 
+                        onBackdropPress={() => setModalVisible(false)}
+                        >
+                        <TouchableWithoutFeedback onPress={()=>setModalVisible(false)}>
+                            <View style={[modal_fab.lookSeelect]}>            
+                                <AnimatedLottieView      
+                                    style={{width:ScreenWidth*0.8,alignSelf:'center'}}
+                                    source={require('../assets/handClick.json')}  
+                                    speed={0.5}
+                                    autoPlay
+                                    loop={false}
+                                    autoSize={true}/>
+                                <TouchableOpacity style={{flex:1}} onPress={()=>{changeModel(false),register(name,email,password,phone,role)}}>
+                                    <View style={{backgroundColor:'#D9D9D9',flex:1,marginHorizontal:moderateScale(20),borderRadius:moderateScale(20),marginBottom:moderateScale(30),paddingHorizontal:moderateScale(5)}}>
+                                        <Text style={{textAlign:'center',fontWeight:'500',fontSize:moderateScale(30),paddingTop:moderateScale(20),color:'#404496'}}>簡易模式</Text>
+                                        <Text style={{textAlign:'center',fontWeight:'500',fontSize:moderateScale(18)}}>主要提供給視力不良者及老年人使用，簡化介面易於操作使用</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{flex:1}} onPress={()=>{changeModel(true),register(name,email,password,phone,role)}}>
+                                    <View style={{backgroundColor:'#D9D9D9',flex:1,marginHorizontal:moderateScale(20),borderRadius:moderateScale(20),marginBottom:moderateScale(30),paddingHorizontal:moderateScale(5)}}>
+                                        <Text style={{textAlign:'center',fontWeight:'500',fontSize:moderateScale(30),paddingTop:moderateScale(20),color:'#404496'}}>一般模式</Text>
+                                        <Text style={{textAlign:'center',fontWeight:'500',fontSize:moderateScale(18)}}>主要提供給一般用戶以及商業用戶使用，功能性較高</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                
+                            </View>            
+                        </TouchableWithoutFeedback>    
+                    </Modal>
+                <KeyboardAvoidingView behavior="position" enabled  >
+                    <Text style={{fontSize:moderateScale(40),color:"#919191", marginHorizontal:moderateScale(10),marginVertical:moderateScale(20)}}>
+                        註冊
+                    </Text>
+                    <Input 
+                        containerStyle={{height:moderateScale(80)}}
+                        disabledInputStyle={{ background: "#ddd" }}
+                        inputContainerStyle={{height:moderateScale(45)}}
+                        leftIcon={<FontAwesomeIcon icon={ faUser } size={moderateScale(25)} color="#919191"/>}
+                        inputStyle={{}}
+                        label="使用者名稱"
+                        errorMessage={errorMessage[0]}
+                        onChangeText={text =>nameBlur(text)}
+                        value={name}
+                        clearButtonMode="while-editing"
+                        />
 
-            <Input
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                inputStyle={{}}
-                leftIcon={<FontAwesomeIcon icon={ faEnvelopeOpen} size={25} color="#919191" />}
-                label="Email"
-                keyboardType="email-address"
-                value={email}
-                onChangeText={text =>setEmail(text)}
-                clearButtonMode="while-editing"
-                 />
-            
-            <Input
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                leftIcon={<FontAwesomeIcon icon={ faCircleExclamation } size={25} color="#919191"/>}
-                inputStyle={{}}
-                label="Password"
-                secureTextEntry //password
-                onChangeText={text =>passwordBlur(text)}
-                value={password}
-                errorMessage={errorMessage[1]}
-                clearButtonMode="while-editing"
-                />
+                    <Input
+                        containerStyle={{height:moderateScale(80)}}
+                        disabledInputStyle={{ background: "#ddd" }}
+                        inputContainerStyle={{height:moderateScale(45)}}
+                        inputStyle={{}}
+                        leftIcon={<FontAwesomeIcon icon={ faEnvelopeOpen} size={moderateScale(25)} color="#919191" />}
+                        label="電子郵件"
+                        keyboardType="email-address"
+                        value={email}
+                        onChangeText={text =>setEmail(text)}
+                        clearButtonMode="while-editing"
+                        />
+                    
+                    <Input
+                        containerStyle={{height:moderateScale(80)}}
+                        disabledInputStyle={{ background: "#ddd" }}
+                        inputContainerStyle={{height:45}}
+                        leftIcon={<FontAwesomeIcon icon={ faCircleExclamation } size={moderateScale(25)} color="#919191"/>}
+                        inputStyle={{}}
+                        label="密碼"
+                        secureTextEntry //password
+                        onChangeText={text =>passwordBlur(text)}
+                        value={password}
+                        errorMessage={errorMessage[1]}
+                        clearButtonMode="while-editing"
+                        />
 
-            <Input
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                inputStyle={{}}
-                leftIcon={<FontAwesomeIcon icon={ faPhone} size={25} color="#919191" />}
-                label="Phone"
-                keyboardType="numeric"
-                value={phone}
-                errorMessage={errorMessage[2]}
-                onChangeText={text =>phoneBlur(text)}
-                clearButtonMode="while-editing"
-                />
-            {role==1?
-                <>
-                <Input
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                inputStyle={{}}
-                leftIcon={<FontAwesomeIcon icon={ faBuilding} size={25} color="#404496" />}
-                labelStyle={{color:'#404496'}}
-                label="CompanyName"
-                value={phone}
-                //errorMessage={errorMessage[2]}
-                //onChangeText={text =>phoneBlur(text)}
-                clearButtonMode="while-editing"
-                />
-                <Input
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                inputStyle={{}}
-                leftIcon={<FontAwesomeIcon icon={ faMapPin} size={25} color="#404496" />}
-                labelStyle={{color:'#404496'}}
-                label="CompanyAddress"
-                value={phone}
-                //errorMessage={errorMessage[2]}
-                //onChangeText={text =>phoneBlur(text)}
-                clearButtonMode="while-editing"
-                />
-                <Input
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                inputStyle={{}}
-                leftIcon={<FontAwesomeIcon icon={ faMoneyCheck} size={25} color="#404496" />}
-                labelStyle={{color:'#404496'}}
-                label="GUI Number"
-                value={phone}
-                //errorMessage={errorMessage[2]}
-                //onChangeText={text =>phoneBlur(text)}
-                clearButtonMode="while-editing"
-                />
-                <Input
-                containerStyle={{height:80 ,width:350}}
-                disabledInputStyle={{ background: "#ddd" }}
-                inputContainerStyle={{height:45}}
-                inputStyle={{}}
-                leftIcon={<FontAwesomeIcon icon={ faPhone} size={25} color="#404496" />}
-                labelStyle={{color:'#404496'}}
-                label="CompanyPhone"
-                value={phone}
-                //errorMessage={errorMessage[2]}
-                //onChangeText={text =>phoneBlur(text)}
-                clearButtonMode="while-editing"
-                />
-                </>:
-                <>
+                    <Input
+                        containerStyle={{height:moderateScale(80)}}
+                        disabledInputStyle={{ background: "#ddd" }}
+                        inputContainerStyle={{height:moderateScale(45)}}
+                        inputStyle={{}}
+                        leftIcon={<FontAwesomeIcon icon={ faPhone} size={moderateScale(25)} color="#919191" />}
+                        label="點話號碼"
+                        keyboardType="numeric"
+                        value={phone}
+                        errorMessage={errorMessage[2]}
+                        onChangeText={text =>phoneBlur(text)}
+                        clearButtonMode="while-editing"
+                        />
 
-                </>}
-            <View style={styles.twoButton}>
-                <Button 
-                title="Register"
-                loading={isLoading}
-                buttonStyle={{       
-                    backgroundColor: "#A6FCB6",
-                    borderRadius: 5,
-                }}
-                containerStyle={{
-                    height: 40,
-                    width: 120,
-                    marginHorizontal: 30,
-                    marginVertical: 10,
-                }}
-                titleStyle={{ marginHorizontal: 10, color: 'black' ,fontWeight:"bold",}}
+                    <View style={styles.twoButton}>
+                        <Button 
+                        title="註冊"
+                        loading={isLoading}
+                        buttonStyle={{       
+                            backgroundColor: "#A6FCB6",
+                            borderRadius: moderateScale(5),
+                        }}
+                        containerStyle={{
+                            height: moderateScale(40),
+                            width: moderateScale(120),
+                            marginHorizontal: moderateScale(30),
+                            marginVertical: moderateScale(10),
+                        }}
+                        titleStyle={{ marginHorizontal: moderateScale(10), color: 'black' ,fontWeight:"bold",}}
 
-                onPress={()=>{
-                    register(name,email,password,phone,role);
-                }}
-                />
+                        onPress={()=>{
+                            setModalVisible(true);
+                        }}
+                        />
 
-                <Button 
-                title="Login"
-                buttonStyle={{
-                    backgroundColor: "#919191",
-                    borderRadius: 3,
-                }}
-                containerStyle={{
-                    height: 40,
-                    width: 120,
-                    marginHorizontal: 30,
-                    marginVertical: 10,
-                }}
-                titleStyle={{ marginHorizontal: 10, color: 'black' ,fontWeight:"bold"}}
+                        <Button 
+                        title="登入頁面"
+                        buttonStyle={{
+                            backgroundColor: "#919191",
+                            borderRadius: moderateScale(3),
+                        }}
+                        containerStyle={{
+                            height: moderateScale(40),
+                            width: moderateScale(120),
+                            marginHorizontal: moderateScale(30),
+                            marginVertical: moderateScale(10),
+                        }}
+                        titleStyle={{ marginHorizontal: moderateScale(10), color: 'black' ,fontWeight:"bold"}}
+                        onPress={()=>navigation.navigate('Login')}//to RegisterScreen
+                        />
+                    </View>
 
-                onPress={()=>navigation.navigate('Login')}//to RegisterScreen
-                />
-            </View>
-            
-            </KeyboardAvoidingView>
-        </ScrollView>
-        </SafeAreaView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         </TouchableWithoutFeedback>
         </>
         
@@ -247,18 +202,6 @@ const styles = StyleSheet.create({
         //marginBottom:50,
         //justifyContent:'space-around',
         
-    },
-
-    radioButton:{
-        flexDirection:'row', //水平排列
-        //flexWrap:'nowrap',
-        alignSelf:'flex-start',
-        marginBottom:10
-    },
-    scrollView:{
-        justifyContent:'flex-start',
-        //alignItems:'center',
-        //flex:1,
     },
 
 });

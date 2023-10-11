@@ -5,6 +5,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
+
 public class MainActivity extends ReactActivity {
 
   /**
@@ -16,10 +17,10 @@ public class MainActivity extends ReactActivity {
     return "qrcode";
   }
 
-  @Override
+  /*@Override
   protected void onCreate(Bundle savedInstanceState) { //後來加的
-    super.onCreate(null);
-  }
+   / super.onCreate(null);
+  }*/
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link

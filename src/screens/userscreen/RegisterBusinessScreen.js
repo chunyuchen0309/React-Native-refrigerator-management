@@ -52,6 +52,7 @@ const RegisterBusinessScreen=()=>{
                         onChangeText={handleCompanyName}
                         />
                         <Input
+                        selectionColor='#777'
                         label="公司地址"
                         labelStyle={Userstyle.lable1}
                         containerStyle={Userstyle.containerStyle2}
@@ -61,6 +62,7 @@ const RegisterBusinessScreen=()=>{
                         onChangeText={handleCompanyAddressChange}
                         />
                         <Input
+                        selectionColor='#777'
                         label="公司電話"
                         labelStyle={Userstyle.lable1}
                         containerStyle={Userstyle.containerStyle2}
@@ -70,6 +72,7 @@ const RegisterBusinessScreen=()=>{
                         onChangeText={handleCompanyPhoneChange}
                         />
                         <Input
+                        selectionColor='#777'
                         label="統一編號"
                         labelStyle={Userstyle.lable1}
                         containerStyle={Userstyle.containerStyle2}

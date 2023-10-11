@@ -5,10 +5,19 @@ import { Button, Text } from "react-native-elements";
 import Userstyle from "../style/UserStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faKeyboard, faQrcode } from "@fortawesome/free-solid-svg-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { scale, moderateScale, verticalScale} from "./ScaleMethod";
+import { useDispatch } from "react-redux";
+import { clearList } from "../store/createFoodSlice";
 const PostScreen=()=>{
-    const navigation=useNavigation()
+    const navigation=useNavigation();
+    const dispatch =useDispatch();
+    useFocusEffect( //載入該頁面時都會重新抓取資料
+        React.useCallback(() => {
+            dispatch(clearList());
+        }, [])
+    );
+
     return(
         
         <SafeAreaView style={styles.safeAreaView}>

@@ -15,14 +15,22 @@ const modal_fab =StyleSheet.create({
         height:moderateScale(200),
     },
     creatRefModalView:{
-        //opacity:1,
         borderRadius:moderateScale(10),
         alignSelf:'center',
         justifyContent:'flex-start',
         backgroundColor:'transparent',
         flex:1,
+    },
+    RecipeModifyModalView:{
+        borderRadius:moderateScale(10),
+        //alignSelf:'center',
+        justifyContent:'center',
+        backgroundColor:'#FFFFFF',
         //width:moderateScale(280),
         //height:moderateScale(200),
+        marginBottom:moderateScale(350),
+        marginTop:moderateScale(150),
+        flex:1,
     },
     /**
      * Modal置中標題
@@ -64,16 +72,39 @@ const modal_fab =StyleSheet.create({
     headerfab:{
         zIndex:5,
         //right:moderateScale(20),
-        bottom:moderateScale(-27,0.2),
+        justifyContent:'center',
+        //alignItems:'center',
+        bottom:moderateScale(2),
+        borderRadius:50,
+        padding:moderateScale(6),
         backgroundColor:"#A7DCFF",
         shadowColor:'#10348D',
         shadowOffset:{
             width:0,
-            height:moderateScale(5)},
+            height:moderateScale(2)},
         shadowOpacity:0.5,
         shadowRadius:moderateScale(3.5),
-        elevation:moderateScale(5),
+        elevation:moderateScale(2),
     },
+    lookSeelect:{
+        backgroundColor:'#FFFFFF',
+        flex:1,
+        borderRadius:moderateScale(20),
+        marginHorizontal:moderateScale(10),
+        marginVertical:moderateScale(100),
+    },
+    handAddBox:{
+        zIndex:5,
+        justifyContent:'center',
+        backgroundColor:"#A7DCFF",
+        shadowColor:'#10348D',
+        shadowOffset:{
+            width:0,
+            height:moderateScale(2)},
+        shadowOpacity:0.5,
+        shadowRadius:moderateScale(3.5),
+        elevation:moderateScale(2),
+    }
 })
 
 export default modal_fab;

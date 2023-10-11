@@ -154,6 +154,8 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:2.5.0' //gif
     implementation("com.facebook.react:react-android")
 
+    implementation project(':@shopify-flash-list') //flashlist
+
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")

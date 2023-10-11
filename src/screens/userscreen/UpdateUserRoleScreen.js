@@ -10,13 +10,12 @@ import { TouchableWithoutFeedback } from "react-native";
 import { Keyboard } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 const UpdateUserRoleScreen=()=>{
     console.log("UpdateUserRoleScreen");
+    const state = useSelector(state => state.userInfo);
     const [userRole,setUserRole]=useState("");
-    const [userInfo,setUserInfo]=useState("");
-    const route = useRoute();
-    const {token}=useContext(AuthContext);
     const [isLoading,setIsLoading]=useState(false);
     const navigation=useNavigation();
 
@@ -27,10 +26,10 @@ const UpdateUserRoleScreen=()=>{
         axios({
             method:"PUT",
             url:`${BASE_URL}/auth/modify`,
-            headers: {'Authorization': token.token},
+            headers: {'Authorization':state.token},
             data:{
-                name:userInfo.username,
-                phone:userInfo.phone,
+                name:state.info.username,
+                phone:state.info.phone,
                 role:userRole,
             },
         }).then(res=>{
@@ -46,8 +45,7 @@ const UpdateUserRoleScreen=()=>{
         });
     }
     useEffect(()=>{
-        setUserInfo(route.params?.userInfo);
-        setUserRole(route.params?.userInfo.role== "個人" ? 0:1 );
+        setUserRole(state.info.role== "個人" ? 0:1 );
     },[]);
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   

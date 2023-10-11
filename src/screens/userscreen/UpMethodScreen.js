@@ -23,7 +23,6 @@ const UpMethodScreen=()=>{
             <SafeAreaView style={Userstyle.safeAreaView}>
                 <KeyboardAvoidingView behavior="position" enabled>
                     <View style={[Userstyle.greyBg,{marginTop:moderateScale(10),paddingBottom:moderateScale(40)}]}>
-
                         <View style={styles.card}>
                             <Text style={styles.cardTitle}>個人免費</Text>
                             <View style={styles.cardContentView}>
@@ -49,9 +48,7 @@ const UpMethodScreen=()=>{
                                                         title={"購買"}>             
                                                 </Button>
                                         </View>
-                                </View>
-                                
-                                
+                                </View>                     
                             </View>
                             
                         </View>
@@ -61,7 +58,7 @@ const UpMethodScreen=()=>{
                                 <Text style={styles.cardTitle}>個人付費</Text>
                                 <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end',marginRight:moderateScale(25),marginTop:moderateScale(28)}}>
                                     <FontAwesomeIcon icon={faFire} color="#CA3936"></FontAwesomeIcon>
-                                    <Text style={{color:'#CA3936',marginStart:moderateScale(5)}}>熱門方案</Text>
+                                    <Text style={{color:'#CA3936',marginStart:moderateScale(5),fontSize:moderateScale(15)}}>熱門方案</Text>
                                 </View>
                             </View>
                             <View style={styles.cardContentView}>
@@ -131,8 +128,8 @@ const styles=StyleSheet.create({
     card:{
         backgroundColor:'#FFFFFF',
         marginHorizontal:moderateScale(20),
-        height:moderateScale(190),
-        marginTop:moderateScale(40),
+        height:moderateScale(190,0.5),
+        marginTop:moderateScale(40,0),
         borderRadius:moderateScale(20)
     },
     cardTitle:{

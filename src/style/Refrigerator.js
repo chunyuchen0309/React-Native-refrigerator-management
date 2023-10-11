@@ -17,7 +17,6 @@ const  refrigerator =StyleSheet.create({
         borderTopRightRadius:moderateScale(30),
         marginBottom:moderateScale(10),
     },
-    
     outBotton:{ //最外層下
         flex:5,
         //height:320,

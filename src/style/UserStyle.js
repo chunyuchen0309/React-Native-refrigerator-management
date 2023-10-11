@@ -16,6 +16,63 @@ const Userstyle =StyleSheet.create({
         borderRadius:moderateScale(20),
         marginTop:moderateScale(100),
     },
+    searchInput:{
+        height:moderateScale(45),
+        backgroundColor:'#FAFAFA',
+        shadowColor:'black',
+        shadowOffset:{width:0,height:moderateScale(3)},
+        shadowOpacity: 0.5,
+        shadowRadius: moderateScale(1.5),
+        elevation:moderateScale(1.5),
+        marginHorizontal:moderateScale(20),
+    },
+    /**
+     * 輸入匡的text
+     */
+    textLabel:{
+        marginHorizontal:moderateScale(20),
+        color:'#878787',
+        fontWeight:'bold',
+        fontSize:moderateScale(18),
+        paddingBottom:moderateScale(5),
+        marginTop:moderateScale(50),
+    },
+    textContainerStyle:{
+        paddingHorizontal:moderateScale(20),
+        marginBottom:moderateScale(100),
+        height:moderateScale(45),
+        backgroundColor:'#FAFAFA',
+        shadowColor:'black',
+        shadowOffset:{width:0,height:moderateScale(3)},
+        shadowOpacity: 0.5,
+        shadowRadius: moderateScale(1.5),
+        elevation:moderateScale(1.5),
+        color:'#878787',
+        marginHorizontal:moderateScale(20),
+        fontSize:moderateScale(20),
+    },
+    textLabelTwo:{
+        marginHorizontal:moderateScale(20),
+        color:'#878787',
+        fontWeight:'bold',
+        fontSize:moderateScale(18),
+        paddingBottom:moderateScale(5),
+        marginTop:moderateScale(20),
+    },
+    textContainerStyleTwo:{
+        paddingHorizontal:moderateScale(20),
+        marginBottom:moderateScale(0),
+        height:moderateScale(45),
+        backgroundColor:'#FAFAFA',
+        shadowColor:'black',
+        shadowOffset:{width:0,height:moderateScale(3)},
+        shadowOpacity: 0.5,
+        shadowRadius: moderateScale(1.5),
+        elevation:moderateScale(1.5),
+        color:'#878787',
+        marginHorizontal:moderateScale(20),
+        fontSize:moderateScale(20),
+    },
     /**
      * 輸入欄位標題
      */
@@ -38,12 +95,12 @@ const Userstyle =StyleSheet.create({
         shadowOffset:{width:0,height:moderateScale(2)},
         shadowOpacity: 0.5,
         shadowRadius: moderateScale(1.5),
-        elevation:1.5,
+        elevation:moderateScale(1.5),
     },
     inputStyle1:{ //inside font
         color:'#878787',
-        marginHorizontal:moderateScale(20),
-        fontSize:moderateScale(20),
+        marginHorizontal:moderateScale(10),
+        fontSize:moderateScale(20),   
     },
     /**
      * 上傳按鈕

@@ -18,17 +18,24 @@ export const calculateDate = createAsyncThunk('foodSlice/calculateDate', async (
     const month = localDate.getMonth() + 1; // 月份從0開始，需要加1
     const day = localDate.getDate();
     localDate = `${year}-${month}-${day}`;
+    console.log("當前日期",localDate);     
     if(tempFoodList){
         var TempExpirePlus=0;
         var TempExpireMinus=0;
         for(let i=0;i<tempFoodList.length;i++){
             if(tempFoodList[i].expired_date){
-                //console.log("每個位置的日期",foodInfo[i].expired_date);            
+                //       
                 const inputDate = tempFoodList[i].expired_date;
                 const formattedDate = inputDate.replace(/\//g, '-');
                 const day_2 = new Date(formattedDate); 
                 const day_1 = new Date(localDate);
+
+                day_1.setHours(0, 0, 0, 0); // 设置时间部分为0
+                day_2.setHours(0, 0, 0, 0);
+                //console.log("食物過期日1",day_1); 
+                //console.log("食物過期日2",day_2); 
                 var diffTime = Math.abs(day_2 .getTime() - day_1.getTime());
+                //console.log("食物過期日3",diffTime); 
                 if(day_2 .getTime() - day_1.getTime()<0){
                     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))*-1;
                     TempExpireMinus++
@@ -36,12 +43,16 @@ export const calculateDate = createAsyncThunk('foodSlice/calculateDate', async (
                     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     diffDays<4?TempExpirePlus++:null;
                 }
+                //console.log("過期日：：",diffDays);
                 //console.log("食物資訊",diffDays);
                 tempFoodList[i].day= diffDays;
             }
         }
+    }else{
+        console.log("無食物資料")
+        return  {"tempFoodList":[],"Plus":0,"Minus":0};
     }
-    console.log("計算過後的foodList : ",tempFoodList);
+    //console.log("計算過後的foodList : ",tempFoodList);
     return  {"tempFoodList":tempFoodList,"Plus":TempExpirePlus,"Minus":TempExpireMinus};
 });
 
@@ -59,7 +70,6 @@ export const getFoodInfo = createAsyncThunk('foodSlice/getFoodInfo', async (_,th
     } catch (e) {
         console.log("FoodApi獲取失敗", e);
         thunkAPI.dispatch(calculateDate());
-        return 
     }
 });
 
@@ -81,8 +91,8 @@ export const deleteFoodApi = createAsyncThunk('foodSlice/deleteFoodApi', async (
 
 
 
-export const removeFoodInfo = createAsyncThunk('refSlice/removeFoodInfo', async () => {
-    //console.log("redux刪除RefApi");
+export const removeFoodInfo = createAsyncThunk('foodSlice/removeFoodInfo', async () => {
+    //console.log("redux刪除本地RefApi");
     return await AsyncStorage.removeItem('foodInfo');;
 });
 
@@ -110,10 +120,10 @@ const foodSlice =createSlice({
             }
         }),
         builder.addCase(removeFoodInfo.fulfilled, (state, action) => {
+            state.Minus="";
+            state.Plus="";
+            state.foodList=[];
             console.log("removeFoodInfo成功");
-            state.Minus=""
-            state.Plus=""
-            state.foodList=[]
         })
     }
 })

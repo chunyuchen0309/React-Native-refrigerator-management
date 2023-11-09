@@ -26,10 +26,10 @@ const foodListItem =StyleSheet.create({
     listTitleLeft:{
         color:'#878787',
         fontSize:moderateScale(20),
-        //backgroundColor:'blue',
-        flex:1,
+        //backgroundColor:'yellow',
+        flex:3,
         textAlign:'left',
-        width:moderateScale(140,1.7),
+        //width:moderateScale(140,1.7),
         paddingTop:moderateScale(10),
     },
     /**
@@ -41,11 +41,12 @@ const foodListItem =StyleSheet.create({
         color:'#878787',
         fontSize:moderateScale(20),
         //textAlign:"right",
-        justifyContent:'space-between',
-        marginEnd:moderateScale(10),
+        justifyContent:'flex-end',
+        marginEnd:moderateScale(5),
         paddingTop:moderateScale(10),
         //backgroundColor:'blue',
-        width:moderateScale(110),
+        flex:3,
+        //width:moderateScale(110,0.6),
     },
     /**
      * 過期日期文字
@@ -54,7 +55,8 @@ const foodListItem =StyleSheet.create({
         color:'#878787',
         fontSize:moderateScale(20),
         textAlign:"right",
-        marginEnd:moderateScale(5),
+        marginRight:moderateScale(5),
+        width:moderateScale(102,0.9),
         //paddingTop:moderateScale(10),
     },
     /**

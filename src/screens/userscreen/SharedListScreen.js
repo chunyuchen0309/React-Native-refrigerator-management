@@ -10,45 +10,33 @@ import { BASE_URL } from "../../config";
 //import { Swipeable } from "react-native-gesture-handler/Swipeable";
 import { FlashList } from "@shopify/flash-list";
 import ItemBox from "./ItemBox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { moderateScale } from "../ScaleMethod";
+import { getSharedList } from "../../store/userSlice";
 
 
 
 const SharedListScreen = () => {
-    console.log("SharedListScreen");
+    
     const state = useSelector(state => state.userInfo);
     const [isLoading, setIsLoading] = useState(false);
     const [userList, setUserList] = useState([]);
     const [requestUserList, setRequestUserList] = useState([]);
     const navigation = useNavigation();
-
+    const dispatch = useDispatch();
     useEffect(() => {
-        getAccount();
-    }, []);
-
-    const getAccount = () => { //初始載入資料
-        axios({
-            method: "GET",
-            url: `${BASE_URL}/account/request`,
-            headers: { 'Authorization': state.token },
-        }).then(res => {
-            console.log(res.data);
-            setUserList(res.data.userList);
-            setRequestUserList(res.data.requestUserList);
-            //console.log("使用者帳號(up):"+res.data);
-        }).catch(e => {
-            console.log(`getAccount error ${e}`);
-
-        }).finally(() => {
-            //navigation.goBack();
-        });
-    }
+        if(state.sharedList){
+            setUserList(state.sharedList.userList);
+            setRequestUserList(state.sharedList.requestUserList);
+        }
+        
+    }, [state.sharedList?.userList,state.sharedList?.requestUserList]);
 
     const agreeAccount = (index) => {  //同意申請
         console.log("agreeAccount_up");
         axios({
             method: "PUT",
-            url: `${BASE_URL}/account/request/handle`,
+            url: `${BASE_URL}/account/account/request/handle`,
             headers: { 'Authorization': state.token },
             data: {
                 targetName: requestUserList[index].name,
@@ -57,8 +45,8 @@ const SharedListScreen = () => {
                 status: true,
             },
         }).then(res => {
-            console.log(res.data);
-            getAccount();
+            console.log("同意申請成功",res.data);
+            dispatch(getSharedList());
         }).catch(e => {
             console.log(`getAccount error ${e}`);
         }).finally(() => {
@@ -66,10 +54,10 @@ const SharedListScreen = () => {
         });
     }
     const deleteAccount = (index) => { //刪除共用
-        console.log("deleteAccount_up");
+        console.log("deleteAccount_up",userList[index].name,userList[index].email,userList[index].phone);
         axios({
             method: "PUT",
-            url: `${BASE_URL}/account/shared/delete`,
+            url: `${BASE_URL}/account/account/shared/delete`,
             headers: { 'Authorization': state.token },
             data: {
                 name: userList[index].name,
@@ -77,10 +65,10 @@ const SharedListScreen = () => {
                 phone: userList[index].phone,
             },
         }).then(res => {
-            console.log(res.data);
-            getAccount();
-        }).catch(e => {
-            console.log(`error ${e}`);
+            dispatch(getSharedList());
+            console.log("刪除成功",res.data);
+        }).catch(function (error){
+            console.log(error);
         }).finally(() => {
             //navigation.goBack();
         });
@@ -95,8 +83,8 @@ const SharedListScreen = () => {
             電話號碼: ${userList[index].phone}\n
             郵件: ${userList[index].email}`,
             [
-                { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                { text: "Agree", onPress: () => deleteAccount(index), style: 'destructive' }
+                { text: "取消", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
+                { text: "刪除", onPress: () => deleteAccount(index), style: 'destructive' }
             ]
         )
     };
@@ -108,8 +96,8 @@ const SharedListScreen = () => {
             電話號碼: ${requestUserList[index].phone}\n
             郵件: ${requestUserList[index].email}`,
             [
-                { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                { text: "Agree", onPress: () => agreeAccount(index), style: 'destructive' }
+                { text: "取消", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
+                { text: "同意", onPress: () => agreeAccount(index), style: 'destructive' }
             ]
         )
     }
@@ -122,9 +110,10 @@ const SharedListScreen = () => {
             <Text style={Userstyle.list_outTitle}>
                 共享使用者
             </Text>
-            <View style={Userstyle.towList}>
+            <View style={[Userstyle.towList,{height:moderateScale(250),}]}>
                 <FlashList
                     data={userList}
+                    ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無用戶資料</Text>}
                     estimatedItemSize={50}
                     renderItem={({ item, index }) => (
                         <ItemBox data={item} handleDelete={() => deleteItem(index)}
@@ -136,10 +125,11 @@ const SharedListScreen = () => {
             <Text style={Userstyle.list_outTitle}>
                 申請加入
             </Text>
-            <View style={Userstyle.towList}>
+            <View style={[Userstyle.towList,{height:moderateScale(250),}]}>
                 <FlashList
                     data={requestUserList}
                     estimatedItemSize={50}
+                    ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無用戶資料</Text>}
                     renderItem={({ item, index }) => (
                         <TouchableOpacity onPress={() => agreeItem(index)}>
                             <View style={Userstyle.listButton}>

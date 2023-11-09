@@ -11,6 +11,7 @@ import { Keyboard } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
+import { moderateScale } from "../ScaleMethod";
 
 const UpdateUserRoleScreen=()=>{
     console.log("UpdateUserRoleScreen");
@@ -21,8 +22,7 @@ const UpdateUserRoleScreen=()=>{
 
     const Update=()=>{
         setIsLoading(true);
-        //console.log(userRole+" and "+accountRole+" and "+token.token);
-
+        console.log(userRole);
         axios({
             method:"PUT",
             url:`${BASE_URL}/auth/modify`,
@@ -52,13 +52,13 @@ const UpdateUserRoleScreen=()=>{
             <SafeAreaView style={Userstyle.safeAreaView}>
                 <KeyboardAvoidingView behavior="position" enabled>
                     <View style={Userstyle.greyBg}>
-                    <View style={Userstyle.checkBoxView}>
+                    <View style={[Userstyle.checkBoxView,{justifyContent:'center'}]}>
                         <CheckBox
                         //disabled={true}
                             checked={userRole == 1}
                             onPress={()=>setUserRole(0)}
                             title="個人"
-                            textStyle={{color:"#919191"}}
+                            textStyle={{color:"#919191",fontSize:moderateScale(18)}}
                             containerStyle={{backgroundColor:'transparent',borderColor:'transparent',}}
                             checkedIcon={<FontAwesomeIcon icon={faSquare}  size={40} color="#919191"  />}
                             uncheckedIcon={<FontAwesomeIcon icon={faSquareCheck} size={40} color="#F49F0C"/>}
@@ -68,7 +68,7 @@ const UpdateUserRoleScreen=()=>{
                             checked={userRole == 0}
                             onPress={()=>setUserRole(1)}
                             title="商業"
-                            textStyle={{color:"#919191"}}
+                            textStyle={{color:"#919191",fontSize:moderateScale(18)}}
                             containerStyle={{backgroundColor:'transparent',borderColor:'transparent',}}
                             checkedIcon={<FontAwesomeIcon icon={faSquare} size={40} color="#919191"/>}
                             uncheckedIcon={<FontAwesomeIcon icon={faSquareCheck} size={40} color="#F49F0C"/>}

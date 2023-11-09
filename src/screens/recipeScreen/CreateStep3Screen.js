@@ -9,14 +9,26 @@ import { FlashList } from "@shopify/flash-list";
 import ProcedureList from "../recipeList/ProcedureList";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { setInfo } from "../../store/createRecipeSlice";
+import { setInfo, setObjectProcedure, upRecipeApi } from "../../store/createRecipeSlice";
 
 const CreateStep3Screen=()=>{
     const navigation = useNavigation();
     const [procedureList,setProcedureList]=useState([]);
     const [procedure,setProcedure]=useState('');
+
     const state = useSelector(state => state.createRecipe);
     const dispatch =useDispatch();
+
+    const arrayToObject_Procedure=()=>{
+        //console.log("新增食材array: ",state.info.ingredients);
+        let tempProcedure=procedureList;
+        let objProcedure={};
+        tempProcedure.forEach((item, index) => {
+            objProcedure[index] = item;
+            });
+        console.log("precedure : ",objProcedure);
+        dispatch(setObjectProcedure(objProcedure));
+    }
     
     
     /**
@@ -43,24 +55,28 @@ const CreateStep3Screen=()=>{
     /**
      * 前往下一頁
      */
-    const nextPage=()=>{
+    const nextPage=async ()=>{
         if(procedureList.length == 0){
             Alert.alert("請完成所有選項輸入");
             //navigation.navigate('List'); //測試時暫時開啟
         }else{
-            dispatch(
+            await arrayToObject_Procedure();
+            await dispatch(
                 setInfo(
                 {
                     procedure:procedureList
                 })
             );
+            await dispatch(upRecipeApi());
             navigation.navigate('List');
         }
     }
 
     useEffect(() => {
         setProcedure("");
+        
         //console.log("新增步驟列表: ",procedureList);
+        
     }, [procedureList]);
 
     return (

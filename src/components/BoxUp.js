@@ -14,19 +14,19 @@ const BoxUp = (props) => {
         return(
                 <View style={style.ImageBg}>
                     <TouchableOpacity  onPress={()=>pressIndx(1)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box1,{left:moderateScale(50,0.7),top:moderateScale(-30,0.7),}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box1,{left:moderateScale(50,0.7),top:moderateScale(-30,0.7),}]} ></Image>
                     </TouchableOpacity>
 
                     <TouchableOpacity  onPress={()=>pressIndx(2)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box1,{left:moderateScale(10,0.7),top:moderateScale(-30,0.7),zIndex:1,}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box1,{left:moderateScale(10,0.7),top:moderateScale(-30,0.7),zIndex:1,}]} ></Image>
                     </TouchableOpacity>
 
                     <TouchableOpacity  onPress={()=>pressIndx(3)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box1,{left:moderateScale(-7,0.7),top:moderateScale(-60,0.7),zIndex:1}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box1,{left:moderateScale(-7,0.7),top:moderateScale(-60,0.7),zIndex:1}]} ></Image>
                     </TouchableOpacity>
 
                     <TouchableOpacity  onPress={()=>pressIndx(4)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box1,{zIndex:1,top:moderateScale(-60,0.7),left:moderateScale(-45,0.7)}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box1,{zIndex:1,top:moderateScale(-60,0.7),left:moderateScale(-45,0.7)}]} ></Image>
                     </TouchableOpacity>
                 </View> 
         );
@@ -35,22 +35,22 @@ const BoxUp = (props) => {
         return(
             <View style={style.ImageBg}>
                 <TouchableOpacity  onPress={()=>pressIndx(1)}>
-                    <Image source={require('../../Img/分層2.png')} style={[style.box2,{left:moderateScale(70,0.7),top:moderateScale(-30,0.7),}]} ></Image>
+                    <Image source={require('../../Img/分層2.png')} resizeMode={"contain"} style={[style.box2,{left:moderateScale(70,0.7),top:moderateScale(-30,0.7),}]} ></Image>
                 </TouchableOpacity>
                 <TouchableOpacity  onPress={()=>pressIndx(2)}>
-                    <Image source={require('../../Img/分層2.png')} style={[style.box2,{left:moderateScale(30,0.7),top:moderateScale(-30,0.7),zIndex:1,}]} ></Image>
+                    <Image source={require('../../Img/分層2.png')} resizeMode={"contain"} style={[style.box2,{left:moderateScale(30,0.7),top:moderateScale(-30,0.7),zIndex:1,}]} ></Image>
                 </TouchableOpacity>
                 <TouchableOpacity  onPress={()=>pressIndx(3)}>
-                    <Image source={require('../../Img/分層2.png')} style={[style.box2,{left:moderateScale(-5,0.7),top:moderateScale(-30,0.7),zIndex:2,}]} ></Image>
+                    <Image source={require('../../Img/分層2.png')} resizeMode={"contain"} style={[style.box2,{left:moderateScale(-5,0.7),top:moderateScale(-30,0.7),zIndex:2,}]} ></Image>
                 </TouchableOpacity>
                 <TouchableOpacity  onPress={()=>pressIndx(4)}>
-                    <Image source={require('../../Img/分層2.png')} style={[style.box2,{left:moderateScale(12,0.7),top:moderateScale(-60,0.7)}]} ></Image>
+                    <Image source={require('../../Img/分層2.png')} resizeMode={"contain"} style={[style.box2,{left:moderateScale(12,0.7),top:moderateScale(-60,0.7)}]} ></Image>
                 </TouchableOpacity>
                 <TouchableOpacity  onPress={()=>pressIndx(5)}>
-                    <Image source={require('../../Img/分層2.png')} style={[style.box2,{left:moderateScale(-23,0.7),top:moderateScale(-60,0.7),zIndex:1,}]} ></Image>
+                    <Image source={require('../../Img/分層2.png')} resizeMode={"contain"} style={[style.box2,{left:moderateScale(-23,0.7),top:moderateScale(-60,0.7),zIndex:1,}]} ></Image>
                 </TouchableOpacity>
                 <TouchableOpacity  onPress={()=>pressIndx(6)}>
-                    <Image source={require('../../Img/分層2.png')} style={[style.box2,{left:moderateScale(-60,0.7),top:moderateScale(-60,0.7),zIndex:2,}]} ></Image>
+                    <Image source={require('../../Img/分層2.png')} resizeMode={"contain"} style={[style.box2,{left:moderateScale(-60,0.7),top:moderateScale(-60,0.7),zIndex:2,}]} ></Image>
                 </TouchableOpacity>    
             </View> 
         )
@@ -58,31 +58,31 @@ const BoxUp = (props) => {
             return(
                 <View style={style.ImageBg}>
                     <TouchableOpacity  onPress={()=>pressIndx(1)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(70,0.7),top:moderateScale(-20,0.7),}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(70,0.7),top:moderateScale(-20,0.7),}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(2)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(40,0.7),top:moderateScale(-20,0.7),zIndex:1,}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(40,0.7),top:moderateScale(-20,0.7),zIndex:1,}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(3)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(10,0.7),top:moderateScale(-20,0.7),zIndex:2,}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(10,0.7),top:moderateScale(-20,0.7),zIndex:2,}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(4)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(33,0.7),top:moderateScale(-45,0.7),}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(33,0.7),top:moderateScale(-45,0.7),}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(5)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(3,0.7),top:moderateScale(-45,0.7),zIndex:1,}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(3,0.7),top:moderateScale(-45,0.7),zIndex:1,}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(6)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(-27,0.7),top:moderateScale(-45,0.7),zIndex:2,}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(-27,0.7),top:moderateScale(-45,0.7),zIndex:2,}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(7)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(-5,0.7),top:moderateScale(-70,0.7),}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(-5,0.7),top:moderateScale(-70,0.7),}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(8)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(-35,0.7),top:moderateScale(-70,0.7),zIndex:1,}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(-35,0.7),top:moderateScale(-70,0.7),zIndex:1,}]} ></Image>
                     </TouchableOpacity>
                     <TouchableOpacity  onPress={()=>pressIndx(9)}>
-                        <Image source={require('../../Img/分層.png')} style={[style.box3,{left:moderateScale(-65,0.7),top:moderateScale(-70,0.7),zIndex:2,}]} ></Image>
+                        <Image source={require('../../Img/分層.png')} resizeMode={"contain"} style={[style.box3,{left:moderateScale(-65,0.7),top:moderateScale(-70,0.7),zIndex:2,}]} ></Image>
                     </TouchableOpacity>  
                 </View> 
             )

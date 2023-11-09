@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleDown, faAngleUp, faCheck, faChevronDown, faLightbulb, faQuestion, } from "@fortawesome/free-solid-svg-icons";
 import dropdown from "../../style/Dropdown";
 import refrigerator from "../../style/Refrigerator";
-import { RefrigeratorContext } from "../../context/RefrigeratorContext";
 import Modal from "react-native-modal";
 import AnimatedLottieView from "lottie-react-native";
 import { ChangeColor } from "../../assets/stepBarColor";

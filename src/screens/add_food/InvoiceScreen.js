@@ -16,7 +16,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import AnimatedLottieView from "lottie-react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addFood, addFoodInv } from "../../store/createFoodSlice";
-
+import axios from "axios";
+import { BASE_URL } from "../../config";
 const InvoiceScreen = () => {
     //const [invoiceList,setInvoiceList]=useState([]);
     const route = useRoute();
@@ -27,23 +28,47 @@ const InvoiceScreen = () => {
     const [foodDate, setFoodDate] = useState("");
     const [open, setOpen] = useState(false);
     const animationRef = useRef(null);
-    const foodCategoryList = [
-        { label: '蔬菜類', value: '蔬菜' },
-        { label: '肉類', value: '肉' },
-        { label: '海鮮', value: '海鮮' },
-        { label: '飲品類', value: '飲料' },
-        { label: '水果類', value: '水果' },
-        { label: '加工食品類', value: '加工食品' },
-        { label: '冰品', value: '冰品' },
-        { label: '甜點', value: '甜點' },
-        { label: '奶製品', value: '奶製品' },
-        { label: '豆類', value: '豆類' },
-        { label: '雞蛋', value: '雞蛋' },
-        { label: '剩菜', value: '剩菜' },
-    ];
+    
+    const [foodCategoryList, setFoodCategoryList] = useState([
+        { label: '蔬菜類', value: '', icon: () => <Image source={require("../../../Img/foodpic/蔬菜.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '肉類', value: '', icon: () => <Image source={require("../../../Img/foodpic/肉類.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '海鮮', value: '', icon: () => <Image source={require("../../../Img/foodpic/海鮮.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '飲品類', value: '', icon: () => <Image source={require("../../../Img/foodpic/飲料.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '水果類', value: '', icon: () => <Image source={require("../../../Img/foodpic/水果.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '加工食品類', value: '', icon: () => <Image source={require("../../../Img/foodpic/加工食品.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '冰品', value: '', icon: () => <Image source={require("../../../Img/foodpic/冰品.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '甜點', value: '', icon: () => <Image source={require("../../../Img/foodpic/甜點.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '奶製品', value: '', icon: () => <Image source={require("../../../Img/foodpic/奶製品.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '豆類', value: '', icon: () => <Image source={require("../../../Img/foodpic/豆類.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '雞蛋', value: '', icon: () => <Image source={require("../../../Img/foodpic/雞蛋.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+        { label: '剩菜', value: '', icon: () => <Image source={require("../../../Img/foodpic/剩菜.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
+    ]);
     const dispatch =useDispatch();
     const foodState = useSelector(state => state.createFood);
+    const userState = useSelector(state => state.userInfo);
+    const getFoodCategoryList = () => {
+        axios.get(`${BASE_URL}/storage/category`, {
+            headers: {
+                'Authorization': userState.token
+            }
+        }).then( res => {
+            console.log(res.data);
+            for(let i=0;i<res.data.length;i++){
+                for(let j=0;j<foodCategoryList.length;j++)
+                if(res.data[i].category_name==foodCategoryList[j].label){
+                    foodCategoryList[j].value=res.data[i].category_id
+                }
+            }
+        }).catch(e => {
+            console.log(e);
+        }).finally(()=>{
+            console.log("食物選單",foodCategoryList);
+            
+        });
+    }
+
     useEffect(() => {
+        getFoodCategoryList();
         setInvoiceInfo(foodState.info);
         /*setInvoiceInfo({
             "Number": "A1234567",
@@ -54,7 +79,7 @@ const InvoiceScreen = () => {
                 { "OldData": "豆干", "NewData": "", "Category": "", "Date": "" }
             ]
         });*/
-
+        
         navigation.setOptions(
             {
                 headerRight: () => (
@@ -103,7 +128,7 @@ const InvoiceScreen = () => {
      */
     const changeNameItem = (index, changeData) => {
         const updatedData = JSON.parse(JSON.stringify(invoiceInfo.Data));//深拷貝
-        updatedData[index].NewData = changeData;
+        updatedData[index].OldData = changeData;
         setInvoiceInfo({ ...invoiceInfo, Data: updatedData });
         //展開運算子 複製原來的結構，並改寫其中的Data內容
     }
@@ -198,6 +223,7 @@ const InvoiceScreen = () => {
                                     <DropDownPicker
                                         disabled
                                         zIndex={9000}
+                                        itemKey="value"
                                         placeholder="選擇種類"
                                         style={{ borderWidth: 0, backgroundColor: 'transparent', paddingBottom: moderateScale(22), paddingLeft: moderateScale(3) }}
                                         containerStyle={{ backgroundColor: 'transparent', flex: 1, alignSelf: 'flex-start' }}
@@ -356,6 +382,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         flexWrap: 'wrap',
+    },
+    iconImg: {
+        //flex:1,
+        //backgroundColor:"black",
+        width: moderateScale(20),
+        height: moderateScale(20),
+        //marginVertical:moderateScale(),
     },
 })
 

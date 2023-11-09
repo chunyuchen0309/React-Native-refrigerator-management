@@ -7,7 +7,7 @@ export const requestUserPermission = async () => {
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     if (enabled) {
-        console.log(authStatus) // you can remove the console.log later
+        //console.log(authStatus) // you can remove the console.log later
         //GetFCMToken();
     }
 };

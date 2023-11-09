@@ -10,6 +10,7 @@ import { TouchableWithoutFeedback } from "react-native";
 import { Keyboard } from "react-native";
 import { TextInput } from "react-native";
 import { useSelector } from "react-redux";
+import { moderateScale } from "../ScaleMethod";
 
 const UpdateUserPasswordScreen=()=>{
     //console.log("UpdateUserPasswordScreen");
@@ -136,6 +137,7 @@ const UpdateUserPasswordScreen=()=>{
                         </View>
                     
                         <Button
+                        titleStyle={{fontSize:moderateScale(17),fontWeight:'500'}}
                         buttonStyle={Userstyle.buttonUpdate}
                         title="修改"
                         loading={isLoading}

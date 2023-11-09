@@ -16,6 +16,11 @@ const MyRecipeScreen = () => {
     const bottomSheet = React.useRef(null);
     const [modifySelect, setModifySelect] = useState("");
     const navigation = useNavigation()
+    /**
+     * 食譜點擊，選擇修改刪除
+     * @param {*} index 
+     * @param {*} item 
+     */
     const handClickItem = (index, item) => {
         console.log("我的食譜點擊：", index);
         //console.log("item:",item);
@@ -44,7 +49,9 @@ const MyRecipeScreen = () => {
             goModify();
         }
     }, [modifySelect]);
-
+    /**
+     * 前往要更改的頁面
+     */
     const goModify = () => {
         switch (modifySelect) {
             case 1:
@@ -179,6 +186,7 @@ const styles = StyleSheet.create({
         color: '#3E5481',
         fontSize: moderateScale(18),
         fontWeight: 'bold',
+        lineHeight:moderateScale(25),
     },
     bottomSheetGroup: {
         marginHorizontal: moderateScale(20),

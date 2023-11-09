@@ -5,7 +5,6 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/native";
-import { RefrigeratorContext } from "../../context/RefrigeratorContext";
 import Modal from "react-native-modal";
 import AnimatedLottieView from "lottie-react-native";
 import { scale, moderateScale, verticalScale } from "../ScaleMethod";

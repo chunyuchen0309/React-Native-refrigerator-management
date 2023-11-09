@@ -23,10 +23,11 @@ const RecipeListItem =StyleSheet.create({
      * 食譜照片
      */
     recipeImg:{
-        height:moderateScale(70),
-        width:moderateScale(70),
+        height:moderateScale(68),
+        width:moderateScale(100),
         alignSelf:'center',
-        marginHorizontal:moderateScale(5),
+        borderRadius:moderateScale(10),
+        marginHorizontal:moderateScale(10),
     },
     /**
      * 不包含圖片內層群組
@@ -56,6 +57,7 @@ const RecipeListItem =StyleSheet.create({
         fontSize:moderateScale(20),
         fontWeight:'500',
         //backgroundColor:'#FFE8AE',
+        color:'#777',
         flex:1,
         lineHeight:moderateScale(30),
     },
@@ -68,7 +70,7 @@ const RecipeListItem =StyleSheet.create({
         flexDirection:'row',
         alignItems:'flex-end',
         paddingTop:moderateScale(5),
-        marginBottom:moderateScale(5),
+        marginBottom:moderateScale(10),
     },
     /**
      * 分類Text
@@ -176,7 +178,7 @@ const RecipeListItem =StyleSheet.create({
         flex:1,
     },
     RecipeIngredientsButton:{
-        marginHorizontal:moderateScale(30),
+        marginHorizontal:moderateScale(0),
         marginBottom:moderateScale(2.5),
         borderRadius:0,
         backgroundColor:'#F7F7F7',

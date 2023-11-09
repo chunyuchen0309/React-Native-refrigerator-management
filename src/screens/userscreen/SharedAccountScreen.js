@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
 import { Button, CheckBox, Input,} from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import { Keyboard } from "react-native";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { moderateScale } from "../ScaleMethod";
 
 const SharedAccountScreen=()=>{
     //console.log("SharedAccountScreen");
@@ -21,28 +22,33 @@ const SharedAccountScreen=()=>{
     const [sendRole,setSendRole]=useState(false);
     const Shared=()=>{
         setIsLoading(true);
+        console.log('username:',''+state.info.username,
+        '\nrequestEmail:',''+sharedEmail,
+        '\nbusiness:',sendRole,);
         
         axios({
             method:"PUT",
-            url:`${BASE_URL}/account/request/send`,
+            url:`${BASE_URL}/account/account/request/send`,
             headers: {'Authorization': state.token},
             data:{
-                username:state.info.username,
-                requestEmail:sharedEmail,
-                business:sendRole,
+                'username':''+state.info.username,
+                'requestEmail':''+sharedEmail,
+                'business':sendRole,
             },
         }).then(res=>{
-            console.log(res.data);
+            console.log("共享請求發送成功",res.data);
             setIsLoading(false);
-        }).catch(e=>{
-            console.log(`UpdateAccountName error ${e}`);
+            navigation.goBack();
+        }).catch(function (error){
+            console.log(error.response);
+            Alert.alert(`${error.response.data.errorMessage}`);
             setIsLoading(false);
         }).finally(()=>{
             setIsLoading(false);
-            navigation.goBack();
+            
         });        
+        
     }
-    console.log(sendRole);
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   
             <SafeAreaView style={Userstyle.safeAreaView}>
@@ -55,14 +61,17 @@ const SharedAccountScreen=()=>{
                         inputContainerStyle={Userstyle.inputContainerStyle1}
                         inputStyle={Userstyle.inputStyle1}
                         value={sharedEmail}
+                        autoCapitalize="none" 
+                        selectionColor='#777'
+                        keyboardType="email-address"
                         onChangeText={text =>setSharedEmail(text)}
                         />
                         <CheckBox
                         //disabled={true}
                             checked={!sendRole}
                             onPress={()=>setSendRole(!sendRole)}
-                            title="商業"
-                            textStyle={{color:"#919191"}}
+                            title="對方是否為商業用戶"
+                            textStyle={{color:"#919191",fontSize:moderateScale(18)}}
                             containerStyle={{backgroundColor:'transparent',borderColor:'transparent',}}
                             checkedIcon={<FontAwesomeIcon icon={faSquare} size={40} color="#919191"/>}
                             uncheckedIcon={<FontAwesomeIcon icon={faSquareCheck} size={40} color="#F49F0C"/>}
@@ -70,6 +79,7 @@ const SharedAccountScreen=()=>{
                         <Button
                         buttonStyle={Userstyle.buttonUpdate}
                         title="送出共享請求"
+                        titleStyle={{fontSize:moderateScale(17),fontWeight:'500'}}
                         loading={isLoading}
                         onPress={()=>{Shared()}}/>
                     </View>

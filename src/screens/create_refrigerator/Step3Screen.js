@@ -8,7 +8,6 @@ import { faAngleDoubleDown, faAngleDown, faAngleUp, faCheck, faChevronDown, faLi
 import dropdown from "../../style/Dropdown";
 import refrigerator from "../../style/Refrigerator";
 import { TouchableOpacity } from "react-native";
-import { RefrigeratorContext } from "../../context/RefrigeratorContext";
 import AnimatedLottieView from "lottie-react-native";
 import { ChangeColor } from "../../assets/stepBarColor";
 import Modal from "react-native-modal";
@@ -145,9 +144,9 @@ const Step3Screen = () => {
 
     useEffect(() => {
         // 冷凍、冷藏分層導入
-        var selectedCount = parseInt(state.info.coldCount);
-        setButtonTopCenter(Array(selectedCount).fill(null));
         var selectedCount = parseInt(state.info.freezingCount);
+        setButtonTopCenter(Array(selectedCount).fill(null));
+        var selectedCount = parseInt(state.info.coldCount);
         setButtonDownCenter(Array(selectedCount).fill(null));
     }, []);
 

@@ -60,7 +60,7 @@ const RecipeStyle = StyleSheet.create({
         marginVertical: moderateScale(40),
         marginBottom: moderateScale(20),
         borderRadius: moderateScale(15),
-        backgroundColor: '#A6FCB6',
+        backgroundColor: '#27F727',
     },
     /**
      * 新增列表欄位按鈕

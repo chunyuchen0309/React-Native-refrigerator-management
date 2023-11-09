@@ -16,6 +16,7 @@ import Modal from "react-native-modal";
 import AnimatedLottieView from "lottie-react-native";
 import { TouchableOpacity } from "react-native";
 import { ScreenWidth } from "@rneui/base";
+import Userstyle from "../style/UserStyle";
 const RegisterScreen =()=>{
 
     const [name,setName]=useState("");
@@ -83,16 +84,19 @@ const RegisterScreen =()=>{
                             </View>            
                         </TouchableWithoutFeedback>    
                     </Modal>
+                    
                 <KeyboardAvoidingView behavior="position" enabled  >
-                    <Text style={{fontSize:moderateScale(40),color:"#919191", marginHorizontal:moderateScale(10),marginVertical:moderateScale(20)}}>
+                <Text style={{fontSize:moderateScale(40),color:"#919191", marginHorizontal:moderateScale(20),marginVertical:moderateScale(20),fontWeight: '500'}}>
                         註冊
                     </Text>
-                    <Input 
-                        containerStyle={{height:moderateScale(80)}}
-                        disabledInputStyle={{ background: "#ddd" }}
-                        inputContainerStyle={{height:moderateScale(45)}}
-                        leftIcon={<FontAwesomeIcon icon={ faUser } size={moderateScale(25)} color="#919191"/>}
-                        inputStyle={{}}
+                    <Input
+                        autoCapitalize="none"   
+                        containerStyle={[Userstyle.containerStyle1, { height: moderateScale(80), marginBottom: 0, marginTop: moderateScale(10) }]}
+                            inputContainerStyle={Userstyle.inputContainerStyle1}
+                            inputStyle={Userstyle.inputStyle1}
+                            labelStyle={{ marginBottom: moderateScale(10),fontWeight: '700' }}
+                        leftIcon={<FontAwesomeIcon icon={ faUser } size={moderateScale(25)} style={{ marginLeft: moderateScale(10) }} color="#919191"/>}
+                        selectionColor='#777'
                         label="使用者名稱"
                         errorMessage={errorMessage[0]}
                         onChangeText={text =>nameBlur(text)}
@@ -101,12 +105,14 @@ const RegisterScreen =()=>{
                         />
 
                     <Input
-                        containerStyle={{height:moderateScale(80)}}
-                        disabledInputStyle={{ background: "#ddd" }}
-                        inputContainerStyle={{height:moderateScale(45)}}
-                        inputStyle={{}}
-                        leftIcon={<FontAwesomeIcon icon={ faEnvelopeOpen} size={moderateScale(25)} color="#919191" />}
+                        autoCapitalize="none"
+                        containerStyle={[Userstyle.containerStyle1, { height: moderateScale(80), marginBottom: 0, marginTop: moderateScale(10) }]}
+                            inputContainerStyle={Userstyle.inputContainerStyle1}
+                            inputStyle={Userstyle.inputStyle1}
+                            labelStyle={{ marginBottom: moderateScale(10),fontWeight: '700' }}
+                        leftIcon={<FontAwesomeIcon icon={ faEnvelopeOpen} size={moderateScale(25)} style={{ marginLeft: moderateScale(10) }} color="#919191" />}
                         label="電子郵件"
+                        selectionColor='#777'
                         keyboardType="email-address"
                         value={email}
                         onChangeText={text =>setEmail(text)}
@@ -114,11 +120,13 @@ const RegisterScreen =()=>{
                         />
                     
                     <Input
-                        containerStyle={{height:moderateScale(80)}}
-                        disabledInputStyle={{ background: "#ddd" }}
-                        inputContainerStyle={{height:45}}
-                        leftIcon={<FontAwesomeIcon icon={ faCircleExclamation } size={moderateScale(25)} color="#919191"/>}
-                        inputStyle={{}}
+                        autoCapitalize="none"
+                        containerStyle={[Userstyle.containerStyle1, { height: moderateScale(80), marginBottom: 0, marginTop: moderateScale(10) }]}
+                            inputContainerStyle={Userstyle.inputContainerStyle1}
+                            inputStyle={Userstyle.inputStyle1}
+                            labelStyle={{ marginBottom: moderateScale(10),fontWeight: '700' }}
+                        leftIcon={<FontAwesomeIcon icon={ faCircleExclamation } size={moderateScale(25)} style={{ marginLeft: moderateScale(10) }} color="#919191"/>}
+                        selectionColor='#777'
                         label="密碼"
                         secureTextEntry //password
                         onChangeText={text =>passwordBlur(text)}
@@ -128,14 +136,15 @@ const RegisterScreen =()=>{
                         />
 
                     <Input
-                        containerStyle={{height:moderateScale(80)}}
-                        disabledInputStyle={{ background: "#ddd" }}
-                        inputContainerStyle={{height:moderateScale(45)}}
-                        inputStyle={{}}
-                        leftIcon={<FontAwesomeIcon icon={ faPhone} size={moderateScale(25)} color="#919191" />}
-                        label="點話號碼"
+                        containerStyle={[Userstyle.containerStyle1, { height: moderateScale(80), marginBottom: 0, marginTop: moderateScale(10) }]}
+                            inputContainerStyle={Userstyle.inputContainerStyle1}
+                            inputStyle={Userstyle.inputStyle1}
+                            labelStyle={{ marginBottom: moderateScale(10),fontWeight: '700' }}
+                        leftIcon={<FontAwesomeIcon icon={ faPhone} size={moderateScale(25)} style={{ marginLeft: moderateScale(10) }} color="#919191" />}
+                        label="電話號碼"
                         keyboardType="numeric"
                         value={phone}
+                        selectionColor='#777'
                         errorMessage={errorMessage[2]}
                         onChangeText={text =>phoneBlur(text)}
                         clearButtonMode="while-editing"
@@ -147,7 +156,7 @@ const RegisterScreen =()=>{
                         loading={isLoading}
                         buttonStyle={{       
                             backgroundColor: "#A6FCB6",
-                            borderRadius: moderateScale(5),
+                            borderRadius: moderateScale(10),
                         }}
                         containerStyle={{
                             height: moderateScale(40),
@@ -155,7 +164,7 @@ const RegisterScreen =()=>{
                             marginHorizontal: moderateScale(30),
                             marginVertical: moderateScale(10),
                         }}
-                        titleStyle={{ marginHorizontal: moderateScale(10), color: 'black' ,fontWeight:"bold",}}
+                        titleStyle={{  color: 'black' ,fontWeight:"bold",}}
 
                         onPress={()=>{
                             setModalVisible(true);
@@ -166,7 +175,7 @@ const RegisterScreen =()=>{
                         title="登入頁面"
                         buttonStyle={{
                             backgroundColor: "#919191",
-                            borderRadius: moderateScale(3),
+                            borderRadius: moderateScale(10),
                         }}
                         containerStyle={{
                             height: moderateScale(40),
@@ -174,11 +183,10 @@ const RegisterScreen =()=>{
                             marginHorizontal: moderateScale(30),
                             marginVertical: moderateScale(10),
                         }}
-                        titleStyle={{ marginHorizontal: moderateScale(10), color: 'black' ,fontWeight:"bold"}}
+                        titleStyle={{ color: 'black' ,fontWeight:"bold"}}
                         onPress={()=>navigation.navigate('Login')}//to RegisterScreen
                         />
                     </View>
-
                 </KeyboardAvoidingView>
             </SafeAreaView>
         </TouchableWithoutFeedback>
@@ -196,11 +204,8 @@ const styles = StyleSheet.create({
 
     twoButton:{
         flexDirection:'row', //水平排列
-        //flexWrap:'nowrap',
-        alignSelf:'center',
-        height:200,
-        //marginBottom:50,
-        //justifyContent:'space-around',
+        flexWrap:'nowrap',
+        marginTop:moderateScale(10),
         
     },
 

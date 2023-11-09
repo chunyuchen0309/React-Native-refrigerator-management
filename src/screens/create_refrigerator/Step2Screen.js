@@ -8,7 +8,6 @@ import { faAngleDown, faAngleUp, faCheck, faChevronDown, faLightbulb, faQuestion
 import dropdown from "../../style/Dropdown";
 import refrigerator from "../../style/Refrigerator";
 import { TouchableOpacity } from "react-native";
-import { RefrigeratorContext } from "../../context/RefrigeratorContext";
 import AnimatedLottieView from "lottie-react-native";
 import { ChangeColor } from "../../assets/stepBarColor";
 import Modal from "react-native-modal";

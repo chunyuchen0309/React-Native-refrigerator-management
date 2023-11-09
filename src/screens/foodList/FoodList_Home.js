@@ -19,19 +19,22 @@ const ItemBox = (props) => {
     const { lookModel } = useContext(AuthContext);
 
     const foodImg = {
-        '水果': <Image source={require("../../../Img/foodpic/水果.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
-        '加工食品': <Image source={require("../../../Img/foodpic/加工食品.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
+        
+        '加工食品類': <Image source={require("../../../Img/foodpic/加工食品.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
         '奶製品': <Image source={require("../../../Img/foodpic/奶製品.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
         '冰品': <Image source={require("../../../Img/foodpic/冰品.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
-        '肉': <Image source={require("../../../Img/foodpic/肉類.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
+        '肉類': <Image source={require("../../../Img/foodpic/肉類.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
         '豆類': <Image source={require("../../../Img/foodpic/豆類.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
         '海鮮': <Image source={require("../../../Img/foodpic/海鮮.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
         '甜點': <Image source={require("../../../Img/foodpic/甜點.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
         '剩菜': <Image source={require("../../../Img/foodpic/剩菜.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
-        '飲料': <Image source={require("../../../Img/foodpic/飲料.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
-        '蔬菜': <Image source={require("../../../Img/foodpic/蔬菜.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
-        '雞蛋': <Image source={require("../../../Img/foodpic/雞蛋.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>
+        '飲品類': <Image source={require("../../../Img/foodpic/飲料.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
+        '蔬菜類': <Image source={require("../../../Img/foodpic/蔬菜.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
+        '雞蛋': <Image source={require("../../../Img/foodpic/雞蛋.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
+        '水果類': <Image source={require("../../../Img/foodpic/水果.png")} resizeMode={"contain"} style={[style.iconImg, !lookModel && { marginTop: moderateScale(15) }]}></Image>,
     };
+
+    
     //console.log("傳入的資料",YMD);
     useEffect(() => {
         setTMD(props.data.expired_date.split('/'));
@@ -43,7 +46,7 @@ const ItemBox = (props) => {
     const rightSwipe = () => {
         return (
             <TouchableOpacity
-                style={{flex:1,marginHorizontal: moderateScale(15)}}
+                style={{ flex: 1, marginHorizontal: moderateScale(15) }}
             >
                 <View style={foodListItem.deleteBox}>
                     <FontAwesomeIcon icon={faTrash} size={moderateScale(25)} color="#FFFFFF"></FontAwesomeIcon>
@@ -72,17 +75,7 @@ const ItemBox = (props) => {
     return (
         <>
             {lookModel ?
-                <Swipeable
-                    renderRightActions={rightSwipe}
-                    onSwipeableOpen={(directio) => { 
-                        if (directio == "right") { 
-                                swipeableRef.current.close(), 
-                                props.handleDelete(props.index), //呼叫父組件並傳值
-                                AccessibilityInfo.announceForAccessibility("成功刪除")
-                        }}
-                    }
-                    overshootLeft={false}
-                    ref={swipeableRef}>
+                
                     <TouchableNativeFeedback
                         //activeOpacity={0.5}
                         onPressOut={() => changeOpacityOut()}
@@ -94,27 +87,23 @@ const ItemBox = (props) => {
                         accessibilityLabel={`${props.data.ingredient_orignal_name}有效日期為${YMD[0]}年${YMD[1]}月${YMD[2]}日`}
                     >
                         <View style={[foodListItem.listButton, { opacity: butttenOpacity }]}>
-                            {foodImg[props.data.category_name]}
-                            <Text style={foodListItem.listTitleLeft} ellipsizeMode="tail">
+                        {foodImg[props.data.category_name]}
+                            <Text style={foodListItem.listTitleLeft} numberOfLines={1} ellipsizeMode="tail">
                                 {props.data.ingredient_orignal_name}
                             </Text>
-                            <View style={foodListItem.listTitleRight}>
+                            <View style={[foodListItem.listTitleRight]}>
                                 <View style={style.dateIcon}>
                                     <FontAwesomeIcon icon={faCircle} size={moderateScale(15)} color={props.data.day < 0 ? "#990A0A" : props.data.day < 1 ? "#FF0700" : props.data.day < 2 ? "#FF9900" : "#FFF000"}></FontAwesomeIcon>
                                 </View>
-                                <Text style={foodListItem.dateText}>
+                                <Text style={[foodListItem.dateText,]}>
                                     {props.data.expired_date ? props.data.expired_date : props.data.ingredient_orignal_name}
                                 </Text>
                             </View>
                         </View>
                     </TouchableNativeFeedback>
-                </Swipeable>
+                
                 :
-                <Swipeable
-                    renderRightActions={rightSwipe}
-                    onSwipeableOpen={(directio) => { if (directio == "right") { swipeableRef.current.close(), props.handleDelete(), AccessibilityInfo.announceForAccessibility("成功刪除") } }}
-                    overshootLeft={false}
-                    ref={swipeableRef}>
+                
                     <TouchableNativeFeedback
                         onPressOut={() => changeOpacityOut()}
                         onPress={() => { props.handleClick() }}
@@ -127,20 +116,29 @@ const ItemBox = (props) => {
                         <View style={[foodListItem.listButton, { height: moderateScale(60), opacity: butttenOpacity }]}>
                             {foodImg[props.data.category_name]}
 
-                            <Text style={[foodListItem.listTitleLeft, { paddingTop: moderateScale(15), fontSize: moderateScale(25), paddingLeft: moderateScale(2) }]} ellipsizeMode="tail">
+                            <Text
+                                style={[foodListItem.listTitleLeft,
+                                {
+                                    paddingTop: moderateScale(15),
+                                    fontSize: moderateScale(25),
+                                    paddingLeft: moderateScale(2),
+                                    //maxWidth:moderateScale(100,1.7),
+                                    //backgroundColor:'yellow',
+                                }]}
+                                ellipsizeMode="tail"
+                                numberOfLines={1}>
                                 {props.data.ingredient_orignal_name}
                             </Text>
                             <View style={[foodListItem.listTitleRight, { paddingTop: moderateScale(18), }]}>
                                 <View style={[style.dateIcon, { marginTop: moderateScale(3), marginEnd: moderateScale(2), }]}>
                                     <FontAwesomeIcon icon={faCircle} size={moderateScale(18)} color={props.data.day < 0 ? "#990A0A" : props.data.day < 1 ? "#FF0700" : props.data.day < 2 ? "#FF9900" : "#FFF000"}></FontAwesomeIcon>
                                 </View>
-                                <Text style={[foodListItem.dateText, { fontSize: moderateScale(20) }]}>
+                                <Text style={[foodListItem.dateText, { fontSize: moderateScale(20), }]}>
                                     {props.data.expired_date ? props.data.expired_date : props.data.ingredient_orignal_name}
                                 </Text>
                             </View>
                         </View>
                     </TouchableNativeFeedback>
-                </Swipeable>
             }
         </>
     );
@@ -149,6 +147,7 @@ const style = StyleSheet.create({
     dateIcon: {
         marginTop: moderateScale(5),
         marginEnd: moderateScale(5),
+
     },
     dateText: {
         color: "#777",

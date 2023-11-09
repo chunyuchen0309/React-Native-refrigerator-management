@@ -52,6 +52,7 @@ const HandToRefScreen = () => {
     const [choose, setChoose] = useState({ Door: "", Outrow: '', InsideCol: "", InsideRow: '' });
     const [initialRender, setInitialRender] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalFinishVisible, setModaFinishlVisible] = useState(false);
     const dispatch =useDispatch();
     const getRefInfo = () => {
         setRefInfo(refState.refList);
@@ -119,6 +120,7 @@ const HandToRefScreen = () => {
                 style={{ flex: 1, backgroundColor: "#416BFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
                 onPress={() => handleButtonPress(index + Buttonindex, "freezerContainer")}
+                
             />
         ));
     };
@@ -182,7 +184,8 @@ const HandToRefScreen = () => {
 
         var tempType = type;
 
-        if (tempType == "freezerDoorContainer" || tempType == "coolerDoorContainer") { //點擊門的情況
+        if (tempType == "freezerDoorContainer" || tempType == "coolerDoorContainer") { 
+            //點擊門的情況
             //console.log("種類:"+tempType);
             console.log(` 選擇第 ${buttonIndex} 層`);
 
@@ -247,7 +250,7 @@ const HandToRefScreen = () => {
                 "ingredient": newDataInfo,
             },
         }).then(res => {
-            console.log(res.data);
+            console.log(res);
             const deletedIndexes = [];
             const filteredList = addList.filter((item, index) => {
             if (item["Select"] !== true) {  
@@ -260,12 +263,16 @@ const HandToRefScreen = () => {
             setAddList(filteredList);
             setIsFoodSelect(false);
             if (filteredList.length == 0) {
-                Alert.alert("新增完成");
-                navigation.navigate("Post");
+                //Alert.alert("新增完成");
+                setModaFinishlVisible(true);
+                setTimeout(() => {
+                    setModaFinishlVisible(false);
+                    navigation.navigate("Post");
+                }, 3500);
             }
-        }).catch(e => {
-            console.log(`add error ${e}`);
-            
+        }).catch(function(e){
+            console.log(e);
+            Alert.alert("新增錯誤");
         }).finally(() => {
 
         });
@@ -300,7 +307,7 @@ const HandToRefScreen = () => {
                             <Image source={require('../../../Img/arrow.png')}></Image>
                             <Text style={modal_fab.modalTitle}>點擊想要加入的食物列表後，在點選存入的冰箱</Text>
                             <AnimatedLottieView
-                                style={{ height: moderateScale(100), alignSelf: 'flex-end', top: moderateScale(-30), right: moderateScale(30) }}
+                                style={{ height: moderateScale(100), alignSelf: 'flex-end', top: moderateScale(-30,1.6), right: moderateScale(30,2) }}
                                 source={require('../../assets/click.json')}
                                 speed={0.5}
                                 autoPlay={true}
@@ -310,6 +317,27 @@ const HandToRefScreen = () => {
                     </View>
 
                 </TouchableWithoutFeedback>
+            </Modal>
+
+            <Modal
+                    animationIn={"zoomIn"}
+                    animationInTiming={900}
+                    animationOut={"zoomOut"}
+                    animationOutTiming={800}
+                    isVisible={modalFinishVisible}
+                    backdropOpacity={0.8}
+                    onBackdropPress={() => { setModaFinishlVisible(false)}}
+                >
+                        <View style={styles.modalView}>
+                            <AnimatedLottieView
+                                style={{width:moderateScale(500),alignSelf:'center',paddingEnd:moderateScale(6)}}
+                                source={require('../../assets/addFoodFinish.json')}
+                                autoPlay
+                                speed={0.8}
+                                loop={false}>
+                            </AnimatedLottieView>
+
+                        </View>
             </Modal>
 
             <View style={[Userstyle.towList, { height: moderateScale(400), marginVertical: moderateScale(20), paddingHorizontal: moderateScale(20), }]}>
@@ -376,7 +404,7 @@ const HandToRefScreen = () => {
                 handleStyle={styles.bottomSheetHandle}
                 handleIndicatorStyle={{ backgroundColor: "#FFAA00", height: moderateScale(5), width: moderateScale(50), }}
                 index={-1}
-                snapPoints={['80%']}
+                snapPoints={['90%']}
                 enablePanDownToClose={true}
                 ref={bottomSheetRef}
             >
@@ -500,9 +528,14 @@ const styles = StyleSheet.create({
         color: '#777',
         marginVertical: moderateScale(10),
     },
-    modalSet: {
-
-    }
+    modalView: {
+        borderRadius: moderateScale(10),
+        alignSelf: 'center',
+        justifyContent:'center',
+        backgroundColor: 'transparent',
+        width: moderateScale(300),
+        height: moderateScale(250),
+    },
 
 })
 

@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import React, { useContext, useEffect, useState } from "react";
-import { Alert, ImageBackground, SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, ImageBackground,Image, SafeAreaView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
 import ItemBox from "./InvoiceItemBox";
@@ -13,13 +13,17 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import CustomBackdrop from "./CustomBackdrop";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import refrigerator from "../../style/Refrigerator";
 import BoxContainer from "./BoxContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { moderateScale } from "../ScaleMethod";
 import { addRemove } from "../../store/createFoodSlice";
+import { TouchableWithoutFeedback } from "react-native";
+import modal_fab from "../../style/Modal&FAB";
+import Modal from "react-native-modal";
+import AnimatedLottieView from "lottie-react-native";
 const InvoiceToRefScreen = () => {
     const route = useRoute();
     const { token } = useContext(AuthContext);
@@ -47,7 +51,8 @@ const InvoiceToRefScreen = () => {
     const userState = useSelector(state => state.userInfo);
     const refState = useSelector(state => state.refInfo);
     const foodState = useSelector(state => state.createFood);
-
+    const [modalFinishVisible, setModaFinishlVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const getRefInfo = () => {
         setRefInfo(refState.refList);
         //console.log(().length);
@@ -59,6 +64,17 @@ const InvoiceToRefScreen = () => {
         }
     }
     useEffect(() => { //初始仔入獲取冰箱資料以及食物資料
+        navigation.setOptions(
+            {
+                headerRight: () => (
+                    <View style={modal_fab.headerfab}>
+                        <TouchableOpacity onPress={() => setModalVisible(true)}>
+                            <FontAwesomeIcon icon={faLightbulb} color="#FFFFFF" size={20}></FontAwesomeIcon>
+                        </TouchableOpacity>
+                    </View>
+                ),
+            }
+        );
         getRefInfo();
         var tempData = foodState.info;
         //console.log("foodState:  ",tempData);
@@ -230,7 +246,7 @@ const InvoiceToRefScreen = () => {
                 });
             }
         }
-        console.log(newDataInfo);
+        console.log("上傳的資料", newDataInfo);
         axios({
             method: "POST",
             url: `${BASE_URL}/storage/item/add`,
@@ -243,22 +259,25 @@ const InvoiceToRefScreen = () => {
 
             const deletedIndexes = [];
             const filteredList = addList.filter((item, index) => {
-            if (item["Select"] !== true) {  
-                return true; // 保留false
-            }
-            deletedIndexes.push(index);//儲存要刪除的index
-            return false; // 刪
+                if (item["Select"] !== true) {
+                    return true; // 保留false
+                }
+                deletedIndexes.push(index);//儲存要刪除的index
+                return false; // 刪
             });
             dispatch(addRemove(deletedIndexes));
             setAddList(filteredList);
             setIsFoodSelect(false);
             if (filteredList.length == 0) {
-                Alert.alert("新增完成");
-                navigation.navigate("Post");
+                setModaFinishlVisible(true);
+                setTimeout(() => {
+                    setModaFinishlVisible(false);
+                    navigation.navigate("Post");
+                }, 3500);
             }
         }).catch(e => {
             console.log(`add error ${e}`);
-        
+            Alert.alert("新增錯誤");
         }).finally(() => {
         });
     };
@@ -268,7 +287,61 @@ const InvoiceToRefScreen = () => {
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
+            <Modal
+                animationIn={"fadeIn"}
+                animationInTiming={800}
+                animationOut={"fadeOut"}
+                animationOutTiming={800}
+                isVisible={modalVisible}
+                backdropOpacity={0.9}
+                onBackdropPress={() => setModalVisible(false)}
+            >
+                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                    <View style={{ marginTop: moderateScale(110), height: moderateScale(40), justifyContent: 'flex-start', flex: 1 }}>
+                        <TouchableOpacity disabled>
+                            <View style={[Userstyle.listButton, { height: moderateScale(45), marginHorizontal: moderateScale(20), backgroundColor: '#FBD589' }]}>
+                                <Text style={[Userstyle.listTitle, { textAlign: "left", marginStart: moderateScale(10), paddingTop: moderateScale(10), }]}>
+                                    蘋果
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
 
+                        <View style={{ flexDirection: 'row', flexWrap: 'nowrap', marginHorizontal: moderateScale(30) }}>
+
+                            <Image source={require('../../../Img/arrow.png')}></Image>
+                            <Text style={modal_fab.modalTitle}>點擊想要加入的食物列表後，在點選存入的冰箱</Text>
+                            <AnimatedLottieView
+                                style={{ height: moderateScale(100), alignSelf: 'flex-end', top: moderateScale(-30), right: moderateScale(30) }}
+                                source={require('../../assets/click.json')}
+                                speed={0.5}
+                                autoPlay={true}
+                                loop={false}
+                                autoSize={true} />
+                        </View>
+                    </View>
+
+                </TouchableWithoutFeedback>
+            </Modal>
+            <Modal
+                animationIn={"zoomIn"}
+                animationInTiming={900}
+                animationOut={"zoomOut"}
+                animationOutTiming={800}
+                isVisible={modalFinishVisible}
+                backdropOpacity={0.8}
+                onBackdropPress={() => { setModaFinishlVisible(false) }}
+            >
+                <View style={styles.modalView}>
+                    <AnimatedLottieView
+                        style={{ width: moderateScale(500), alignSelf: 'center', paddingEnd: moderateScale(6) }}
+                        source={require('../../assets/addFoodFinish.json')}
+                        autoPlay
+                        speed={0.8}
+                        loop={false}>
+                    </AnimatedLottieView>
+
+                </View>
+            </Modal>
             <View style={[Userstyle.towList, { height: 300, marginVertical: 20, paddingHorizontal: 20, }]}>
                 <FlashList
                     data={addList}
@@ -329,12 +402,12 @@ const InvoiceToRefScreen = () => {
                 handleStyle={styles.bottomSheetHandle}
                 handleIndicatorStyle={{ backgroundColor: "#FFAA00", height: 5, width: 50, }}
                 index={-1}
-                snapPoints={['80%']}
+                snapPoints={['90%']}
                 enablePanDownToClose={true}
                 ref={bottomSheetRef}
             >
 
-{isfoodSelect && (selectRef != "") ? RefInfo && RefInfo && RefInfo[selectRef].firstType == "cooler" ?
+                {isfoodSelect && (selectRef != "") ? RefInfo && RefInfo && RefInfo[selectRef].firstType == "cooler" ?
                     <>
                         <Text style={styles.addText}>選擇存放位置</Text>
                         <View style={{ flex: 1, marginBottom: moderateScale(40) }}>
@@ -453,7 +526,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#777',
         marginVertical: 10,
-    }
+    },
+    modalView: {
+        borderRadius: moderateScale(10),
+        alignSelf: 'center',
+        justifyContent:'center',
+        backgroundColor: 'transparent',
+        width: moderateScale(300),
+        height: moderateScale(250),
+    },
+
 
 })
 

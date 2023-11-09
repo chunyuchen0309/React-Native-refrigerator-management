@@ -10,6 +10,7 @@ import { TouchableWithoutFeedback } from "react-native";
 import { Keyboard } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { moderateScale } from "../ScaleMethod";
 
 const LookModelScreenScreen=()=>{
     console.log("UpdateUserRoleScreen");
@@ -37,24 +38,25 @@ const LookModelScreenScreen=()=>{
                             checked={userLookModel==false}
                             onPress={()=>setUserLookModel(true)}
                             title="一般模式"
-                            textStyle={{color:"#919191"}}
+                            textStyle={{color:"#919191",fontSize: moderateScale(20)}}
                             containerStyle={{backgroundColor:'transparent',borderColor:'transparent',}}
-                            checkedIcon={<FontAwesomeIcon icon={faSquare}  size={40} color="#919191"  />}
-                            uncheckedIcon={<FontAwesomeIcon icon={faSquareCheck} size={40} color="#F49F0C"/>}
+                            checkedIcon={<FontAwesomeIcon icon={faSquare}  size={moderateScale(40) } color="#919191"  />}
+                            uncheckedIcon={<FontAwesomeIcon icon={faSquareCheck} size={moderateScale(40)} color="#F49F0C"/>}
                         />
                         <CheckBox
                         //disabled={true}
                             checked={userLookModel}
                             onPress={()=>setUserLookModel(false)}
                             title="簡易模式"
-                            textStyle={{color:"#919191"}}
+                            textStyle={{color:"#919191",fontSize:moderateScale(20)}}
                             containerStyle={{backgroundColor:'transparent',borderColor:'transparent',}}
-                            checkedIcon={<FontAwesomeIcon icon={faSquare} size={40} color="#919191"/>}
-                            uncheckedIcon={<FontAwesomeIcon icon={faSquareCheck} size={40} color="#F49F0C"/>}
+                            checkedIcon={<FontAwesomeIcon icon={faSquare} size={moderateScale(40)} color="#919191"/>}
+                            uncheckedIcon={<FontAwesomeIcon icon={faSquareCheck} size={moderateScale(40)} color="#F49F0C"/>}
                         />
                     </View>   
                     <Button
                         buttonStyle={Userstyle.buttonUpdate}
+                        titleStyle={{fontSize:moderateScale(17),fontWeight:'500'}}
                         title="修改"
                         loading={isLoading}
                         onPress={()=>{Update()}}/>              

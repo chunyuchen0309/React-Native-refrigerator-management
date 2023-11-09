@@ -12,6 +12,7 @@ import { Text } from "react-native";
 import { TextInput } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { modifyUserPhoneApi, removeError } from "../../store/userSlice";
+import { moderateScale } from "../ScaleMethod";
 
 const UpdateUserPhoneScreen = () => {
     //console.log("UpdateUserPhoneScreen");
@@ -87,6 +88,7 @@ const UpdateUserPhoneScreen = () => {
                             用戶電話號碼
                         </Text>
                         <TextInput
+                            keyboardType='numeric'
                             selectionColor='#777'
                             accessibilityLabel="用戶電話號碼"
                             accessible={true}
@@ -99,6 +101,7 @@ const UpdateUserPhoneScreen = () => {
                         <Button
                             buttonStyle={Userstyle.buttonUpdate}
                             title="修改"
+                            titleStyle={{fontSize:moderateScale(17),fontWeight:'500'}}
                             loading={isLoading}
                             onPress={() => { Update() }} />
                     </View>

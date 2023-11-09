@@ -11,6 +11,7 @@ import { Keyboard } from "react-native";
 import { TextInput } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { modifyAccountNameApi, removeError,} from "../../store/userSlice";
+import { moderateScale } from "../ScaleMethod";
 
 const UpdateAccountnameScreen=()=>{
     //console.log("UpdateAccountnameScreen");
@@ -34,25 +35,6 @@ const UpdateAccountnameScreen=()=>{
             ));
         setIsLoading(false);
         navigation.goBack();
-        /*axios({
-            method:"PUT",
-            url:`${BASE_URL}/account/modify`,
-            headers: {'Authorization': state.token},
-            data:{
-                username:state.info.username,
-                account_name:accountName
-            },
-        }).then(res=>{
-            console.log(res.data);
-            setIsLoading(false);
-        }).catch(e=>{
-            console.log(`UpdateAccountName error ${e}`);
-            setIsLoading(false);
-            
-        }).finally(()=>{
-            setIsLoading(false);
-            navigation.goBack();
-        });*/
     }
     useEffect(()=>{
         setAccountName(state.info.accountName);
@@ -78,6 +60,7 @@ const UpdateAccountnameScreen=()=>{
                             帳戶名稱
                         </Text>
                         <TextInput
+                            autoCapitalize="none" 
                             selectionColor='#777'
                             accessibilityLabel="帳戶名稱"
                             accessible={true}
@@ -88,6 +71,7 @@ const UpdateAccountnameScreen=()=>{
                         />
                     
                         <Button
+                        titleStyle={{fontSize:moderateScale(17),fontWeight:'500'}}
                         buttonStyle={Userstyle.buttonUpdate}
                         title="修改"
                         loading={isLoading}

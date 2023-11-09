@@ -28,10 +28,17 @@ const createFoodSlice =createSlice({
             state.info=state.info.filter((_, index) => !action.payload.includes(index));
             //刪除不是傳入的index,filter保留為true的值
             //所以傳入的值如果有擇變為false,如果沒有擇變為true保留
-        }        
+        },
+        deleteItem(state,action){
+            console.log('刪除的index:',action.payload.index)
+            state.info=state.info.filter((_,index)=>index!==action.payload.index);
+        },
+        modifyItem(state,action){
+            state.info[action.payload.index]=action.payload.foodInfo
+        },
     },
 })
 
-export const {addFood,addFoodInv,clearList,addRemove}=createFoodSlice.actions;
+export const {addFood,addFoodInv,clearList,addRemove,deleteItem,modifyItem}=createFoodSlice.actions;
 
 export default createFoodSlice.reducer;

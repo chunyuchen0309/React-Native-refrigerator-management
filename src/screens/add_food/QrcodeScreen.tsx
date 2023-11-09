@@ -36,7 +36,7 @@ const QrcodeScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [foodList, setFoodList] = useState([]);
     const [result, setResult] = useState(new Set());
-    const [invoiceInfo, setInvoiceInfo] = useState({});
+    const [invoiceInfo, setInvoiceInfo] = useState({"Number": "","Date": "","Data":[],});
     const [modalVisible, setModalVisible] = useState(false);
     const scannerRef = useRef(null);
     const state = useSelector(state => state.userInfo);
@@ -68,8 +68,8 @@ const QrcodeScreen = () => {
         var tempFoodList=[];
         if (invoiceInfo.Number=="") {
             Alert.alert("請完成掃描")
-            //navigation.navigate('Invoice', { "invoiceData": invoiceInfo })
-            
+            //navigation.navigate('Invoice');
+            //navigation.navigate('Invoice', { "invoiceData": invoiceInfo })   
         } else {
             for(var i =0;i<foodList.length;i++){
                 //console.log("執行 ",i)
@@ -133,7 +133,8 @@ const QrcodeScreen = () => {
             for (let i = 0; i < s1.length; i++) {
                 var chineseRegex = /[\u4e00-\u9fa5]/g;
                 var chineseCharacters = s1[i].match(chineseRegex);
-                if (chineseCharacters) {
+                console.log("加入s2",chineseCharacters);
+                if ( chineseCharacters && chineseCharacters[0]!== "未"&& chineseCharacters[1]!== "含") {
                     s2.push(chineseCharacters.join(''))
                 }
             }
@@ -194,7 +195,7 @@ const QrcodeScreen = () => {
             <QRCodeScanner
                 onRead={onSuccess}
                 ref={scannerRef}
-                cameraStyle={{ height: moderateScale(350), width: moderateScale(350), overflow: 'hidden', borderRadius: moderateScale(30), borderWidth: moderateScale(5), borderColor: "#FFA600" }}
+                cameraStyle={{ height: moderateScale(350), width: moderateScale(350), overflow: 'hidden', borderRadius: moderateScale(30), borderWidth: moderateScale(3), borderColor: "#FFA600" }}
                 containerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
                 showMarker={true}
                 reactivate={scan}

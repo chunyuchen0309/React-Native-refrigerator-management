@@ -11,8 +11,10 @@ import { Button, Input } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { setInfo } from "../../store/createRecipeSlice";
+import { BASE_URL } from "../../config";
+import axios from "axios";
 const CreateStep1Screen = () => {
-
+    const [imgBase64, setImageBase64] = useState();
     const [selectImg, setSelectImg] = useState();
     const [recipeName, setRecipeName] = useState();
     const [recipeTime, setRecipeTime] = useState();
@@ -21,27 +23,57 @@ const CreateStep1Screen = () => {
     const [recipeDifficult, setReciperDifficult] = useState([0, "all"]);
     const navigation = useNavigation();
     const state = useSelector(state => state.createRecipe);
-    const dispatch =useDispatch();
-    //
+    const userState = useSelector(state => state.userInfo);
+    const [recipeCategoryList, setRecipeCategoryList] = useState([{ name: '中式', value: '' }, { name: '西式', value: '' }, { name: '韓式', value: '' }]);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        getFoodCatgoryList();
+    }, []);
+
+    /**
+     * 取得食譜種類id
+     */
+    const getFoodCatgoryList = () => {
+        axios.get(`${BASE_URL}/storage/category`, {
+            headers: {
+                'Authorization': userState.token
+            }
+        }).then(res => {
+            console.log(res.data);
+            for (let i = 0; i < res.data.length; i++) {
+                for (let j = 0; j < recipeCategoryList.length; j++) {
+                    if (res.data[i].category_name == recipeCategoryList[j].name) {
+                        recipeCategoryList[j].value = res.data[i].category_id
+                    }
+                }
+            }
+        }).catch(e => {
+            console.log(e);
+        }).finally(() => {
+            console.log("食譜種類選單", recipeCategoryList);
+        });
+    }
+    
     /**
      * 開啟相簿
      */
     const openCamra = async () => {
         var options = {
             mediaType: 'photo',
-            includeBase64: 'true',
-            includeExtra: 'true',
+            includeBase64: true,
+            includeExtra: true,
             storageOptions: {
                 path: 'image'
-            },          
+            },
         }
         await launchImageLibrary(options, res => {
             if (res.didCancel) {
                 console.log("未選擇照片");
             } else {
-                console.log("照片res: ",res.assets[0]);
-            
+                console.log("照片res: ", res.assets[0]);
+                setImageBase64(res.assets[0].base64);
                 setSelectImg(res.assets[0].uri);
+
             }
         });
     }
@@ -50,21 +82,27 @@ const CreateStep1Screen = () => {
      * 前往下一頁
      */
     const nextPage = () => {
-        if (!recipeName || !recipeTime || !recipeCategory || !recipeDifficult || !recipeDescribe) {
+        if (!imgBase64 || !recipeName || !recipeTime || !recipeCategory || !recipeDifficult || !recipeDescribe) {
             Alert.alert("請完成所有選項輸入");
-            //navigation.navigate('createStep2'); //測試時暫時開啟        
+            navigation.navigate('createStep2'); //測試時暫時開啟        
         } else {
             navigation.navigate('createStep2');
+            var tempID;
+            for (var i = 0; i < recipeCategoryList.length; i++) {
+                if (recipeCategory[1] == recipeCategoryList[i].name) {
+                    tempID = recipeCategoryList[i].value;
+                }
+            }
             dispatch(
                 setInfo(
-                {
-                img:"selectImg",
-                name:recipeName,
-                time:recipeTime,
-                category:recipeCategory,
-                difficult:recipeDifficult,
-                describe:recipeDescribe,
-                })
+                    {
+                        img: imgBase64,
+                        name: recipeName,
+                        time: recipeTime,
+                        category: tempID,
+                        difficult: recipeDifficult,
+                        describe: recipeDescribe,
+                    })
             );
         }
     }
@@ -73,7 +111,7 @@ const CreateStep1Screen = () => {
             <ScrollView
                 contentContainerStyle={{ justifyContent: 'flex-start', marginBottom: moderateScale(100) }}>
                 <KeyboardAvoidingView behavior="position" >
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         onPress={() => openCamra()}
                         accessible={true}
                         accessibilityRole={"none"}
@@ -145,7 +183,7 @@ const CreateStep1Screen = () => {
                         accessible={true}
                         accessibilityRole="none"
                         accessibilityLabel="食譜概述輸入欄位"
-                        
+
                         returnKeyType='done'
                         selectionColor='#777'
                         inputContainerStyle={[RecipeStyle.input, { height: moderateScale(100), paddingTop: moderateScale(10) }]}
@@ -160,9 +198,9 @@ const CreateStep1Screen = () => {
                         style={RecipeStyle.inputLabel}
                         accessible={true}
                         accessibilityLabel="食譜種類選擇"
-                        //accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                        //accessibilityState={{ disabled: true }} 
-                        >
+                    //accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                    //accessibilityState={{ disabled: true }} 
+                    >
                         食譜種類
                     </Text>
 
@@ -172,7 +210,7 @@ const CreateStep1Screen = () => {
                             accessibilityRole={"none"}
                             accessibilityLabel={"中式"}
                             style={[styles.groupButton, { backgroundColor: recipeCategory[0] == 1 ? '#99FF17' : '#ECEAEA' }]}
-                            onPress={() => setReciperCategory([1, "chiness"])}>
+                            onPress={() => setReciperCategory([1, "中式"])}>
                             <Text style={[styles.groupButtonText, { color: recipeCategory[0] == 1 ? '#FFFFFF' : '#3E5481' }]}>中式</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -180,7 +218,7 @@ const CreateStep1Screen = () => {
                             accessibilityRole={"none"}
                             accessibilityLabel={"西式"}
                             style={[styles.groupButton, { backgroundColor: recipeCategory[0] == 2 ? '#99FF17' : '#ECEAEA' }]}
-                            onPress={() => setReciperCategory([2, "west"])}>
+                            onPress={() => setReciperCategory([2, "西式"])}>
                             <Text style={[styles.groupButtonText, { color: recipeCategory[0] == 2 ? '#FFFFFF' : '#3E5481' }]}>西式</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -188,7 +226,7 @@ const CreateStep1Screen = () => {
                             accessibilityRole={"none"}
                             accessibilityLabel={"韓式"}
                             style={[styles.groupButton, { backgroundColor: recipeCategory[0] == 3 ? '#99FF17' : '#ECEAEA' }]}
-                            onPress={() => setReciperCategory([3, "korean"])}>
+                            onPress={() => setReciperCategory([3, "韓式"])}>
                             <Text style={[styles.groupButtonText, { color: recipeCategory[0] == 3 ? '#FFFFFF' : '#3E5481' }]}>韓式</Text>
                         </TouchableOpacity>
                     </View>

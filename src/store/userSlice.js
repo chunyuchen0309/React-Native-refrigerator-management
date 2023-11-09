@@ -15,6 +15,7 @@ const initialState = {
     token: "",
     isLoading: false,
     error: "",
+    sharedList:[],
 }
 /**
  * 取得使用者API
@@ -100,11 +101,42 @@ export const modifyUserPhoneApi = createAsyncThunk('userSlice/modifyUserPhoneApi
 });
 
 /**
+ * redux更新使用者電話號碼API
+ */
+export const checkToken = createAsyncThunk('userSlice/checkToken', async (_,thunkAPI) => {
+    console.log("checkTokenAPI")
+    try {
+        const response = await axios({
+                method: "GET",
+                url: `${BASE_URL}/account/account/check`,
+                headers: { 'Authorization':thunkAPI.getState().userInfo.token },
+            }
+        );
+        console.log("確認token",response.data);
+    } catch (error) {
+        console.log(error.response);
+        
+        
+        if(error.response.status=="400"){
+            console.log(`Bearer ${error.response.data}`);
+            thunkAPI.dispatch(setUserToken(`Bearer ${error.response.data}`));
+            console.log("token錯誤");
+            
+        }
+    }
+});
+
+/**
  * redux移除使用者本地token以及清除使用者資訊
  */
 export const removeUserToken = createAsyncThunk('userSlice/removeUserToken', async () => {
     //console.log("redux獲取token異步");
     return await AsyncStorage.removeItem('token');;
+});
+
+export const removeUserInfo = createAsyncThunk('userSlice/removeUserInfo', async () => {
+    //console.log("redux獲取token異步");
+    return await AsyncStorage.removeItem('userInfo');;
 });
 /**
  * redux設置使用者本地token 
@@ -113,6 +145,23 @@ export const setUserToken = createAsyncThunk('userSlice/setUserToken', async (to
     //console.log("redux獲取token異步");
     await AsyncStorage.setItem('token', JSON.stringify(token));
     return token;
+});
+/**
+ * 取得使用者API
+ */
+export const getSharedList = createAsyncThunk('userSlice/getSharedList', async (_,thunkAPI) => {
+    console.log("redux獲取uerInfoApi", thunkAPI.getState().userInfo.token);
+    try {
+        const response = await axios({
+            method: "GET",
+            url: `${BASE_URL}/account/account/request`,
+            headers: { 'Authorization': thunkAPI.getState().userInfo.token },
+        });
+        console.log(response);
+        return response.data;
+    } catch (e) {
+        console.log("getSharedList獲取失敗", e);
+    }
 });
 
 const userSlice = createSlice({
@@ -177,8 +226,13 @@ const userSlice = createSlice({
             builder.addCase(modifyUserPhoneApi.rejected, (state, action) => {
                 console.log("modifyUserPhoneApi失敗", action.payload);
                 state.error=action.payload;
+            }),
+            builder.addCase(removeUserInfo.fulfilled, (state, action) => {
+                console.log("removeUserInfo成功", action.payload);
+            }),
+            builder.addCase(getSharedList.fulfilled, (state, action) => {
+                state.sharedList=action.payload;
             })
-            
     },
 })
 

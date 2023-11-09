@@ -144,6 +144,7 @@ const Userstyle =StyleSheet.create({
         marginTop:moderateScale(60),
         marginBottom:moderateScale(5),
         color:"#777",
+        fontWeight:'500'
     },
     deletebox:{
         height:moderateScale(35),

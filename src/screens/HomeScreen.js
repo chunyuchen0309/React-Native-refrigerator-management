@@ -7,40 +7,45 @@ import { RefreshControl } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faBars, faCalendar, faCalendarXmark, faTools, faTrash, faTrashCan, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faNfcSymbol } from "@fortawesome/free-brands-svg-icons";
-import Userstyle from "../style/UserStyle";
-import { BASE_URL } from "../config";
 import { scale, moderateScale, verticalScale } from "./ScaleMethod";
 
 import { FlashList } from "@shopify/flash-list";
-import { Swipeable } from "react-native-gesture-handler";
+
 import ItemBox from "./foodList/FoodList_Home";
 import Slider from '@react-native-community/slider';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteFoodApi, getFoodInfo, setIsloading } from "../store/foodSlice";
 import { getRefInfo } from "../store/refSlice";
-
+import { TouchableWithoutFeedback } from "react-native";
+import AnimatedLottieView from "lottie-react-native";
+import Modal from "react-native-modal";
+import { checkToken } from "../store/userSlice";
 const HomeScreen = () => {
     const navigation = useNavigation()
     const [buttonSelect, setButtonSelect] = useState(true);
     const { lookModel } = useContext(AuthContext);
     const [filteredFoodInfo, setFilteredFoodInfo] = useState([]);
     const [seekBar, setSeekBar] = useState(3);
-    const [seekBarDate, setSeekBarDate] = useState("今日過期");
+    const [seekBarDate, setSeekBarDate] = useState("即將過期食物");
     const state = useSelector(state => state.userInfo);
     const foodState = useSelector(state => state.foodInfo);
     const dispatch = useDispatch();
-
+    const [modalVisible, setModalVisible] = useState(false);
     useFocusEffect( //載入該頁面時都會重新抓取資料
         React.useCallback(() => {
             //console.log("主頁當前使用者資訊", state);
             dispatch(getFoodInfo());
             dispatch(getRefInfo());
+            dispatch(checkToken());
         }, [])
     );
+
+
 
     const onRefresh = useCallback(() => { // 避免不必要的渲染使用
         dispatch(setIsloading());
         dispatch(getFoodInfo());
+        dispatch(checkToken());
     }, []);
 
     useEffect(() => { //有資料且正確載入使組建篩選並重新渲染
@@ -181,11 +186,32 @@ const HomeScreen = () => {
         ]);
         //console.log("刪除：", index)
     }, [filteredFoodInfo]);
-    
-    const deleteItemApi =async (id)=>{
+
+    const deleteItemApi = async (id) => {
         await dispatch(deleteFoodApi(id));
         await dispatch(getFoodInfo());
+        setModalVisible(true);
+        setTimeout(() => {
+            setModalVisible(false);
+        }, 2500);
     }
+
+
+
+    const deleteMoreItemApi = async () => {
+        console.log("要刪除的食物", filteredFoodInfo);
+
+        for (var i = 0; i < filteredFoodInfo.length; i++) {
+            await dispatch(deleteFoodApi(filteredFoodInfo[i].ingredient_id));
+        }
+        setModalVisible(true);
+        await dispatch(getFoodInfo());
+
+        setTimeout(() => {
+            setModalVisible(false);
+        }, 2500);
+    }
+
 
     return (
         <ScrollView
@@ -193,6 +219,30 @@ const HomeScreen = () => {
             refreshControl={
                 <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{ backgroundColor: '#E4E4E4' }} />
             }>
+            <Modal
+                animationIn={"zoomIn"}
+                animationInTiming={900}
+                animationOut={"zoomOut"}
+                animationOutTiming={800}
+                isVisible={modalVisible}
+                backdropOpacity={0.6}
+                onBackdropPress={() => { setModalVisible(false) }}
+            >
+                <TouchableWithoutFeedback
+                    onPress={() => { setModalVisible(false) }}
+                >
+                    <View style={styles.modalView}>
+                        <AnimatedLottieView
+                            style={{ width: moderateScale(500), alignSelf: 'center', paddingEnd: moderateScale(6) }}
+                            source={require('../assets/trash.json')}
+                            autoPlay
+                            speed={0.5}
+                            loop={false}>
+                        </AnimatedLottieView>
+
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
             {lookModel ? <>
                 <View style={[styles.topBg, {}]}>
                     <View accessible={true}
@@ -201,17 +251,14 @@ const HomeScreen = () => {
                         <Input
                             disabled
                             containerStyle={{
-                                paddingHorizontal: moderateScale(65),
-                                marginTop: Platform.OS === 'android' ? verticalScale(20) : verticalScale(50)
+                                paddingHorizontal: moderateScale(70),
+                                marginTop: Platform.OS === 'android' ? verticalScale(-5) : verticalScale(30)
                             }}
-                            inputContainerStyle={{ height: moderateScale(30), }}
-                            disabledInputStyle={{ fontSize: moderateScale(30), }}
-                            leftIcon={<FontAwesomeIcon icon={faUser} color="#777" size={moderateScale(18)}></FontAwesomeIcon>}
+                            inputContainerStyle={{ height: Platform.OS == 'android' ? verticalScale(66) : moderateScale(50), }}
+                            disabledInputStyle={{ fontSize: moderateScale(30), marginTop: moderateScale(10, 0.7) }}
+                            leftIcon={<FontAwesomeIcon icon={faUser} color="#777" size={moderateScale(23)} style={{ marginTop: moderateScale(10, 0.6) }}></FontAwesomeIcon>}
                         >
-                            <Text style={{ fontSize: moderateScale(25), textAlign: 'left', }}
-                                accessible={false} >
-                                {state.info.username}
-                            </Text>
+                            {state.info.username}
                         </Input>
                     </View>
                     <View style={styles.topThreeButton}>
@@ -297,19 +344,32 @@ const HomeScreen = () => {
                         <Image
                             source={require('../../Img/SeekBar.png')}
                             resizeMode="contain"
-                            style={{ width: moderateScale(300, 1.2), alignSelf: 'center', top: Platform.OS === 'android' ? moderateScale(0) : moderateScale(10, 0), }}>
+                            style={{ width: moderateScale(300, 1), alignSelf: 'center', top: Platform.OS === 'android' ? moderateScale(10) : moderateScale(10, 0), }}>
                         </Image>
-                        <Slider
-                            style={{ width: moderateScale(250, 1), alignSelf: 'center', zIndex: 2, top: moderateScale(-20, 0.1) }}
-                            value={seekBar}
-                            onValueChange={(val) => { changeSeekBar(val) }}
-                            minimumValue={0}
-                            maximumValue={4.5}
-                            step={1.5}
-                            thumbTintColor={"#FFFFFF"}
-                            maximumTrackTintColor={"transparent"}
-                            minimumTrackTintColor="transparent"
-                        />
+                        {Platform.OS === 'android' ?
+                            <Slider
+                                style={{ width: moderateScale(280, 0.7), alignSelf: 'center', zIndex: 10, top: moderateScale(-20, -0.7) }}
+                                value={seekBar}
+                                onValueChange={(val) => { changeSeekBar(val) }}
+                                minimumValue={0}
+                                maximumValue={4.5}
+                                step={1.5}
+                                thumbImage={require('../../Img/Dot.png')}
+                                maximumTrackTintColor={"transparent"}
+                                minimumTrackTintColor="transparent"
+                            /> :
+                            <Slider
+                                style={{ width: moderateScale(280, 0.7), alignSelf: 'center', zIndex: 2, top: moderateScale(-20, -0.7) }}
+                                value={seekBar}
+                                onValueChange={(val) => { changeSeekBar(val) }}
+                                minimumValue={0}
+                                maximumValue={4.5}
+                                step={1.5}
+                                thumbTintColor={"#FFFFFF"}
+                                maximumTrackTintColor={"transparent"}
+                                minimumTrackTintColor="transparent"
+                            />}
+
                     </View>
                 </View>
 
@@ -318,7 +378,7 @@ const HomeScreen = () => {
                         //accessible={true}
                         accessibilityRole={"none"}
                         accessibilityLabel={"即將過期食物列表"}
-                        style={[styles.homeDateList, { marginTop: moderateScale(-20, 0), }]}>
+                        style={[styles.homeDateList, { marginTop: moderateScale(-20, -1.5), }]}>
                         <FlashList
                             nestedScrollEnabled
                             ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
@@ -344,7 +404,7 @@ const HomeScreen = () => {
                     : <>
 
                         <View
-                            style={[styles.homeDateList, { marginTop: moderateScale(-20, 0), }]}
+                            style={[styles.homeDateList, { marginTop: moderateScale(-20, -1.5), }]}
                             //accessible={true}
                             accessibilityRole={"none"}
                             accessibilityLabel={"已過期食物列表"}
@@ -370,13 +430,7 @@ const HomeScreen = () => {
                                 }}>
                             </FlashList>
                         </View>
-                        <FAB
-                            icon={<FontAwesomeIcon icon={faTrash} color="#FFFFFF" size={moderateScale(20)}></FontAwesomeIcon>}
-                            color="#C81414"
-                            //size="small"
-                            placement="right"
-                            style={{ zIndex: 100 }}
-                        />
+
                     </>
                 }
             </>
@@ -521,10 +575,11 @@ const HomeScreen = () => {
                             </View>
 
                             <FAB
-                                icon={<FontAwesomeIcon icon={faTrash} color="#FFFFFF" size={moderateScale(15)}></FontAwesomeIcon>}
+                                icon={<FontAwesomeIcon icon={faTrash} color="#FFFFFF" size={moderateScale(20)}></FontAwesomeIcon>}
                                 color="#C81414"
                                 //size="small"
                                 placement="right"
+                                onPress={() => { deleteMoreItem() }}
                                 style={{ zIndex: 10 }}
                             >
                             </FAB>
@@ -560,7 +615,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         marginHorizontal: moderateScale(20),
-        marginTop: moderateScale(-30),
+        marginTop: moderateScale(-40),
         top: moderateScale(35),
     },
     topButton: { //三個按鈕的單個按鈕
@@ -574,6 +629,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#777",
         fontSize: moderateScale(14),
+
     },
     dateButton: { //切換日期按鈕
         marginHorizontal: moderateScale(40),
@@ -591,12 +647,21 @@ const styles = StyleSheet.create({
         flex: 1,
         zIndex: 2,
         backgroundColor: '#ECEAEA',
-        height: verticalScale(320),
+        height: verticalScale(335),
         marginHorizontal: moderateScale(20),
         borderRadius: moderateScale(20),
         paddingVertical: moderateScale(20),
         marginTop: moderateScale(10),
     },
+    modalView: {
+        borderRadius: moderateScale(10),
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        width: moderateScale(300),
+        height: moderateScale(250),
+    },
+
 
 });
 

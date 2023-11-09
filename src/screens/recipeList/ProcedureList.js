@@ -45,7 +45,6 @@ const ProcedureList = (props) => {
                     width: moderateScale(25),
                     height: moderateScale(25),
                     borderRadius: moderateScale(50),
-
                     marginVertical: moderateScale(5),
                 }}>
                     <Text style={{
@@ -53,7 +52,7 @@ const ProcedureList = (props) => {
                         textAlign: 'center',
                         alignItems: 'center',
                         fontWeight: 'bold',
-                        lineHeight: moderateScale(25)
+                        lineHeight: moderateScale(25),
                     }}>
                         {props.index + 1}
                     </Text>

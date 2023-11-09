@@ -11,6 +11,7 @@ import { Keyboard } from "react-native";
 import { moderateScale } from "../ScaleMethod";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck, faFire } from "@fortawesome/free-solid-svg-icons";
+import WebView from "react-native-webview";
 const UpMethodScreen=()=>{
 
     const navigation=useNavigation();
@@ -22,6 +23,7 @@ const UpMethodScreen=()=>{
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   
             <SafeAreaView style={Userstyle.safeAreaView}>
                 <KeyboardAvoidingView behavior="position" enabled>
+                    
                     <View style={[Userstyle.greyBg,{marginTop:moderateScale(10),paddingBottom:moderateScale(40)}]}>
                         <View style={styles.card}>
                             <Text style={styles.cardTitle}>個人免費</Text>
@@ -79,6 +81,7 @@ const UpMethodScreen=()=>{
                                     <Text style={[styles.cardContentText,{color:"#7257FF"}]}>智能化QRCODE掃描</Text>
                                         <View style={{justifyContent:'flex-end',flexDirection:'row',flex:1}}>
                                                 <Button 
+                                                        onPress={()=>{navigation.navigate("PersonWeb")}}
                                                         buttonStyle={[styles.buttonSend,{backgroundColor:'#FF9900'}]}
                                                         titleStyle={styles.buttonSendTitle}
                                                         title={"購買"}>             
@@ -128,7 +131,7 @@ const styles=StyleSheet.create({
     card:{
         backgroundColor:'#FFFFFF',
         marginHorizontal:moderateScale(20),
-        height:moderateScale(190,0.5),
+        height:moderateScale(190,0.7),
         marginTop:moderateScale(40,0),
         borderRadius:moderateScale(20)
     },
@@ -164,7 +167,7 @@ const styles=StyleSheet.create({
     buttonSendTitle:{
         color:'#FFFFFF',
         fontSize:moderateScale(15),
-        lineHeight:moderateScale(15),
+        lineHeight:moderateScale(15,1),
         padding:moderateScale(0),
 
     }

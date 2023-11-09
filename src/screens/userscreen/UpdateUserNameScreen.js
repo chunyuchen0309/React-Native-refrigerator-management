@@ -11,6 +11,7 @@ import { Keyboard } from "react-native";
 import { Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { modifyUserNameApi, removeError } from "../../store/userSlice";
+import { moderateScale } from "../ScaleMethod";
 
 const UpdateUserNameScreen = () => {
     const state = useSelector(state => state.userInfo);
@@ -85,6 +86,7 @@ const UpdateUserNameScreen = () => {
                             用戶名稱
                         </Text>
                         <TextInput
+                            autoCapitalize="none" 
                             selectionColor='#777'
                             accessibilityLabel="用戶名稱"
                             accessible={true}
@@ -94,6 +96,7 @@ const UpdateUserNameScreen = () => {
                             onChangeText={handleuserNameChange}
                         />
                         <Button
+                        titleStyle={{fontSize:moderateScale(17),fontWeight:'500'}}
                             buttonStyle={Userstyle.buttonUpdate}
                             title="修改"
                             loading={isLoading}

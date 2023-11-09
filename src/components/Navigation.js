@@ -21,8 +21,6 @@ import UpdateUserRoleScreen from "../screens/userscreen/UpdateUserRoleScreen";
 import UpdateUserPhoneScreen from "../screens/userscreen/UpdateUserPhoneScreen";
 import UpdateUserNameScreen from "../screens/userscreen/UpdateUserNameScreen";
 import UpdateUserPasswordScreen from "../screens/userscreen/UpdateUserPasswordScreen";
-
-import { RefrigeratorProvider } from "../context/RefrigeratorContext";
 import Step5Screen from "../screens/create_refrigerator/Step5Screen";
 import Step4Screen from "../screens/create_refrigerator/Step4Screen";
 import Step3Screen from "../screens/create_refrigerator/Step3Screen";
@@ -51,6 +49,10 @@ import ModifyStep3Screen from "../screens/recipeScreen/ModifyStep3Screen";
 import { useSelector } from "react-redux";
 import BusinessInfoScreen from "../screens/userscreen/BusinessInfoScreen";
 import RecipeDetailScreen from "../screens/recipeScreen/RecipeDetailScreen";
+import PersonWeb from "../screens/userscreen/PersonWeb";
+import FinishedScreen from "../screens/recipeScreen/FinishedScreen";
+
+import { navigationRef } from './RootNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,8 +75,6 @@ const PostIcon = ({ children, onPress }) => (
 
 const HomeStack = ({ navigation, route }) => {
 
-
-
     React.useLayoutEffect(() => {
         const routeName = getFocusedRouteNameFromRoute(route);
         //console.log(routeName)
@@ -86,7 +86,6 @@ const HomeStack = ({ navigation, route }) => {
         }
     }, [navigation, route]);
     return (
-        <RefrigeratorProvider>
             <Stack.Navigator
                 initialRoutName="Home"
                 screenOptions={{
@@ -145,7 +144,7 @@ const HomeStack = ({ navigation, route }) => {
                     options={{ title: "存放位置", headerBackTitle: '主頁', headerBackVisible: Platform.OS == 'android' ? false : true }}
                 />
             </Stack.Navigator>
-        </RefrigeratorProvider>
+       
     );
 }
 
@@ -156,7 +155,7 @@ const UserStack = ({ navigation, route }) => {
         if (routeName == "UpdateAccountname" || routeName == "SharedAccount" || routeName == "SharedList" ||
             routeName == "UpdateUserName" || routeName == "UpdateUserPhone" || routeName == "UpdateUserRole" ||
             routeName == "UpdateUserPassword" || routeName == "UpMethod" || routeName == "RegisterBusiness" ||
-            routeName == "LookModelScreen" || routeName == "BusinessInfo") {
+            routeName == "LookModelScreen" || routeName == "BusinessInfo" || routeName =="PersonWeb") {
             navigation.setOptions({ tabBarStyle: { backgroundColor: "#C7E0F9", display: 'none', } });
         } else {
             navigation.setOptions({ tabBarStyle: { ...style.tabBar, ...style.shadow } });
@@ -241,6 +240,11 @@ const UserStack = ({ navigation, route }) => {
                 component={BusinessInfoScreen}
                 options={{ title: "商業資訊", headerBackTitle: '主頁', headerBackVisible: Platform.OS == 'android' ? false : true }}
             />
+            <Stack.Screen
+                name="PersonWeb"
+                component={PersonWeb}
+                options={{ title: "個人付費", headerBackTitle: '升級方案', headerBackVisible: Platform.OS == 'android' ? false : true }}
+            />
         </Stack.Navigator>
 
     );
@@ -316,7 +320,7 @@ const ListStack = ({ navigation, route }) => {
         //console.log(routeName)
         if (routeName == "createStep1" || routeName == "createStep2" || routeName == "createStep3" ||
             routeName == "MyRecipe" || routeName == "ModifyStep1" || routeName == "ModifyStep2" ||
-            routeName == "ModifyStep3" || routeName == "RecipeDetail") {
+            routeName == "ModifyStep3" || routeName == "RecipeDetail" || routeName == "Finished") {
             navigation.setOptions({ tabBarStyle: { backgroundColor: "#C7E0F9", display: 'none', } });
         } else {
             navigation.setOptions({ tabBarStyle: { ...style.tabBar, ...style.shadow } });
@@ -386,6 +390,12 @@ const ListStack = ({ navigation, route }) => {
                 component={RecipeDetailScreen}
                 options={{ title: "食譜資訊", headerBackTitle: '返回主頁', headerBackVisible: Platform.OS == 'android' ? false : true }}
             />
+            <Stack.Screen
+                name="Finished"
+                component={FinishedScreen}
+                options={{ title: "完成烹飪", headerBackTitle: '食譜資訊', headerBackVisible: Platform.OS == 'android' ? false : true }}
+            />
+
         </Stack.Navigator>
     );
 }
@@ -407,13 +417,13 @@ const Navigation = () => {
     const state = useSelector(state => state.userInfo);
     return (
         <NavigationContainer //包在最外藏的container
+            ref={navigationRef}
         >
             {isLogin ? (
                 <>
 
                     <Tab.Navigator //tab的最外層 
-                        //initialRouteName="首頁"
-                        
+                        initialRouteName="首頁"
                         screenOptions={{
                             headerShown: false,
                             tabBarShowLabel: false,
@@ -421,7 +431,7 @@ const Navigation = () => {
                             tabBarInactiveTintColor: '#10348D',
                             tabBarActiveTintColor: '#FFFFFF',
                             lazy: true,
-                            unmountOnBlur: false,
+                            unmountOnBlur: true,
                         }}>
 
                         <Tab.Screen

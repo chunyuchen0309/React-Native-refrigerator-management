@@ -17,6 +17,7 @@ export const getRefInfo = createAsyncThunk('refSlice/getRefInfo', async (_,thunk
         });
         await AsyncStorage.setItem('refInfo',JSON.stringify(response.data.refrigeratorList));
         console.log("RefApi獲取成功", response.data);
+        console.log("RefApi獲取成功 :res", response);
         return response.data.refrigeratorList;
     } catch (e) {
         console.log("RefApi獲取失敗", e);
@@ -34,9 +35,9 @@ export const queryRefPlace = createAsyncThunk('refSlice/queryRefPlace', async (_
             data:{
                 "refrigerator_name": "Kevin_ref",
                 "compartment_row": 1,
-                "compartment_col": 4,
+                "compartment_col": 2,
                 "container_row": 1,
-                "container_col": 1,
+                "container_col": 2,
             }
         });
         
@@ -77,8 +78,8 @@ const refSlice =createSlice({
             }
         }),
         builder.addCase(removeRefInfo.fulfilled, (state, action) => {
+            state.refList=[];
             console.log("removeRefInfo成功");
-            state.refList=[]
         })
     }
 })

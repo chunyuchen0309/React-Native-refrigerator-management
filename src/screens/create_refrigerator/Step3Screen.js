@@ -353,6 +353,7 @@ const Step3Screen = () => {
             }
             <Button buttonStyle={style.nextButton}
                 title="下一步"
+                titleStyle={{ fontSize: moderateScale(17), fontWeight: '500' }}
                 onPress={() => ToNextPage()}
             >
 
@@ -383,7 +384,7 @@ const style = StyleSheet.create({
         width: ScreenWidth,
     },
     nextButton: {
-        backgroundColor: "#A6FCB6",
+        backgroundColor: "#27F727",
         marginVertical: 20,
         marginHorizontal: 50,
         borderRadius: 10,

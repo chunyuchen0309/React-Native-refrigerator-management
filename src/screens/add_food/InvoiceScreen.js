@@ -318,6 +318,7 @@ const InvoiceScreen = () => {
             <Button
                 onPress={() => { goNextPage() }}
                 buttonStyle={styles.nextButton}
+                titleStyle={{ fontSize: moderateScale(17), fontWeight: '500' }}
                 title={"下一步"}
             >
             </Button>
@@ -359,7 +360,8 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
     },
     nextButton: {
-        backgroundColor: "#A9FF3C",
+        
+        backgroundColor: "#27F727",
         marginVertical: moderateScale(20),
         marginHorizontal: moderateScale(50),
         borderRadius: moderateScale(10),

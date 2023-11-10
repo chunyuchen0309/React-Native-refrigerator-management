@@ -60,7 +60,7 @@ const QrcodeScreen = () => {
             "Date": "1130601",
             "Data":[],
         });*/
-        
+
     }, []);
 
     const goNext = async () => {
@@ -221,11 +221,13 @@ const QrcodeScreen = () => {
                     <>
                         <Button
                             buttonStyle={styles.qrButton}
+                            titleStyle={{ fontSize: moderateScale(17), fontWeight: '500' }}
                             onPress={() => tryScan()}
-                            title="掃描發票">
+                            title="重新掃描">
                         </Button>
                         <Button
                             loading={isLoading}
+                            titleStyle={{ fontSize: moderateScale(17), fontWeight: '500' }}
                             buttonStyle={styles.qrButton}
                             onPress={() => goNext()}
                             title="掃描結果">

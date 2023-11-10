@@ -461,7 +461,7 @@ const RefrigeratorScreen = () => {
                                         <Button
                                             title="修改"
                                             buttonStyle={{
-                                                backgroundColor: "#A6FCB6",
+                                                backgroundColor: "#27F727",
                                                 borderRadius: moderateScale(10),
                                             }}
                                             containerStyle={{

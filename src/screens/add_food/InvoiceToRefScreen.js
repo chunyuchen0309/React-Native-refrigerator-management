@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
         color: '#777'
     },
     nextButton: {
-        backgroundColor: "#A9FF3C",
+        backgroundColor: "#27F727",
         //marginTop:,
         marginHorizontal: 50,
         borderRadius: 10,

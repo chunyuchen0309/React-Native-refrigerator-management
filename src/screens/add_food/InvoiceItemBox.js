@@ -159,7 +159,7 @@ const ItemBox = (props) => {
 								ref={inputName}
 								leftIcon={<TouchableOpacity onPress={() => inputName.current.focus()}><FontAwesomeIcon icon={faBookmark} color="#FF9900" size={moderateScale(15)}></FontAwesomeIcon></TouchableOpacity>}
 								containerStyle={{ paddingHorizontal: moderateScale(10), paddingTop: moderateScale(5), height: moderateScale(40) }}
-								inputContainerStyle={{ height: moderateScale(30), borderBottomWidth: 0, backgroundColor: 'white', borderRadius: moderateScale(10), paddingLeft: moderateScale(10) }}
+								inputContainerStyle={{ height: moderateScale(30,0.7), borderBottomWidth: 0, backgroundColor: 'white', borderRadius: moderateScale(10), paddingLeft: moderateScale(10) }}
 								inputStyle={{ lineHeight: moderateScale(20), fontSize: moderateScale(15), color: '#777', fontWeight: '500' }}
 								value={newName}
 								onChangeText={setNewName}
@@ -173,9 +173,9 @@ const ItemBox = (props) => {
 									zIndex={9000}
 									onPress={Keyboard.dismiss}
 									placeholder="選擇種類"
-									style={{ borderWidth: 0, backgroundColor: 'transparent', paddingBottom: moderateScale(22), paddingLeft: moderateScale(3) }}
+									style={{ borderWidth: 0, backgroundColor: 'transparent', paddingBottom: moderateScale(22,-0.7), paddingLeft: moderateScale(3) }}
 									containerStyle={{ backgroundColor: 'transparent', flex: 1, alignSelf: 'flex-start' }}
-									textStyle={{ fontSize: moderateScale(15), color: '#777', fontWeight: '500' }}
+									textStyle={{ fontSize: moderateScale(15), color: '#777', fontWeight: '500'}}
 									placeholderStyle={{ color: '#777', fontWeight: '500' }}
 									searchable={false}
 									listItemLabelStyle={{ color: "#777", fontSize: moderateScale(17, 0.5), zIndex: 100 }} //下方item內容文字
@@ -202,8 +202,8 @@ const ItemBox = (props) => {
 								<Input
 									leftIcon={<TouchableOpacity onPress={() => setDatePickerOpen(true)}><FontAwesomeIcon icon={faCalendar} color="#BFBFBF" size={moderateScale(15)}></FontAwesomeIcon></TouchableOpacity>}
 									containerStyle={{ height: moderateScale(40), flex: 1, alignItems: 'flex-end' }}
-									inputContainerStyle={{ height: moderateScale(30), borderBottomWidth: 0 }}
-									inputStyle={{ lineHeight: moderateScale(20), fontSize: moderateScale(16), color: '#777', fontWeight: '500' }}
+									inputContainerStyle={{ height: moderateScale(30,0.8), borderBottomWidth: 0 }}
+									inputStyle={{ lineHeight: moderateScale(20,), fontSize: moderateScale(16), color: '#777', fontWeight: '500' }}
 									value={foodDate}
 									placeholder="有效日期"
 									placeholderTextColor="#777"

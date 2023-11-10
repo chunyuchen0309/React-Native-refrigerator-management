@@ -390,6 +390,7 @@ const HandToRefScreen = () => {
             <Button
                 onPress={() => { bottomSheetRef.current.expand(); }}
                 buttonStyle={styles.nextButton}
+                titleStyle={{ fontSize: moderateScale(17), fontWeight: '500' }}
                 title={"新增"}
             >
             </Button>
@@ -505,7 +506,7 @@ const styles = StyleSheet.create({
         color: '#777'
     },
     nextButton: {
-        backgroundColor: "#A9FF3C",
+        backgroundColor: "#27F727",
         //marginTop:,
         marginHorizontal: moderateScale(50),
         borderRadius: moderateScale(10),

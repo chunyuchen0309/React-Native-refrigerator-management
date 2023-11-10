@@ -216,9 +216,8 @@ const HomeScreen = () => {
     return (
         <ScrollView
             contentContainerStyle={{}}
-            refreshControl={
-                <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{ backgroundColor: '#E4E4E4' }} />
-            }>
+            scrollEnabled={false}
+             >
             <Modal
                 animationIn={"zoomIn"}
                 animationInTiming={900}
@@ -381,6 +380,9 @@ const HomeScreen = () => {
                         style={[styles.homeDateList, { marginTop: moderateScale(-20, -1.5), }]}>
                         <FlashList
                             nestedScrollEnabled
+                            refreshControl={
+                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                    }
                             ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                             data={filteredFoodInfo}
                             estimatedItemSize={30}
@@ -410,6 +412,9 @@ const HomeScreen = () => {
                             accessibilityLabel={"已過期食物列表"}
                         >
                             <FlashList
+                            refreshControl={
+                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                    }
                                 nestedScrollEnabled
                                 ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                                 data={filteredFoodInfo}
@@ -522,6 +527,9 @@ const HomeScreen = () => {
                             accessibilityLabel={"即將過期食物列表"}
                             style={[styles.homeDateList, { height: verticalScale(450) }]}>
                             <FlashList
+                             refreshControl={
+                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                    }
                                 nestedScrollEnabled
                                 ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                                 data={filteredFoodInfo}
@@ -553,6 +561,9 @@ const HomeScreen = () => {
                                 accessibilityLabel={"已過期食物列表"}
                             >
                                 <FlashList
+                                 refreshControl={
+                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                    }
                                     nestedScrollEnabled
                                     ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                                     data={filteredFoodInfo}

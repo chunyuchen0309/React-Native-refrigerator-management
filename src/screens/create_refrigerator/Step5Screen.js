@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     finishButton: {
         height: moderateScale(40),
         justifyContent: 'flex-start',
-        backgroundColor: '#A6FCB6',
+        backgroundColor: '#27F727',
         marginHorizontal: moderateScale(20),
         marginVertical: moderateScale(40),
         //marginBottom:3,

@@ -683,7 +683,7 @@ const HandAddScreen = () => {
 
 const styles = StyleSheet.create({
     nextButton: {
-        backgroundColor: "#A6FCB6",
+        backgroundColor: "#27F727",
         marginBottom: moderateScale(50),
         marginHorizontal: moderateScale(20),
         borderRadius: moderateScale(20),

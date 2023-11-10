@@ -16,7 +16,7 @@ import RecipeProcedureList from "../recipeList/RecipeProcedureList";
 import modal_fab from "../../style/Modal&FAB";
 import { TouchableOpacity } from "react-native";
 import FinishedFoodList from "../recipeList/FinishedFoodList";
-import { deleteFoodApi } from "../../store/foodSlice";
+import { deleteFoodApi, getFoodInfo } from "../../store/foodSlice";
 import Modal from "react-native-modal";
 import { TouchableWithoutFeedback } from "react-native";
 const FinishedScreen = () => {
@@ -80,8 +80,10 @@ const FinishedScreen = () => {
         }
         
         setModalVisible(true);
+        dispatch(getFoodInfo());
         setTimeout(() => {
             setModalVisible(false);
+            
             navigation.navigate("List");
         }, 3000);
         //Alert.alert("刪除成功");

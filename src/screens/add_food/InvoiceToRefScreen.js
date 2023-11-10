@@ -195,8 +195,8 @@ const InvoiceToRefScreen = () => {
         if (tempType == "freezerDoorContainer" || tempType == "coolerDoorContainer") { //點擊門的情況
             //console.log("種類:"+tempType);
             console.log(` 選擇第 ${buttonIndex} 層`);
-            var Boxcol = 0;
-            var Boxrow = 0;
+            var Boxcol = 1;
+            var Boxrow = 1;
             var Door = true;
             bottomSheetRef.current.forceClose();
             upUserSelect(Boxcol, Boxrow, Door, buttonIndex);// 上傳

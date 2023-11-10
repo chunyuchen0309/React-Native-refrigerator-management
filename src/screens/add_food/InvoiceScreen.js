@@ -115,7 +115,7 @@ const InvoiceScreen = () => {
      */
     const deleteItem = (index) => { //回調函數
         console.log("刪除call")
-        const updatedData = invoiceInfo.Data.filter((item, i) => i !== index);
+        const updatedData = invoiceInfo.Data.filter((item, i) => i != index);
         //filter 方法接受一個回調函數，這個回調函數對陣列中的每個元素執行判斷，如果回傳 true，該元素將被保留，否則將被移除
         setInvoiceInfo({ ...invoiceInfo, Data: updatedData });
         //console.log("刪除的陣列 : "+invoiceInfo.Data);
@@ -127,6 +127,7 @@ const InvoiceScreen = () => {
      * @param {*} changeData 更改值
      */
     const changeNameItem = (index, changeData) => {
+        console.log("改名call")
         const updatedData = JSON.parse(JSON.stringify(invoiceInfo.Data));//深拷貝
         updatedData[index].OldData = changeData;
         setInvoiceInfo({ ...invoiceInfo, Data: updatedData });
@@ -138,6 +139,7 @@ const InvoiceScreen = () => {
      * @param {*} changeData 更改值
      */
     const changeCategoryItem = (index, changeData) => {
+        console.log("改類別call")
         const updatedData = JSON.parse(JSON.stringify(invoiceInfo.Data));//深拷貝
         updatedData[index].Category = changeData;
         setInvoiceInfo({ ...invoiceInfo, Data: updatedData });

@@ -60,6 +60,7 @@ const QrcodeScreen = () => {
             "Date": "1130601",
             "Data":[],
         });*/
+        
     }, []);
 
     const goNext = async () => {
@@ -93,7 +94,7 @@ const QrcodeScreen = () => {
                     invoiceInfo.Data.push({
                         "OldData":foodList[i],
                         "NewData":"",
-                        "Category":"",
+                        "Category":null,
                         "Date":"",
                     })
                 })
@@ -138,7 +139,9 @@ const QrcodeScreen = () => {
                     s2.push(chineseCharacters.join(''))
                 }
             }
+
             setFoodList(s2);
+
             /*var tempData = [];
             for (let i = 0; i < s2.length; i++) {
                 tempData.push({ "OldData": "" + s2[i], "NewData": '', })

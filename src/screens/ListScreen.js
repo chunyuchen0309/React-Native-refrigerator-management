@@ -72,22 +72,6 @@ const ListScreen = () => {
         }, [])
     );
 
-    const getLike=()=>{
-        console.log('喜愛獲得api')
-        axios({
-            method: "GET",
-            url: `${BASE_URL}/storage/cookbook/personal`,
-            headers: { 'Authorization': state.token },
-            
-        }).then(res => {
-            console.log(res.data);
-        }).catch(function (error){
-            console.log(error);
-        }).finally(() => {
-            //navigation.goBack();
-        });
-    }
-
     useEffect(() => { //有資料且正確載入
         var tempRepiceList=recipeState.repiceList;
         if (recipeState.repiceList.length > 0) {
@@ -232,7 +216,10 @@ const ListScreen = () => {
      */
     const onRefresh = useCallback(async () => { // 避免不必要的渲染使用
         setRefresh(true);
+        await dispatch(getRepiceLikeInfo());
+        //console.log(1);
         await dispatch(getRepiceInfo());
+        await dispatch(setLikeToList());
         setRefresh(false);
     }, []);
 

@@ -14,6 +14,9 @@ import dropdown from "../../style/Dropdown";
 import DatePicker from "react-native-date-picker";
 import { AuthContext } from "../../context/AuthContext";
 import modal_fab from "../../style/Modal&FAB";
+import axios from "axios";
+import { BASE_URL } from "../../config";
+import { useSelector } from "react-redux";
 const ItemBox = (props) => {
 	const swipeableRef = useRef(null);
 	const [modalVisible, setModalVisible] = useState(false);
@@ -26,23 +29,22 @@ const ItemBox = (props) => {
 	const [datePickerOpen, setDatePickerOpen] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [month, setMonth] = useState(["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
-	const foodCategoryList = [
-		{ label: '蔬菜類', value: 'b9db4f16-8eb5-4de7-b028-739df646e9af' },
-		{ label: '肉類', value: '50164000-6332-4b8e-bda4-50a7d0392e1b' },
-		{ label: '海鮮', value: 'cc1b00f1-d6c1-47dd-954d-c5d8613ec288' },
-		{ label: '飲品類', value: 'e2eec36b-7ac9-445e-ae35-04cba2c615e9' },
-		{ label: '水果類', value: '3ec0a82a-2661-4e6b-a2ff-3412c2407307' },
-		{ label: '加工食品類', value: 'b014bd14-6f5e-46d0-a166-80dbf0a15740' },
-		{ label: '冰品', value: 'f30cb1da-9482-4f74-a8d6-756158468a7f' },
-		{ label: '甜點', value: 'fbc120bc-0192-41f3-b996-f3df43ba1122' },
-		{ label: '奶製品', value: '9b7491dd-8ff7-4da5-9b7d-3b1a53d6d4f1' },
-		{ label: '豆類', value: '34d184a7-c6d8-469e-b6be-9d76c0496ac2' },
-		{ label: '雞蛋', value: '6c1f58ac-2925-4423-8db5-d5277da6a0e2' },
-		{ label: '剩菜', value: '35eed315-948e-4439-8980-cb030d1b2d81' },
-	];
+	const [foodCategoryList, setFoodCategoryList] = useState([
+		{ label: '蔬菜類', value: '' },
+		{ label: '肉類', value: '' },
+		{ label: '海鮮', value: '' },
+		{ label: '飲品類', value: '' },
+		{ label: '水果類', value: '' },
+		{ label: '加工食品類', value: '' },
+		{ label: '冰品', value: '' },
+		{ label: '甜點', value: '' },
+		{ label: '奶製品', value: '' },
+		{ label: '豆類', value: '' },
+		{ label: '雞蛋', value: '' },
+		{ label: '剩菜', value: '' },]);
 	const { lookModel } = useContext(AuthContext);
 	const [YMD, setTMD] = useState([]);
-
+	const userState = useSelector(state => state.userInfo);
 	useEffect(() => {
 		setTMD(foodDate.split('/'));
 	}, [foodDate]); //作用為即時更新選擇的數據，呈現在input之中
@@ -50,12 +52,39 @@ const ItemBox = (props) => {
 	//setChangeIndex(props.data);
 	//}, [props.data]); //作用為即時更新選擇的數據，呈現在input之中
 
+
+	const getFoodCategoryList = () => {
+        axios.get(`${BASE_URL}/storage/category`, {
+            headers: {
+                'Authorization': userState.token
+            }
+        }).then( res => {
+            console.log(res.data);
+            for(let i=0;i<res.data.length;i++){
+                for(let j=0;j<foodCategoryList.length;j++)
+                if(res.data[i].category_name==foodCategoryList[j].label){
+                    foodCategoryList[j].value=res.data[i].category_id
+                }
+            }
+        }).catch(e => {
+            console.log(e);
+        }).finally(()=>{
+            console.log("食物選單123",foodCategoryList);
+            
+        });
+    }
 	useEffect(() => {
-		setNewName(props.data.OldData ? props.data.OldData : props.data.NewData);
+		getFoodCategoryList();
+		
+		//console.log("輸入的食材種類",props.data.Category)
+	}, []); //作
+	useEffect(() => {
+		setNewName(props.data.OldData);
 		setFoodCategory(props.data.Category);
 		setFoodDate(props.data.Date);
+		
 		//console.log("輸入的食材種類",props.data.Category)
-	}, []); //作用為即時更新選擇的數據，呈現在input之中
+	}, [props.data.OldData,props.data.Category,props.data.Date]); //作用為即時更新選擇的數據，呈現在input之中
 
 	useEffect(() => {
 		// 监听 selectedFoodCategory 的变化

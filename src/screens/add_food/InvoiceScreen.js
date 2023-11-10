@@ -43,6 +43,7 @@ const InvoiceScreen = () => {
         { label: '雞蛋', value: '', icon: () => <Image source={require("../../../Img/foodpic/雞蛋.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
         { label: '剩菜', value: '', icon: () => <Image source={require("../../../Img/foodpic/剩菜.png")} resizeMode={"contain"} style={styles.iconImg}></Image> },
     ]);
+    const [sendlist,setSendList]=useState();
     const dispatch =useDispatch();
     const foodState = useSelector(state => state.createFood);
     const userState = useSelector(state => state.userInfo);
@@ -52,7 +53,7 @@ const InvoiceScreen = () => {
                 'Authorization': userState.token
             }
         }).then( res => {
-            console.log(res.data);
+            //console.log(res.data);
             for(let i=0;i<res.data.length;i++){
                 for(let j=0;j<foodCategoryList.length;j++)
                 if(res.data[i].category_name==foodCategoryList[j].label){
@@ -63,7 +64,6 @@ const InvoiceScreen = () => {
             console.log(e);
         }).finally(()=>{
             console.log("食物選單",foodCategoryList);
-            
         });
     }
 

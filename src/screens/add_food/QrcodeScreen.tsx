@@ -82,11 +82,13 @@ const QrcodeScreen = () => {
                         name:foodList[i]
                     },
                 }).then(res=>{
+
+                    const formattedDateWithSlash = res.data.date.replace(/-/g, '/');
                     invoiceInfo.Data.push({
-                        "OldData":res.data.OldData,
+                        "OldData":""+res.data.oldData,
                         "NewData":"",
-                        "Category":res.data.category,
-                        "Date":res.data.date,
+                        "Category":""+res.data.category,
+                        "Date":""+formattedDateWithSlash,
                     })
                     console.log(res.data);
                 }).catch(e=>{
@@ -99,7 +101,7 @@ const QrcodeScreen = () => {
                     })
                 })
             }
-            console.log("準備傳出的foodList",tempFoodList);
+            console.log("準備傳出的foodList",invoiceInfo);
             dispatch(addFoodInv(invoiceInfo));
             navigation.navigate('Invoice');
         }

@@ -23,7 +23,7 @@ const ItemBox = (props) => {
 	const [ItemModalVisible, setItemModalVisible] = useState(false);
 	//const [changeIndex,setChangeIndex]=useState(props.data);
 	const [newName, setNewName] = useState('');
-	const [foodCategory, setFoodCategory] = useState("");
+	const [foodCategory, setFoodCategory] = useState();
 	const [foodDate, setFoodDate] = useState("");
 	const [date, setDate] = useState(new Date())
 	const [datePickerOpen, setDatePickerOpen] = useState(false);
@@ -48,9 +48,6 @@ const ItemBox = (props) => {
 	useEffect(() => {
 		setTMD(foodDate.split('/'));
 	}, [foodDate]); //作用為即時更新選擇的數據，呈現在input之中
-	//useEffect(() => {
-	//setChangeIndex(props.data);
-	//}, [props.data]); //作用為即時更新選擇的數據，呈現在input之中
 
 
 	const getFoodCategoryList = () => {
@@ -59,7 +56,7 @@ const ItemBox = (props) => {
                 'Authorization': userState.token
             }
         }).then( res => {
-            console.log(res.data);
+            //console.log(res.data);
             for(let i=0;i<res.data.length;i++){
                 for(let j=0;j<foodCategoryList.length;j++)
                 if(res.data[i].category_name==foodCategoryList[j].label){
@@ -69,7 +66,8 @@ const ItemBox = (props) => {
         }).catch(e => {
             console.log(e);
         }).finally(()=>{
-            console.log("食物選單123",foodCategoryList);
+            //console.log("食物選單123",foodCategoryList);
+			setFoodCategory(props.data.Category);
             
         });
     }
@@ -80,10 +78,8 @@ const ItemBox = (props) => {
 	}, []); //作
 	useEffect(() => {
 		setNewName(props.data.OldData);
-		setFoodCategory(props.data.Category);
 		setFoodDate(props.data.Date);
 		
-		//console.log("輸入的食材種類",props.data.Category)
 	}, [props.data.OldData,props.data.Category,props.data.Date]); //作用為即時更新選擇的數據，呈現在input之中
 
 	useEffect(() => {

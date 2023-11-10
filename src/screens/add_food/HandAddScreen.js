@@ -392,7 +392,7 @@ const HandAddScreen = () => {
                                                     textStyle={{ fontSize: moderateScale(18), color: '#777', fontWeight: '500' }}
                                                     placeholderStyle={{ color: '#777', fontWeight: '500' }}
                                                     searchable={false}
-                                                    dropDownContainerStyle={{ borderRadius: 0, }} //下拉選單外誆
+                                                    dropDownContainerStyle={{ borderRadius: 0, position: Platform.OS === 'android' ? 'relative' : 'absolute', top: Platform.OS == 'android' ? 0 : moderateScale(50) }} //下拉選單外誆
                                                     listItemLabelStyle={{ color: "#777", fontSize: moderateScale(17, 0.5) }} //下方item內容文字
                                                     listItemContainerStyle={{ height: moderateScale(35) }} //下方item高度 
                                                     selectedItemLabelStyle={{ fontWeight: "bold", color: '#777' }} //選擇後的item文字
@@ -409,6 +409,7 @@ const HandAddScreen = () => {
                                                     setValue={setFoodCatgoryModal}
                                                     items={foodCatgoryList}
                                                     closeOnBackPressed={true}
+                                                    listMode="SCROLLVIEW"
                                                     closeAfterSelecting={true}
                                                     ArrowUpIconComponent={({ style }) => <FontAwesomeIcon icon={faAngleUp} color="#777" size={moderateScale(20)} style={style} />}
                                                     ArrowDownIconComponent={({ style }) => <FontAwesomeIcon icon={faAngleDown} color="#777" size={moderateScale(20)} style={style} />}>
@@ -710,6 +711,11 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(20),
         color: '#777',
         fontWeight: 'bold',
+    },
+    modifyView: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        //backgroundColor:'yellow',
     },
 });
 

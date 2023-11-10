@@ -38,7 +38,7 @@ const ListScreen = () => {
     const [JFilterRecipe, setJFilterRecipe] = useState([]);
     const [clearEffects, setClearEffects] = useState(true);
     const dispatch = useDispatch();
-    
+
     const state = useSelector(state => state.userInfo);
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('blur', () => {
@@ -57,7 +57,7 @@ const ListScreen = () => {
 
         React.useCallback(() => {
             async function fetchData() {
-                
+
                 await dispatch(getRepiceLikeInfo());
                 console.log(1);
                 await dispatch(getRepiceInfo());
@@ -67,16 +67,16 @@ const ListScreen = () => {
             }
             setClearEffects(true)
             fetchData();
-            
+
             //getLike();
         }, [])
     );
 
     useEffect(() => { //有資料且正確載入
-        var tempRepiceList=recipeState.repiceList;
+        var tempRepiceList = recipeState.repiceList;
         if (recipeState.repiceList.length > 0) {
             console.log("首次存入食譜資訊");
-            
+
             calculateFoodInfoDate();
             setFilterRecipeInfo(recipeState.repiceList);
 
@@ -106,7 +106,7 @@ const ListScreen = () => {
                 const sortedList = [...tempList]; // 创建副本
                 switch (filterRecommend[1]) {
                     case "like":
-                        tempList=tempList.filter((item) => item.like==true);
+                        tempList = tempList.filter((item) => item.like == true);
                         break;
                     case "timeLong":
                         sortedList.sort((a, b) => b.time - a.time);
@@ -117,7 +117,7 @@ const ListScreen = () => {
                         tempList = sortedList;
                         break;
                 }
-                
+
             }
 
             if (filterDifficult[1] == "all") {
@@ -150,7 +150,7 @@ const ListScreen = () => {
      * Jaccard計算
      */
     const calculateJaccard = () => {
-        console.log("Jaccard 篩選的食材：",filteredFoodInfo);
+        console.log("Jaccard 篩選的食材：", filteredFoodInfo);
         var tempFoodList = [];
         var tempJRecipeList = [];
         if (recipeState.repiceList.length > 0) {
@@ -260,7 +260,7 @@ const ListScreen = () => {
                     }
                     accessibilityRole={"none"}
                     accessibilityLabel={"食譜列表"}
-                    ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>正在載入食譜列表</Text>}
+                    ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食譜列表</Text>}
                     data={filterRecipeInfo}
                     estimatedItemSize={60}
                     renderItem={({ item, index }) => {
@@ -270,7 +270,6 @@ const ListScreen = () => {
                                 handleClick={() => handClickItem(index, item)}
                                 index={index}
                             >
-
                             </RecipeList>
                         )
                     }}
@@ -313,9 +312,9 @@ const ListScreen = () => {
                             icon={<FontAwesomeIcon icon={faPen} color="#FF9900" size={moderateScale(20)} />}
                             title={
                                 <Text style={{ textAlign: 'center', fontSize: moderateScale(15), fontWeight: '500' }}
-                                accessible={false}
-                                accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                                accessibilityState={{ disabled: true }}>
+                                    accessible={false}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityState={{ disabled: true }}>
                                     新增食譜
                                 </Text>
                             }
@@ -335,9 +334,9 @@ const ListScreen = () => {
                             icon={<FontAwesomeIcon icon={faScroll} color="#FF9900" size={moderateScale(20)} />}
                             title={
                                 <Text style={{ textAlign: 'center', fontSize: moderateScale(15), fontWeight: '500' }}
-                                accessible={false}
-                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                            accessibilityState={{ disabled: true }}>
+                                    accessible={false}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityState={{ disabled: true }}>
                                     我的食譜
                                 </Text>
                             }
@@ -384,9 +383,9 @@ const ListScreen = () => {
                             title={
                                 <View style={{ backgroundColor: '#ECEAEA', paddingHorizontal: moderateScale(20), paddingVertical: moderateScale(10), borderRadius: moderateScale(10), alignContent: 'flex-end' }}>
                                     <Text style={{ textAlign: 'center', fontSize: moderateScale(15), fontWeight: '500' }}
-                                    accessible={false}
-                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                                    accessibilityState={{ disabled: true }}>
+                                        accessible={false}
+                                        accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                        accessibilityState={{ disabled: true }}>
                                         新增食譜
                                     </Text>
                                 </View>
@@ -408,9 +407,9 @@ const ListScreen = () => {
                             title={
                                 <View style={{ backgroundColor: '#ECEAEA', paddingHorizontal: moderateScale(20), paddingVertical: moderateScale(10), borderRadius: moderateScale(10), alignContent: 'flex-end' }}>
                                     <Text style={{ textAlign: 'center', fontSize: moderateScale(15), fontWeight: '500' }}
-                                    accessible={false}
-                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                                    accessibilityState={{ disabled: true }}>
+                                        accessible={false}
+                                        accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                        accessibilityState={{ disabled: true }}>
                                         我的食譜
                                     </Text>
                                 </View>
@@ -434,9 +433,9 @@ const ListScreen = () => {
                         enableTouchThrough={false}
                         appearsOnIndex={0}
                         disappearsOnIndex={-1}
-                        style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]} 
-                        
-                        />)}
+                        style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]}
+
+                    />)}
                     handleStyle={styles.bottomSheetHandle}
                     handleIndicatorStyle={{ backgroundColor: "#FFAA00", height: moderateScale(5), width: moderateScale(50), }}
                     index={-1}
@@ -448,7 +447,7 @@ const ListScreen = () => {
                     accessible={false}
                     accessibilityRole="none" // 设置为 "none" 表示标签不可点击
                     accessibilityState={{ disabled: true }}
-                    
+
                 >
                     <BottomSheetView>
 
@@ -457,7 +456,7 @@ const ListScreen = () => {
                                 style={[styles.bottomSheetText, { textAlign: 'center', fontSize: moderateScale(20), marginBottom: moderateScale(10), paddingLeft: moderateScale(25), lineHeight: moderateScale(25) }]}
                                 accessible={true}
                                 accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                                //accessibilityState={{ disabled: true }}
+                            //accessibilityState={{ disabled: true }}
                             >
                                 搜尋篩選
                             </Text>

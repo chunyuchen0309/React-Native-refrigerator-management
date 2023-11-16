@@ -126,6 +126,9 @@ const InvoiceToRefScreen = () => {
         }
         return buttonTopCenter.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷凍第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#416BFF", marginVertical: 2, borderRadius: 10, }}
                 //title={`Button ${index + 1}`}
@@ -141,6 +144,9 @@ const InvoiceToRefScreen = () => {
         }
         return buttonDownCenter.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷藏門第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={index === buttonDownCenter.length - 1 ? { flex: 2, backgroundColor: "#95ECFF", marginVertical: 3, borderRadius: 10, } : { flex: 1, backgroundColor: "#95ECFF", marginVertical: 3, borderRadius: 10, }}
                 //title={`Button ${index + 1}`}
@@ -156,6 +162,9 @@ const InvoiceToRefScreen = () => {
         }
         return buttonTopDoor.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷凍門第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: 2, borderRadius: 10, }}
                 //title={`Button ${index + 1}`}
@@ -171,6 +180,9 @@ const InvoiceToRefScreen = () => {
         }
         return buttonDownDoor.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷藏門第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: 2, borderRadius: 10, }}
                 //title={`Button ${index + 1}`}

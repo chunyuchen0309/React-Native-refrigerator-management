@@ -26,7 +26,6 @@ const RecipeList = (props) => {
                         <Image
                             //blurRadius={20}
                             defaultSource={require('../../../Img/defaultImage.png')}
-                            //src={'https://reactnative.dev/img/tiny_logo.png'}
                             source={{ uri: `data:image/png;base64,${props.data.image}` }}
                             style={RecipeListItem.recipeImg}
                             resizeMode='cover'>

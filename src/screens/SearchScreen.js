@@ -83,6 +83,7 @@ const SearchScreen = () => {
 
     const [searchFoodInfo, setSearchFoodInfo] = useState([]);
     const dispatch = useDispatch();
+    
     /**
      * 類別篩選方法
      */
@@ -488,11 +489,11 @@ const SearchScreen = () => {
 
     const deleteMoreItemApi = async () => {
         console.log("要刪除的食物", searchFoodInfo);
-        
+
         for (var i = 0; i < searchFoodInfo.length; i++) {
             await dispatch(deleteFoodApi(searchFoodInfo[i].ingredient_id));
         }
-        
+
         setModalDeleteMoreVisible(true);
         await dispatch(getFoodInfo());
         setTimeout(() => {
@@ -504,6 +505,7 @@ const SearchScreen = () => {
 
     return (
         <>
+            {/* 點擊item顯示詳細存放位置 */}
             <Modal
                 animationIn={"fadeIn"}
                 animationInTiming={800}
@@ -695,6 +697,7 @@ const SearchScreen = () => {
 
             </Modal>
 
+            {/* 右上方提示組件 */}
             <Modal
                 animationIn={"zoomIn"}
                 animationInTiming={900}
@@ -719,6 +722,7 @@ const SearchScreen = () => {
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
+
             {lookModel ?
                 <>
                     <View style={[styles.topBg, { paddingTop: moderateScale(60, 0), }]}>
@@ -811,7 +815,10 @@ const SearchScreen = () => {
                                 <TouchableOpacity onPress={() => {
                                     setFoodCatgory([]);
                                     setDateCategory('all')
-                                }}>
+                                }}
+                                    accessible={true}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityLabel={`重新選擇篩選`}>
                                     <FontAwesomeIcon icon={faRotate} size={moderateScale(28)} color="#2E3E5C" />
                                 </TouchableOpacity>
                             </View>
@@ -961,7 +968,10 @@ const SearchScreen = () => {
                                 <TouchableOpacity onPress={() => {
                                     setFoodCatgory([]);
                                     setDateCategory('all')
-                                }}>
+                                }}
+                                    accessible={true}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityLabel={`重新選擇篩選`}>
                                     <FontAwesomeIcon icon={faRotate} size={moderateScale(28)} color="#2E3E5C" />
                                 </TouchableOpacity>
                             </View>

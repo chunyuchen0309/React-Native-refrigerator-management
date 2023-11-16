@@ -25,7 +25,7 @@ const RecipeDetailScreen = () => {
     const state = useSelector(state => state.userInfo);
     const [ingredientsList, setIngredientsList] = useState([]);
     const [procedureList, setProcedureList] = useState([]);
-    const [likeColor,setLikeColor]=useState(false);
+    const [likeColor, setLikeColor] = useState(false);
     const { lookModel } = useContext(AuthContext);
 
     useFocusEffect( //載入該頁面時都會重新抓取資料
@@ -33,14 +33,14 @@ const RecipeDetailScreen = () => {
 
             setIngredientsList(recipeState.clickRecipeList.ingredients);
             setProcedureList(recipeState.clickRecipeList.procedureList);
-            if(recipeState.likeList?.length>0){
-                for(var i=0;i<recipeState.likeList.length;i++){
-                    if(recipeState.likeList[i].id == recipeState.clickRecipeList.id){
+            if (recipeState.likeList?.length > 0) {
+                for (var i = 0; i < recipeState.likeList.length; i++) {
+                    if (recipeState.likeList[i].id == recipeState.clickRecipeList.id) {
                         setLikeColor(true);
                     }
                 }
             }
-            
+
         }, [])
     );
 
@@ -48,8 +48,12 @@ const RecipeDetailScreen = () => {
         navigation.setOptions(
             {
                 headerRight: () => (
-                    <TouchableOpacity onPress={() => {changeLike() }}>
-                        <FontAwesomeIcon icon={faHeart} color={likeColor?"#FF0000":"#CCCCCC"} size={moderateScale(30)}></FontAwesomeIcon>
+                    <TouchableOpacity onPress={() => { changeLike() }}
+                        accessible={true}
+                        accessibilityRole={"none"}
+                        accessibilityLabel={`變更喜愛按鈕，目前${likeColor ? '有喜愛' : '無喜愛'}`}
+                    >
+                        <FontAwesomeIcon icon={faHeart} color={likeColor ? "#FF0000" : "#CCCCCC"} size={moderateScale(30)}></FontAwesomeIcon>
                     </TouchableOpacity>
 
                 ),
@@ -57,328 +61,328 @@ const RecipeDetailScreen = () => {
         );
     }, [likeColor]);
 
-    console.log('喜愛',likeColor);
+    console.log('喜愛', likeColor);
 
-    const changeLike=()=>{
+    const changeLike = () => {
         console.log("更改like");
-        if(likeColor){
+        if (likeColor) {
             axios({
-                method:"DELETE",
-                url:`${BASE_URL}/storage/cookbook/personal`,
-                headers: {'Authorization': state.token},
-                data:{
+                method: "DELETE",
+                url: `${BASE_URL}/storage/cookbook/personal`,
+                headers: { 'Authorization': state.token },
+                data: {
                     "cookbook_id": recipeState.clickRecipeList.id
                 },
-            }).then(res=>{
-                console.log("刪除成功",res.data);
+            }).then(res => {
+                console.log("刪除成功", res.data);
                 setLikeColor(false);
-            }).catch(function (error){
+            }).catch(function (error) {
 
                 console.log(error);
 
-            }).finally(()=>{
-                
-            });        
-        }else{
+            }).finally(() => {
+
+            });
+        } else {
             axios({
-                method:"POST",
-                url:`${BASE_URL}/storage/cookbook/personal`,
-                headers: {'Authorization': state.token},
-                data:{
+                method: "POST",
+                url: `${BASE_URL}/storage/cookbook/personal`,
+                headers: { 'Authorization': state.token },
+                data: {
                     "cookbook_id": recipeState.clickRecipeList.id
                 },
-            }).then(res=>{
-                console.log("成功",res.data);
+            }).then(res => {
+                console.log("成功", res.data);
                 setLikeColor(true);
-            }).catch(function (error){
+            }).catch(function (error) {
                 console.log(error);
-            }).finally(()=>{
-                
-            });        
+            }).finally(() => {
+
+            });
         }
-        
-    } 
+
+    }
 
     return (
 
         <SafeAreaView style={styles.safeAreaView}>
-            
+
             <ScrollView
                 bounces={false}
             >
                 <Image
-                    source={{uri:`data:image/png;base64,${recipeState.clickRecipeList.image}`}}
+                    source={{ uri: `data:image/png;base64,${recipeState.clickRecipeList.image}` }}
                     style={{ height: moderateScale(200), width: ScreenWidth, backgroundColor: 'yellow' }}
                     resizeMode="cover">
                 </Image>
-                {lookModel?
-                <>
-                <Text
-                    style={RecipeStyle.recipelName}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                >
-                    {recipeState.clickRecipeList.name}
-                </Text>
-                <View style={styles.detailGroup}>
-                    <View style={[styles.detailView, {}]}>
-                        <Text style={styles.detailText}>烹飪時間</Text>
-                        <Text style={[styles.detailText, { color: "#404496", top: moderateScale(5) }]}>{recipeState.clickRecipeList.time}分鐘</Text>
-                    </View>
-                    <View style={[styles.detailView, { borderRightWidth: moderateScale(2), borderLeftWidth: moderateScale(2), borderColor: '#6D6D6D' }]}>
-                        <Text style={styles.detailText}>種類</Text>
-                        <Text style={[styles.detailText, { color: "#404496", top: moderateScale(5) }]}>{recipeState.clickRecipeList.category_id}</Text>
-                    </View>
-                    <View style={styles.detailView}>
-                        <Text style={styles.detailText}>難易度</Text>
+                {lookModel ?
+                    <>
+                        <Text
+                            style={RecipeStyle.recipelName}
+                            accessible={true}
+                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                        >
+                            {recipeState.clickRecipeList.name}
+                        </Text>
+                        <View style={styles.detailGroup}>
+                            <View style={[styles.detailView, {}]}>
+                                <Text style={styles.detailText}>烹飪時間</Text>
+                                <Text style={[styles.detailText, { color: "#404496", top: moderateScale(5) }]}>{recipeState.clickRecipeList.time}分鐘</Text>
+                            </View>
+                            <View style={[styles.detailView, { borderRightWidth: moderateScale(2), borderLeftWidth: moderateScale(2), borderColor: '#6D6D6D' }]}>
+                                <Text style={styles.detailText}>種類</Text>
+                                <Text style={[styles.detailText, { color: "#404496", top: moderateScale(5) }]}>{recipeState.clickRecipeList.category_id}</Text>
+                            </View>
+                            <View style={styles.detailView}>
+                                <Text style={styles.detailText}>難易度</Text>
 
-                        <View style={styles.starView}>
-                            {recipeState.clickRecipeList.difficult == '3' ?
-                                <>
-                                    <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                </>
-                                : recipeState.clickRecipeList.difficult == '2' ?
-                                    <>
-                                        <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                        <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    </>
-                                    :
-                                    <>
-                                        <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    </>
-                            }
+                                <View style={styles.starView}>
+                                    {recipeState.clickRecipeList.difficult == '3' ?
+                                        <>
+                                            <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                        </>
+                                        : recipeState.clickRecipeList.difficult == '2' ?
+                                            <>
+                                                <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                                <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            </>
+                                            :
+                                            <>
+                                                <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            </>
+                                    }
+                                </View>
+
+                            </View>
+                        </View>
+                        <Text
+                            style={RecipeStyle.recipelTitle}
+                            accessible={true}
+                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                        >
+                            食譜概述
+                        </Text>
+                        <View style={styles.describeView}>
+                            <ScrollView>
+                                <Text style={styles.describeText}>
+                                    {recipeState.clickRecipeList.describe}
+                                </Text>
+                            </ScrollView>
+
+                        </View>
+                        <Text
+                            style={RecipeStyle.recipelTitle}
+                            accessible={true}
+                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                        >
+                            {`所需食材${ingredientsList.reduce((count, obj) => (obj.haveFood ? count + 1 : count), 0)}/${ingredientsList.length}`}
+                        </Text>
+                        <View style={styles.ingredientsView}>
+                            <FlashList
+                                data={ingredientsList}
+                                estimatedItemSize={60}
+                                //showsVerticalScrollIndicator="false"
+                                nestedScrollEnabled
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <RecipeIngredientsList
+                                            data={item}
+                                            index={index}
+                                        >
+                                        </RecipeIngredientsList>
+                                    )
+                                }}
+                            />
+                        </View>
+                        <Text
+                            style={RecipeStyle.recipelTitle}
+                            accessible={true}
+                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                        >
+                            烹飪步驟
+                        </Text>
+                        <View style={styles.procedureView}>
+                            <FlashList
+                                data={procedureList}
+                                estimatedItemSize={60}
+                                nestedScrollEnabled
+                                //showsVerticalScrollIndicator="false"
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <RecipeProcedureList
+                                            data={item}
+                                            index={index}
+                                        >
+                                        </RecipeProcedureList>
+                                    )
+                                }}
+                            />
+
+                        </View>
+                        <Button
+                            buttonStyle={RecipeStyle.nextButton}
+                            titleStyle={{ fontSize: moderateScale(20), fontWeight: 'bold', }}
+                            title={"完成烹飪"}
+                            onPress={() => { navigation.navigate("Finished") }}>
+                        </Button>
+                    </> :
+                    <>
+                        <Text
+                            style={[RecipeStyle.recipelName, { fontSize: moderateScale(30) }]}
+                            accessible={true}
+                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                            accessibilityLabel={`食譜名稱為${recipeState.clickRecipeList.name}`}
+                        >
+                            {recipeState.clickRecipeList.name}
+                        </Text>
+                        <View style={styles.detailGroup}>
+                            <View style={[styles.detailView, {}]}>
+                                <Text
+                                    style={styles.detailLookText}
+                                    accessible={true}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityLabel={`烹飪時間為${recipeState.clickRecipeList.time}分鐘`}>
+                                    烹飪時間
+                                </Text>
+                                <Text
+                                    style={[styles.detailLookText, { color: "#404496", top: moderateScale(5) }]}
+                                    accessible={false}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityState={{ disabled: true }}
+                                >{recipeState.clickRecipeList.time}分鐘
+                                </Text>
+                            </View>
+                            <View style={[styles.detailView, { borderRightWidth: moderateScale(2), borderLeftWidth: moderateScale(2), borderColor: '#6D6D6D' }]}>
+                                <Text
+                                    style={styles.detailLookText}
+                                    accessible={true}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityLabel={`食譜種類為${recipeState.clickRecipeList.category_id}`}
+
+                                >種類
+                                </Text>
+                                <Text
+                                    style={[styles.detailLookText, { color: "#404496", top: moderateScale(5) }]}
+                                    accessible={false}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityState={{ disabled: true }}>
+                                    {recipeState.clickRecipeList.category_id}
+                                </Text>
+                            </View>
+                            <View style={styles.detailView}>
+                                <Text style={styles.detailLookText}
+                                    accessible={true}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityLabel={`食譜難易度為${recipeState.clickRecipeList.difficult}顆星`}>
+                                    難易度
+                                </Text>
+
+                                <View style={styles.starView}>
+                                    {recipeState.clickRecipeList.difficult == '3' ?
+                                        <>
+                                            <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                        </>
+                                        : recipeState.clickRecipeList.difficult == '2' ?
+                                            <>
+                                                <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                                <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            </>
+                                            :
+                                            <>
+                                                <FontAwesomeIcon icon={faStar} color="#FFB800" />
+                                            </>
+                                    }
+                                </View>
+
+                            </View>
                         </View>
 
-                    </View>
-                </View>
-                <Text
-                    style={RecipeStyle.recipelTitle}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                >
-                    食譜概述
-                </Text>
-                <View style={styles.describeView}>
-                    <ScrollView>
-                        <Text style={styles.describeText}>
-                        {recipeState.clickRecipeList.describe}
-                        </Text>
-                    </ScrollView>
-
-                </View>
-                <Text
-                    style={RecipeStyle.recipelTitle}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                >
-                    {`所需食材${ingredientsList.reduce((count, obj) => (obj.haveFood ? count + 1 : count), 0)}/${ingredientsList.length}`}
-                </Text>
-                <View style={styles.ingredientsView}>
-                    <FlashList
-                        data={ingredientsList}
-                        estimatedItemSize={60}
-                        //showsVerticalScrollIndicator="false"
-                        nestedScrollEnabled
-                        renderItem={({ item, index }) => {
-                            return (
-                                <RecipeIngredientsList
-                                    data={item}
-                                    index={index}
-                                >
-                                </RecipeIngredientsList>
-                            )
-                        }}
-                    />
-                </View>
-                <Text
-                    style={RecipeStyle.recipelTitle}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                >
-                    烹飪步驟
-                </Text>
-                <View style={styles.procedureView}>
-                    <FlashList
-                        data={procedureList}
-                        estimatedItemSize={60}
-                        nestedScrollEnabled
-                        //showsVerticalScrollIndicator="false"
-                        renderItem={({ item, index }) => {
-                            return (
-                                <RecipeProcedureList
-                                    data={item}
-                                    index={index}
-                                >
-                                </RecipeProcedureList>
-                            )
-                        }}
-                    />
-
-                </View>
-                <Button
-                    buttonStyle={RecipeStyle.nextButton}
-                    titleStyle={{ fontSize: moderateScale(20), fontWeight: 'bold', }}
-                    title={"完成烹飪"}
-                    onPress={() => {navigation.navigate("Finished")}}>
-                </Button>
-                </>:
-                <>
-                <Text
-                    style={[RecipeStyle.recipelName,{fontSize:moderateScale(30)}]}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                    accessibilityLabel={`食譜名稱為${recipeState.clickRecipeList.name}`}
-                >
-                    {recipeState.clickRecipeList.name}
-                </Text>
-                <View style={styles.detailGroup}>
-                    <View style={[styles.detailView, {}]}>
-                        <Text 
-                            style={styles.detailLookText}  
+                        <Text
+                            style={[RecipeStyle.recipelTitle, { fontSize: moderateScale(23), }]}
                             accessible={true}
                             accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                            accessibilityLabel={`烹飪時間為${recipeState.clickRecipeList.time}分鐘`}>
-                            烹飪時間
+                            accessibilityLabel={`食譜概述${recipeState.clickRecipeList.describe}`}
+                        >
+                            食譜概述
                         </Text>
-                        <Text 
-                            style={[styles.detailLookText, { color: "#404496", top: moderateScale(5) }]}
-                            accessible={false}
-                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                            accessibilityState={{ disabled: true }}
-                        >{recipeState.clickRecipeList.time}分鐘
-                        </Text>
-                    </View>
-                    <View style={[styles.detailView, { borderRightWidth: moderateScale(2), borderLeftWidth: moderateScale(2), borderColor: '#6D6D6D' }]}>
-                        <Text 
-                            style={styles.detailLookText}
-                            accessible={true}
-                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                            accessibilityLabel={`食譜種類為${recipeState.clickRecipeList.category_id}`}
-                            
-                            >種類
-                        </Text>
-                        <Text 
-                            style={[styles.detailLookText, { color: "#404496", top: moderateScale(5) }]}
-                            accessible={false}
-                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                            accessibilityState={{ disabled: true }}>
-                            {recipeState.clickRecipeList.category_id}
-                            </Text>
-                    </View>
-                    <View style={styles.detailView}>
-                        <Text style={styles.detailLookText}
-                            accessible={true}
-                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                            accessibilityLabel={`食譜難易度為${recipeState.clickRecipeList.difficult}顆星`}>
-                            難易度
-                        </Text>
+                        <View style={styles.describeView}>
+                            <ScrollView>
+                                <Text
+                                    style={[styles.describeText, { fontSize: moderateScale(19), }]}
+                                    accessible={false}
+                                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                    accessibilityState={{ disabled: true }}>
+                                    {recipeState.clickRecipeList.describe}
+                                </Text>
+                            </ScrollView>
 
-                        <View style={styles.starView}>
-                            {recipeState.clickRecipeList.difficult == '3' ?
-                                <>
-                                    <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                </>
-                                : recipeState.clickRecipeList.difficult == '2' ?
-                                    <>
-                                        <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                        <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    </>
-                                    :
-                                    <>
-                                        <FontAwesomeIcon icon={faStar} color="#FFB800" />
-                                    </>
-                            }
                         </View>
-
-                    </View>
-                </View>
-
-                <Text
-                    style={[RecipeStyle.recipelTitle,{fontSize: moderateScale(23),}]}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                    accessibilityLabel={`食譜概述${recipeState.clickRecipeList.describe}`}
-                >
-                    食譜概述
-                </Text>
-                <View style={styles.describeView}>
-                    <ScrollView>
-                        <Text 
-                            style={[styles.describeText,{fontSize: moderateScale(19),}]}
-                            accessible={false}
+                        <Text
+                            style={[RecipeStyle.recipelTitle, { fontSize: moderateScale(23), }]}
+                            accessible={true}
                             accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                            accessibilityState={{ disabled: true }}>
-                        {recipeState.clickRecipeList.describe}
+                            accessibilityLabel={`所需食材${ingredientsList.length}項食材中有${ingredientsList.reduce((count, obj) => (obj.haveFood ? count + 1 : count), 0)}項`}
+                        >
+                            {`所需食材${ingredientsList.reduce((count, obj) => (obj.haveFood ? count + 1 : count), 0)}/${ingredientsList.length}`}
                         </Text>
-                    </ScrollView>
+                        <View
+                            style={styles.ingredientsView}
+                            accessibilityRole={"none"}
+                            accessibilityLabel={"食物列表"}>
+                            <FlashList
 
-                </View>
-                <Text
-                    style={[RecipeStyle.recipelTitle,{fontSize: moderateScale(23),}]}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                    accessibilityLabel={`所需食材${ingredientsList.length}項食材中有${ingredientsList.reduce((count, obj) => (obj.haveFood ? count + 1 : count), 0)}項`}
-                >
-                     {`所需食材${ingredientsList.reduce((count, obj) => (obj.haveFood ? count + 1 : count), 0)}/${ingredientsList.length}`}
-                </Text>
-                <View 
-                    style={styles.ingredientsView}
-                    accessibilityRole={"none"}
-                    accessibilityLabel={"食物列表"}>
-                    <FlashList
-                        
-                        data={ingredientsList}
-                        estimatedItemSize={60}
-                        //showsVerticalScrollIndicator="false"
-                        nestedScrollEnabled
-                        renderItem={({ item, index }) => {
-                            return (
-                                <RecipeIngredientsList
-                                    data={item}
-                                    index={index}
-                                >
-                                </RecipeIngredientsList>
-                            )
-                        }}
-                    />
-                </View>
-                <Text
-                    style={[RecipeStyle.recipelTitle,{fontSize: moderateScale(23),}]}
-                    accessible={true}
-                    accessibilityRole="none" // 设置为 "none" 表示标签不可点击
-                >
-                    烹飪步驟
-                </Text>
-                <View style={styles.procedureView}>
-                    <FlashList
-                        data={procedureList}
-                        estimatedItemSize={60}
-                        nestedScrollEnabled
-                        //showsVerticalScrollIndicator="false"
-                        renderItem={({ item, index }) => {
-                            return (
-                                <RecipeProcedureList
-                                    data={item}
-                                    index={index}
-                                >
-                                </RecipeProcedureList>
-                            )
-                        }}
-                    />
+                                data={ingredientsList}
+                                estimatedItemSize={60}
+                                //showsVerticalScrollIndicator="false"
+                                nestedScrollEnabled
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <RecipeIngredientsList
+                                            data={item}
+                                            index={index}
+                                        >
+                                        </RecipeIngredientsList>
+                                    )
+                                }}
+                            />
+                        </View>
+                        <Text
+                            style={[RecipeStyle.recipelTitle, { fontSize: moderateScale(23), }]}
+                            accessible={true}
+                            accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                        >
+                            烹飪步驟
+                        </Text>
+                        <View style={styles.procedureView}>
+                            <FlashList
+                                data={procedureList}
+                                estimatedItemSize={60}
+                                nestedScrollEnabled
+                                //showsVerticalScrollIndicator="false"
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <RecipeProcedureList
+                                            data={item}
+                                            index={index}
+                                        >
+                                        </RecipeProcedureList>
+                                    )
+                                }}
+                            />
 
-                </View>
-                <Button
-                    buttonStyle={RecipeStyle.nextButton}
-                    titleStyle={{ fontSize: moderateScale(20), fontWeight: 'bold', }}
-                    title={"完成烹飪"}
-                    onPress={() => {navigation.navigate("Finished")}}>
-                </Button>
-                </>}
-                
+                        </View>
+                        <Button
+                            buttonStyle={RecipeStyle.nextButton}
+                            titleStyle={{ fontSize: moderateScale(20), fontWeight: 'bold', }}
+                            title={"完成烹飪"}
+                            onPress={() => { navigation.navigate("Finished") }}>
+                        </Button>
+                    </>}
+
             </ScrollView>
         </SafeAreaView>
 

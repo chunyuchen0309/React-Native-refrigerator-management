@@ -31,21 +31,25 @@ const HomeScreen = () => {
     const foodState = useSelector(state => state.foodInfo);
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
+    
     useFocusEffect( //載入該頁面時都會重新抓取資料
         React.useCallback(() => {
-            //console.log("主頁當前使用者資訊", state);
-            dispatch(getFoodInfo());
-            dispatch(getRefInfo());
-            dispatch(checkToken());
-        }, [])
-    );
+            const fetchData = async () => {
+                console.log("首頁檢查token新方法");
+                await dispatch(checkToken());
+                // 現在 token 已經更新，可以使用更新後的 token 來獲取其他數據
+                await dispatch(getFoodInfo());
+                await dispatch(getRefInfo());
+            };
+    
+            fetchData();
+        }, [dispatch])
+    )
 
-
-
-    const onRefresh = useCallback(() => { // 避免不必要的渲染使用
+    const onRefresh = useCallback(() => { // 食材料表重新整理
         dispatch(setIsloading());
-        dispatch(getFoodInfo());
         dispatch(checkToken());
+        dispatch(getFoodInfo());
     }, []);
 
     useEffect(() => { //有資料且正確載入使組建篩選並重新渲染
@@ -217,7 +221,7 @@ const HomeScreen = () => {
         <ScrollView
             contentContainerStyle={{}}
             scrollEnabled={false}
-             >
+        >
             <Modal
                 animationIn={"zoomIn"}
                 animationInTiming={900}
@@ -242,7 +246,8 @@ const HomeScreen = () => {
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
-            {lookModel ? <>
+            {lookModel ? 
+            <>
                 <View style={[styles.topBg, {}]}>
                     <View accessible={true}
                         accessibilityLabel={`名稱為 ${state.info.username}`}
@@ -381,8 +386,8 @@ const HomeScreen = () => {
                         <FlashList
                             nestedScrollEnabled
                             refreshControl={
-                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
-                    }
+                                <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                            }
                             ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                             data={filteredFoodInfo}
                             estimatedItemSize={30}
@@ -412,9 +417,9 @@ const HomeScreen = () => {
                             accessibilityLabel={"已過期食物列表"}
                         >
                             <FlashList
-                            refreshControl={
-                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
-                    }
+                                refreshControl={
+                                    <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                                }
                                 nestedScrollEnabled
                                 ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                                 data={filteredFoodInfo}
@@ -527,9 +532,9 @@ const HomeScreen = () => {
                             accessibilityLabel={"即將過期食物列表"}
                             style={[styles.homeDateList, { height: verticalScale(450) }]}>
                             <FlashList
-                             refreshControl={
-                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
-                    }
+                                refreshControl={
+                                    <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                                }
                                 nestedScrollEnabled
                                 ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                                 data={filteredFoodInfo}
@@ -561,9 +566,9 @@ const HomeScreen = () => {
                                 accessibilityLabel={"已過期食物列表"}
                             >
                                 <FlashList
-                                 refreshControl={
-                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
-                    }
+                                    refreshControl={
+                                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                                    }
                                     nestedScrollEnabled
                                     ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                                     data={filteredFoodInfo}

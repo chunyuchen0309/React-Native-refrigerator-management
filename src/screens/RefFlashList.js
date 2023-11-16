@@ -41,13 +41,16 @@ const RefFlashList = (props) => {
      * 冷凍分層數量配置
      * @returns 冷凍分層button
      */
-    const renderTopCenter = () => { 
+    const renderTopCenter = () => {
         var Buttonindex = 1;
         if (props.data.firstType == "cooler") {
             Buttonindex = props.data.coolerCount + 1;
         }
         return buttonTopCenter.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷凍第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#416BFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
@@ -60,13 +63,16 @@ const RefFlashList = (props) => {
    * 冷藏分層數量配置
    * @returns 冷藏分層button
     */
-    const renderDownCenter = () => { 
+    const renderDownCenter = () => {
         var Buttonindex = 1;
         if (props.data.firstType == "freezer") {
             Buttonindex = props.data.freezerCount + 1;
         }
         return buttonDownCenter.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷藏第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={index === buttonDownCenter.length - 1 ? { flex: 2, backgroundColor: "#95ECFF", marginVertical: moderateScale(3), borderRadius: moderateScale(10), } : { flex: 1, backgroundColor: "#95ECFF", marginVertical: moderateScale(3), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
@@ -79,18 +85,21 @@ const RefFlashList = (props) => {
      * 冷凍門分層數量配置
      * @returns 冷凍門分層button
      */
-    const renderTopDoor = () => { 
+    const renderTopDoor = () => {
         var Buttonindex = 1;
         if (props.data.firstType == "cooler") {
             Buttonindex = props.data.coolerDoorCount + 1;
         }
         return buttonTopDoor.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷凍門第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
                 onPress={() => handleButtonPress(index + Buttonindex, "freezerDoor")}
-                //onLongPress={() => longHandleButtonPress(index + Buttonindex, "freezerDoor")}
+            //onLongPress={() => longHandleButtonPress(index + Buttonindex, "freezerDoor")}
             />
         ));
     };
@@ -98,18 +107,21 @@ const RefFlashList = (props) => {
      * 冷藏門分層數量配置
      * @returns 冷藏門分層button
      */
-    const renderDownDoor = () => { 
+    const renderDownDoor = () => {
         var Buttonindex = 1;
         if (props.data.firstType == "freezer") {
             Buttonindex = props.data.freezerDoorCount + 1;
         }
         return buttonDownDoor.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷藏門第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
                 onPress={() => handleButtonPress(index + Buttonindex, "coolerDoor")}
-                //onLongPress={() => longHandleButtonPress(index + Buttonindex, "coolerDoor")}
+            //onLongPress={() => longHandleButtonPress(index + Buttonindex, "coolerDoor")}
             />
         ));
     };
@@ -133,7 +145,14 @@ const RefFlashList = (props) => {
         <>
             {props.data.firstType == "freezer" ?
                 <>
-                    <Text style={{ textAlign: 'center', fontSize: moderateScale(25), paddingBottom: moderateScale(10), color: '#777', fontWeight: '500' }}>{props.data.refrigerator_name}</Text>
+                    <Text
+                        style={{ textAlign: 'center', fontSize: moderateScale(25), paddingBottom: moderateScale(10), color: '#777', fontWeight: '500' }}
+                        accessible={true}
+                        accessibilityLabel={`冰箱名稱`}
+                        accessibilityRole="none">
+                        {props.data.refrigerator_name}
+                    </Text>
+
                     <View style={{ width: ScreenWidth, height: moderateScale(600) }}>
                         <View style={style.finalTop}>
                             <View style={[refrigerator.finallOutTop]}>

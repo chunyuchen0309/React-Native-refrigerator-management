@@ -27,11 +27,18 @@ const UserScreen = () => {
 
     useFocusEffect( //載入該頁面時都會重新抓取資料
         React.useCallback(() => {
-            dispatch(getUserInfo());
-            dispatch(getSharedList());
-            dispatch(checkToken());
-        }, [])
+            const fetchData = async () => {
+                //console.log("個人頁面檢查token新方法");
+                
+                await dispatch(checkToken());
+                await dispatch(getUserInfo());
+                await dispatch(getSharedList());
+            };
+    
+            fetchData();
+        }, [dispatch])
     )
+
     /**
      * 取得FCM
      */

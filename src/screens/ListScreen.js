@@ -38,8 +38,8 @@ const ListScreen = () => {
     const [JFilterRecipe, setJFilterRecipe] = useState([]);
     const [clearEffects, setClearEffects] = useState(true);
     const dispatch = useDispatch();
-
     const state = useSelector(state => state.userInfo);
+    
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('blur', () => {
             setSpeedDialOpen(false);//離開頁面觸發
@@ -215,6 +215,7 @@ const ListScreen = () => {
      * 重新Refresh食譜資料
      */
     const onRefresh = useCallback(async () => { // 避免不必要的渲染使用
+
         setRefresh(true);
         await dispatch(getRepiceLikeInfo());
         //console.log(1);

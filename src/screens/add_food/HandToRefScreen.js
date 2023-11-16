@@ -117,6 +117,9 @@ const HandToRefScreen = () => {
         return buttonTopCenter.map((_, index) => (
             <TouchableOpacity
                 key={index}
+                accessible={true}
+                accessibilityLabel={`冷凍第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 style={{ flex: 1, backgroundColor: "#416BFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
                 onPress={() => handleButtonPress(index + Buttonindex, "freezerContainer")}
@@ -132,6 +135,9 @@ const HandToRefScreen = () => {
         }
         return buttonDownCenter.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷藏第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={index === buttonDownCenter.length - 1 ? { flex: 2, backgroundColor: "#95ECFF", marginVertical: moderateScale(3), borderRadius: moderateScale(10), } : { flex: 1, backgroundColor: "#95ECFF", marginVertical: moderateScale(3), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
@@ -147,6 +153,9 @@ const HandToRefScreen = () => {
         }
         return buttonTopDoor.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷凍門第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
@@ -162,6 +171,9 @@ const HandToRefScreen = () => {
         }
         return buttonDownDoor.map((_, index) => (
             <TouchableOpacity
+                accessible={true}
+                accessibilityLabel={`冷藏門第${index +Buttonindex}層`}
+                accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
@@ -277,9 +289,6 @@ const HandToRefScreen = () => {
 
         });
     };
-
-    //console.log(upDataInfo);
-    //console.log(addList);
 
     return (
         <SafeAreaView style={styles.safeAreaView}>

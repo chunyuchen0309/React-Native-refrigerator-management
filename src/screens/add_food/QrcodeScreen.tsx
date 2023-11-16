@@ -36,11 +36,11 @@ const QrcodeScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [foodList, setFoodList] = useState([]);
     const [result, setResult] = useState(new Set());
-    const [invoiceInfo, setInvoiceInfo] = useState({"Number": "","Date": "","Data":[],});
+    const [invoiceInfo, setInvoiceInfo] = useState({ "Number": "", "Date": "", "Data": [], });
     const [modalVisible, setModalVisible] = useState(false);
     const scannerRef = useRef(null);
     const state = useSelector(state => state.userInfo);
-    const dispatch =useDispatch();
+    const dispatch = useDispatch();
     useEffect(() => { //設置標題右側按鈕
         navigation.setOptions(
             {
@@ -66,47 +66,47 @@ const QrcodeScreen = () => {
     const goNext = async () => {
         setIsLoading(true);
         console.log("go", foodList);
-        var tempFoodList=[];
-        if (invoiceInfo.Number=="") {
+        var tempFoodList = [];
+        if (invoiceInfo.Number == "") {
             Alert.alert("請完成掃描")
             //navigation.navigate('Invoice');
             //navigation.navigate('Invoice', { "invoiceData": invoiceInfo })   
         } else {
-            for(var i =0;i<foodList.length;i++){
+            for (var i = 0; i < foodList.length; i++) {
                 //console.log("執行 ",i)
                 await axios({
-                    method:"POST",
-                    url:`${BASE_URL}/storage/predict`,
-                    headers: {'Authorization': state.token},
-                    data:{
-                        name:foodList[i]
+                    method: "POST",
+                    url: `${BASE_URL}/storage/predict`,
+                    headers: { 'Authorization': state.token },
+                    data: {
+                        name: foodList[i]
                     },
-                }).then(res=>{
+                }).then(res => {
 
                     const formattedDateWithSlash = res.data.date.replace(/-/g, '/');
                     invoiceInfo.Data.push({
-                        "OldData":""+res.data.oldData,
-                        "NewData":"",
-                        "Category":""+res.data.category,
-                        "Date":""+formattedDateWithSlash,
+                        "OldData": "" + res.data.oldData,
+                        "NewData": "",
+                        "Category": "" + res.data.category,
+                        "Date": "" + formattedDateWithSlash,
                     })
                     console.log(res.data);
-                }).catch(e=>{
+                }).catch(e => {
                     console.log(`error ${e}`);
                     invoiceInfo.Data.push({
-                        "OldData":foodList[i],
-                        "NewData":"",
-                        "Category":null,
-                        "Date":"",
+                        "OldData": foodList[i],
+                        "NewData": "",
+                        "Category": null,
+                        "Date": "",
                     })
                 })
             }
-            console.log("準備傳出的foodList",invoiceInfo);
+            console.log("準備傳出的foodList", invoiceInfo);
             dispatch(addFoodInv(invoiceInfo));
             navigation.navigate('Invoice');
         }
-        
-        
+
+
         setIsLoading(false);
     };
     const onSuccess = (e: { data: string; }) => {
@@ -136,8 +136,8 @@ const QrcodeScreen = () => {
             for (let i = 0; i < s1.length; i++) {
                 var chineseRegex = /[\u4e00-\u9fa5]/g;
                 var chineseCharacters = s1[i].match(chineseRegex);
-                console.log("加入s2",chineseCharacters);
-                if ( chineseCharacters && chineseCharacters[0]!== "未"&& chineseCharacters[1]!== "含") {
+                console.log("加入s2", chineseCharacters);
+                if (chineseCharacters && chineseCharacters[0] !== "未" && chineseCharacters[1] !== "含") {
                     s2.push(chineseCharacters.join(''))
                 }
             }
@@ -148,8 +148,8 @@ const QrcodeScreen = () => {
             for (let i = 0; i < s2.length; i++) {
                 tempData.push({ "OldData": "" + s2[i], "NewData": '', })
             }*/
-            
-            setInvoiceInfo({ "Number": arr.join().substring(0, 10), "Date": "" + arr.join().substring(10, 17), "Data":[], });
+
+            setInvoiceInfo({ "Number": arr.join().substring(0, 10), "Date": "" + arr.join().substring(10, 17), "Data": [], });
             //console.log(tempData);
             result.clear();
             arr.splice(0, arr.length);

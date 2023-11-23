@@ -5,7 +5,7 @@ import { Alert, Dimensions, Image, PermissionsAndroid, SafeAreaView, ScrollView,
 import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/native";
 import { RefreshControl } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBars, faCalendar, faCalendarXmark, faTools, faTrash, faTrashCan, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faBriefcase, faCalendar, faCalendarXmark, faTools, faTrash, faTrashCan, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faNfcSymbol } from "@fortawesome/free-brands-svg-icons";
 import { scale, moderateScale, verticalScale } from "./ScaleMethod";
 
@@ -29,9 +29,10 @@ const HomeScreen = () => {
     const [seekBarDate, setSeekBarDate] = useState("即將過期食物");
     const state = useSelector(state => state.userInfo);
     const foodState = useSelector(state => state.foodInfo);
+    const refState = useSelector(state => state.refInfo);
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
-    
+
     useFocusEffect( //載入該頁面時都會重新抓取資料
         React.useCallback(() => {
             const fetchData = async () => {
@@ -41,7 +42,7 @@ const HomeScreen = () => {
                 await dispatch(getFoodInfo());
                 await dispatch(getRefInfo());
             };
-    
+
             fetchData();
         }, [dispatch])
     )
@@ -191,6 +192,27 @@ const HomeScreen = () => {
         //console.log("刪除：", index)
     }, [filteredFoodInfo]);
 
+    const newRef = () => {
+        if (refState.refList.length > 0) {
+            Alert.alert("建立冰箱", `目前已有${refState.refList.length}個冰箱是否建立其他冰箱`, [
+                {
+                    text: '取消',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: '前往建立',
+                    onPress: () => navigation.navigate("Step1"),
+                    style: 'destructive'
+                },
+            ]);
+        } else {
+            navigation.navigate("Step1")
+
+        }
+
+    }
+
     const deleteItemApi = async (id) => {
         await dispatch(deleteFoodApi(id));
         await dispatch(getFoodInfo());
@@ -246,194 +268,164 @@ const HomeScreen = () => {
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
-            {lookModel ? 
-            <>
-                <View style={[styles.topBg, {}]}>
-                    <View accessible={true}
-                        accessibilityLabel={`名稱為 ${state.info.username}`}
-                        accessibilityRole={"none"}>
-                        <Input
-                            disabled
-                            containerStyle={{
-                                paddingHorizontal: moderateScale(70),
-                                marginTop: Platform.OS === 'android' ? verticalScale(-5) : verticalScale(30)
-                            }}
-                            inputContainerStyle={{ height: Platform.OS == 'android' ? verticalScale(66) : moderateScale(50), }}
-                            disabledInputStyle={{ fontSize: moderateScale(30), marginTop: moderateScale(10, 0.7) }}
-                            leftIcon={<FontAwesomeIcon icon={faUser} color="#777" size={moderateScale(23)} style={{ marginTop: moderateScale(10, 0.6) }}></FontAwesomeIcon>}
-                        >
-                            {state.info.username}
-                        </Input>
-                    </View>
-                    <View style={styles.topThreeButton}>
-                        <View
-                            accessible={true}
-                            accessibilityLabel={"前往冰箱配置按鈕"}>
-                            <Text style={styles.topButtonText}>
-                                冰箱配置
-                            </Text>
-                            <Button
-                                onPress={() => { navigation.navigate("Step1") }}
-                                buttonStyle={styles.topButton}
-                                icon={<FontAwesomeIcon icon={faTools} color="#404496" size={moderateScale(30)}></FontAwesomeIcon>}>
-                            </Button>
-                        </View>
-                        <View
-                            accessible={true}
-                            accessibilityLabel={"前往NFC功能按鈕"}
-                        >
-                            <Text style={styles.topButtonText}>
-                                NFC
-                            </Text>
-                            <Button
-                                onPress={() => { navigation.navigate("Nfc") }}
-                                buttonStyle={styles.topButton}
-                                icon={<FontAwesomeIcon icon={faNfcSymbol} color="#404496" size={moderateScale(30)}></FontAwesomeIcon>}>
-                            </Button>
-                        </View>
-                        <View
-                            accessible={true}
-                            accessibilityLabel={"前往冰箱分層功能按鈕"}>
-                            <Text style={styles.topButtonText}>
-                                冰箱分層
-                            </Text>
-                            <Button
-                                accessible={false}
-                                //accessibilityRole={"none"}
-                                onPress={() => { navigation.navigate("Refrigerator") }}
-                                buttonStyle={styles.topButton}
-                                icon={<FontAwesomeIcon icon={faBars} color="#404496" size={moderateScale(30)}></FontAwesomeIcon>}>
-                            </Button>
-                        </View>
-
-                    </View>
-                </View>
-
-                <View style={styles.dateView}>
-                    <Button
-                        accessible={true}
-                        accessibilityRole={"none"}
-                        accessibilityLabel={`即將過期食物數量 ${foodState.Plus}`}
-                        accessibilityHint={"顯示即將過期食物列表按鈕"}
-                        onPress={() => { changeButtonColor(true) }}
-                        buttonStyle={[styles.dateButton, { backgroundColor: buttonSelect == true ? "#FFCA7B" : "#BFBFBF" }]}
-                        title={
-                            <View style={[styles.dateButtonTitle,]}>
-                                <FontAwesomeIcon icon={faCalendar} color="#FFFFFF" size={moderateScale(20)} style={{ marginHorizontal: moderateScale(10), top: 2 }}></FontAwesomeIcon>
-                                <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777" }}>即將過期食物數量</Text>
-                                <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777", textAlign: 'right', flex: 1, marginEnd: moderateScale(5) }}>{foodState.Plus}</Text>
-                            </View>}>
-                    </Button>
-                    <View style={{ height: moderateScale(10) }}>
-                    </View>
-                    <Button
-                        accessible={true}
-                        accessibilityRole={"none"}
-                        accessibilityLabel={`已過期食物數量 ${foodState.Minus}`}
-                        accessibilityHint={"顯示已過期食物列表按鈕"}
-                        onPress={() => { changeButtonColor(false) }}
-                        buttonStyle={[styles.dateButton, { backgroundColor: buttonSelect == false ? "#FFCA7B" : "#BFBFBF" }]}
-                        title={
-                            <View style={styles.dateButtonTitle}>
-                                <FontAwesomeIcon icon={faCalendarXmark} color="#FFFFFF" size={moderateScale(20)} style={{ marginHorizontal: moderateScale(10), top: 2 }}></FontAwesomeIcon>
-                                <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777" }}>已過期食物數量</Text>
-                                <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777", textAlign: 'right', flex: 1, marginEnd: moderateScale(5) }}>{foodState.Minus}</Text>
-                            </View>}
-                    >
-                    </Button>
-                    <Text style={{ textAlign: 'center', marginTop: moderateScale(10), color: "#777", fontSize: moderateScale(20), fontWeight: '600' }}>
-                        {seekBarDate}
-                    </Text>
-                    <View>
-                        <Image
-                            source={require('../../Img/SeekBar.png')}
-                            resizeMode="contain"
-                            style={{ width: moderateScale(300, 1), alignSelf: 'center', top: Platform.OS === 'android' ? moderateScale(10) : moderateScale(10, 0), }}>
-                        </Image>
-                        {Platform.OS === 'android' ?
-                            <Slider
-                                style={{ width: moderateScale(280, 0.7), alignSelf: 'center', zIndex: 10, top: moderateScale(-20, -0.7) }}
-                                value={seekBar}
-                                onValueChange={(val) => { changeSeekBar(val) }}
-                                minimumValue={0}
-                                maximumValue={4.5}
-                                step={1.5}
-                                thumbImage={require('../../Img/Dot.png')}
-                                maximumTrackTintColor={"transparent"}
-                                minimumTrackTintColor="transparent"
-                            /> :
-                            <Slider
-                                style={{ width: moderateScale(280, 0.7), alignSelf: 'center', zIndex: 2, top: moderateScale(-20, -0.7) }}
-                                value={seekBar}
-                                onValueChange={(val) => { changeSeekBar(val) }}
-                                minimumValue={0}
-                                maximumValue={4.5}
-                                step={1.5}
-                                thumbTintColor={"#FFFFFF"}
-                                maximumTrackTintColor={"transparent"}
-                                minimumTrackTintColor="transparent"
-                            />}
-
-                    </View>
-                </View>
-
-                {buttonSelect ? <>
-                    <View
-                        //accessible={true}
-                        accessibilityRole={"none"}
-                        accessibilityLabel={"即將過期食物列表"}
-                        style={[styles.homeDateList, { marginTop: moderateScale(-20, -1.5), }]}>
-                        <FlashList
-                            nestedScrollEnabled
-                            refreshControl={
-                                <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
-                            }
-                            ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
-                            data={filteredFoodInfo}
-                            estimatedItemSize={30}
-                            renderItem={({ item, index }) => {
-                                if (item.day < 4 && item.day >= 0) { // 只渲染符合條件的項目
-                                    return (
-                                        <ItemBox
-                                            data={item}
-                                            handleDelete={deleteItem} //由子組件傳值直接調用父組件的方法
-                                            handleClick={() => handClickItem(index, item)}
-                                            index={index}
-                                        />);
-                                } else {
-                                    return null; // 不渲染不符合條件的項目
+            {lookModel ?
+                <>
+                    <View style={[styles.topBg, {}]}>
+                        <View accessible={true}
+                            accessibilityLabel={`名稱為 ${state.info.username}`}
+                            accessibilityRole={"none"}>
+                            <Input
+                                disabled
+                                containerStyle={{
+                                    paddingHorizontal: moderateScale(70),
+                                    marginTop: Platform.OS === 'android' ? verticalScale(-5) : verticalScale(30)
+                                }}
+                                inputContainerStyle={{ height: Platform.OS == 'android' ? verticalScale(66) : moderateScale(50), }}
+                                disabledInputStyle={{ fontSize: moderateScale(30), marginTop: moderateScale(10, 0.7) }}
+                                leftIcon={state.role == "商業" ?
+                                    <FontAwesomeIcon icon={faBriefcase} color="#777" size={moderateScale(23)} style={{ marginTop: moderateScale(10, 0.6) }}></FontAwesomeIcon>
+                                    :
+                                    <FontAwesomeIcon icon={faUser} color="#777" size={moderateScale(23)} style={{ marginTop: moderateScale(10, 0.6) }}></FontAwesomeIcon>
                                 }
-                            }}>
-                        </FlashList>
+                            >
+                                {state.info.username}
+                            </Input>
+                        </View>
+                        <View style={styles.topThreeButton}>
+                            <View
+                                accessible={true}
+                                accessibilityLabel={"前往冰箱配置按鈕"}>
+                                <Text style={styles.topButtonText}>
+                                    冰箱配置
+                                </Text>
+                                <Button
+                                    onPress={() => { newRef() }}
+                                    buttonStyle={styles.topButton}
+                                    icon={<FontAwesomeIcon icon={faTools} color="#404496" size={moderateScale(30)}></FontAwesomeIcon>}>
+                                </Button>
+                            </View>
+                            <View
+                                accessible={true}
+                                accessibilityLabel={"前往NFC功能按鈕"}
+                            >
+                                <Text style={styles.topButtonText}>
+                                    NFC
+                                </Text>
+                                <Button
+                                    onPress={() => { navigation.navigate("Nfc") }}
+                                    buttonStyle={styles.topButton}
+                                    icon={<FontAwesomeIcon icon={faNfcSymbol} color="#404496" size={moderateScale(30)}></FontAwesomeIcon>}>
+                                </Button>
+                            </View>
+                            <View
+                                accessible={true}
+                                accessibilityLabel={"前往冰箱分層功能按鈕"}>
+                                <Text style={styles.topButtonText}>
+                                    冰箱分層
+                                </Text>
+                                <Button
+                                    accessible={false}
+                                    //accessibilityRole={"none"}
+                                    onPress={() => { navigation.navigate("Refrigerator") }}
+                                    buttonStyle={styles.topButton}
+                                    icon={<FontAwesomeIcon icon={faBars} color="#404496" size={moderateScale(30)}></FontAwesomeIcon>}>
+                                </Button>
+                            </View>
+
+                        </View>
                     </View>
 
-                </>
-                    : <>
+                    <View style={styles.dateView}>
+                        <Button
+                            accessible={true}
+                            accessibilityRole={"none"}
+                            accessibilityLabel={`即將過期食物數量 ${foodState.Plus}`}
+                            accessibilityHint={"顯示即將過期食物列表按鈕"}
+                            onPress={() => { changeButtonColor(true) }}
+                            buttonStyle={[styles.dateButton, { backgroundColor: buttonSelect == true ? "#FFCA7B" : "#BFBFBF" }]}
+                            title={
+                                <View style={[styles.dateButtonTitle,]}>
+                                    <FontAwesomeIcon icon={faCalendar} color="#FFFFFF" size={moderateScale(20)} style={{ marginHorizontal: moderateScale(10), top: 2 }}></FontAwesomeIcon>
+                                    <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777" }}>即將過期食物數量</Text>
+                                    <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777", textAlign: 'right', flex: 1, marginEnd: moderateScale(5) }}>{foodState.Plus}</Text>
+                                </View>}>
+                        </Button>
+                        <View style={{ height: moderateScale(10) }}>
+                        </View>
+                        <Button
+                            accessible={true}
+                            accessibilityRole={"none"}
+                            accessibilityLabel={`已過期食物數量 ${foodState.Minus}`}
+                            accessibilityHint={"顯示已過期食物列表按鈕"}
+                            onPress={() => { changeButtonColor(false) }}
+                            buttonStyle={[styles.dateButton, { backgroundColor: buttonSelect == false ? "#FFCA7B" : "#BFBFBF" }]}
+                            title={
+                                <View style={styles.dateButtonTitle}>
+                                    <FontAwesomeIcon icon={faCalendarXmark} color="#FFFFFF" size={moderateScale(20)} style={{ marginHorizontal: moderateScale(10), top: 2 }}></FontAwesomeIcon>
+                                    <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777" }}>已過期食物數量</Text>
+                                    <Text style={{ fontSize: moderateScale(20), fontWeight: 'bold', color: "#777", textAlign: 'right', flex: 1, marginEnd: moderateScale(5) }}>{foodState.Minus}</Text>
+                                </View>}
+                        >
+                        </Button>
+                        <Text style={{ textAlign: 'center', marginTop: moderateScale(10), color: "#777", fontSize: moderateScale(20), fontWeight: '600' }}>
+                            {seekBarDate}
+                        </Text>
+                        <View>
+                            <Image
+                                source={require('../../Img/SeekBar.png')}
+                                resizeMode="contain"
+                                style={{ width: moderateScale(300, 1), alignSelf: 'center', top: Platform.OS === 'android' ? moderateScale(10) : moderateScale(10, 0), }}>
+                            </Image>
+                            {Platform.OS === 'android' ?
+                                <Slider
+                                    style={{ width: moderateScale(280, 0.7), alignSelf: 'center', zIndex: 10, top: moderateScale(-20, -0.7) }}
+                                    value={seekBar}
+                                    onValueChange={(val) => { changeSeekBar(val) }}
+                                    minimumValue={0}
+                                    maximumValue={4.5}
+                                    step={1.5}
+                                    thumbImage={require('../../Img/Dot.png')}
+                                    maximumTrackTintColor={"transparent"}
+                                    minimumTrackTintColor="transparent"
+                                /> :
+                                <Slider
+                                    style={{ width: moderateScale(280, 0.7), alignSelf: 'center', zIndex: 2, top: moderateScale(-20, -0.7) }}
+                                    value={seekBar}
+                                    onValueChange={(val) => { changeSeekBar(val) }}
+                                    minimumValue={0}
+                                    maximumValue={4.5}
+                                    step={1.5}
+                                    thumbTintColor={"#FFFFFF"}
+                                    maximumTrackTintColor={"transparent"}
+                                    minimumTrackTintColor="transparent"
+                                />}
 
+                        </View>
+                    </View>
+
+                    {buttonSelect ? <>
                         <View
-                            style={[styles.homeDateList, { marginTop: moderateScale(-20, -1.5), }]}
                             //accessible={true}
                             accessibilityRole={"none"}
-                            accessibilityLabel={"已過期食物列表"}
-                        >
+                            accessibilityLabel={"即將過期食物列表"}
+                            style={[styles.homeDateList, { marginTop: moderateScale(-20, -1.5), }]}>
                             <FlashList
+                                nestedScrollEnabled
                                 refreshControl={
                                     <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
                                 }
-                                nestedScrollEnabled
                                 ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
                                 data={filteredFoodInfo}
                                 estimatedItemSize={30}
                                 renderItem={({ item, index }) => {
-                                    if (item.day < 0) { // 只渲染符合條件的項目
+                                    if (item.day < 4 && item.day >= 0) { // 只渲染符合條件的項目
                                         return (
                                             <ItemBox
                                                 data={item}
-                                                handleDelete={() => deleteItem(index, item)}
+                                                handleDelete={deleteItem} //由子組件傳值直接調用父組件的方法
                                                 handleClick={() => handClickItem(index, item)}
                                                 index={index}
-                                            />
-                                        );
+                                            />);
                                     } else {
                                         return null; // 不渲染不符合條件的項目
                                     }
@@ -442,8 +434,42 @@ const HomeScreen = () => {
                         </View>
 
                     </>
-                }
-            </>
+                        : <>
+
+                            <View
+                                style={[styles.homeDateList, { marginTop: moderateScale(-20, -1.5), }]}
+                                //accessible={true}
+                                accessibilityRole={"none"}
+                                accessibilityLabel={"已過期食物列表"}
+                            >
+                                <FlashList
+                                    refreshControl={
+                                        <RefreshControl refreshing={foodState.isLoading} onRefresh={onRefresh} style={{}} />
+                                    }
+                                    nestedScrollEnabled
+                                    ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無食物資料</Text>}
+                                    data={filteredFoodInfo}
+                                    estimatedItemSize={30}
+                                    renderItem={({ item, index }) => {
+                                        if (item.day < 0) { // 只渲染符合條件的項目
+                                            return (
+                                                <ItemBox
+                                                    data={item}
+                                                    handleDelete={() => deleteItem(index, item)}
+                                                    handleClick={() => handClickItem(index, item)}
+                                                    index={index}
+                                                />
+                                            );
+                                        } else {
+                                            return null; // 不渲染不符合條件的項目
+                                        }
+                                    }}>
+                                </FlashList>
+                            </View>
+
+                        </>
+                    }
+                </>
                 : <>
                     <View style={styles.topBg}>
                         <View style={[styles.topThreeButton, { marginTop: moderateScale(10), }]}>
@@ -454,7 +480,7 @@ const HomeScreen = () => {
                                     冰箱配置
                                 </Text>
                                 <Button
-                                    onPress={() => { navigation.navigate("Step1") }}
+                                    onPress={() => { newRef() }}
                                     buttonStyle={styles.topButton}
                                     icon={<FontAwesomeIcon icon={faTools} color="#404496" size={moderateScale(30)}></FontAwesomeIcon>}>
                                 </Button>

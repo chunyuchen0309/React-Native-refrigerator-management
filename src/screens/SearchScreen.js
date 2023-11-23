@@ -83,7 +83,7 @@ const SearchScreen = () => {
 
     const [searchFoodInfo, setSearchFoodInfo] = useState([]);
     const dispatch = useDispatch();
-    
+
     /**
      * 類別篩選方法
      */
@@ -546,6 +546,18 @@ const SearchScreen = () => {
                                 accessible={true}
                                 style={styles.detailText}>
                                 {clickItem.ingredient_orignal_name}
+                            </Text>
+                            <Text style={[Userstyle.textLabel, { marginTop: moderateScale(20) }]}
+                                accessible={false}
+                                accessibilityRole="none" // 设置为 "none" 表示标签不可点击
+                                accessibilityState={{ disabled: true }} >
+                                存放冰箱
+                            </Text>
+                            <Text
+                                accessibilityLabel="食物名稱"
+                                accessible={true}
+                                style={styles.detailText}>
+                                {clickItem.refrigerator_name}
                             </Text>
 
                             <View style={{ flexDirection: 'row', flexWrap: 'nowrap', }}>
@@ -1077,7 +1089,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ECEAEA',
         marginHorizontal: moderateScale(0),
         borderRadius: moderateScale(20),
-        marginVertical: moderateScale(150, 0.2),
+        marginVertical: moderateScale(100, 0.2),
         //padding: moderateScale(20),
         justifyContent: 'flex-start',
     },

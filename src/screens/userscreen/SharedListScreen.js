@@ -107,8 +107,9 @@ const SharedListScreen = () => {
 
     return (
         <SafeAreaView style={Userstyle.safeAreaView}>
+
             <Text style={Userstyle.list_outTitle}>
-                共享使用者
+                個人共享使用者
             </Text>
             <View style={[Userstyle.towList,{height:moderateScale(250),}]}>
                 <FlashList
@@ -132,8 +133,8 @@ const SharedListScreen = () => {
                     ListEmptyComponent={<Text style={{ textAlign: 'center', fontSize: moderateScale(20), fontWeight: '500', color: "#777" }}>無用戶資料</Text>}
                     renderItem={({ item, index }) => (
                         <TouchableOpacity onPress={() => agreeItem(index)}>
-                            <View style={Userstyle.listButton}>
-                                <Text style={Userstyle.listTitle}>
+                            <View style={[Userstyle.listButton,{height:moderateScale(45),}]}>
+                                <Text style={[Userstyle.listTitle,{fontSize:moderateScale(23),lineHeight:moderateScale(35),fontWeight:'500',color:"#777",}]}>
                                     {item.name}
                                 </Text>
                             </View>

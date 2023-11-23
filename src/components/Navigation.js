@@ -53,6 +53,7 @@ import PersonWeb from "../screens/userscreen/PersonWeb";
 import FinishedScreen from "../screens/recipeScreen/FinishedScreen";
 
 import { navigationRef } from './RootNavigation';
+import SharedBusinessListScreen from "../screens/userscreen/SharedBusinessListScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -155,7 +156,7 @@ const UserStack = ({ navigation, route }) => {
         if (routeName == "UpdateAccountname" || routeName == "SharedAccount" || routeName == "SharedList" ||
             routeName == "UpdateUserName" || routeName == "UpdateUserPhone" || routeName == "UpdateUserRole" ||
             routeName == "UpdateUserPassword" || routeName == "UpMethod" || routeName == "RegisterBusiness" ||
-            routeName == "LookModelScreen" || routeName == "BusinessInfo" || routeName =="PersonWeb") {
+            routeName == "LookModelScreen" || routeName == "BusinessInfo" || routeName =="PersonWeb" || routeName=="SharedBusinessList") {
             navigation.setOptions({ tabBarStyle: { backgroundColor: "#C7E0F9", display: 'none', } });
         } else {
             navigation.setOptions({ tabBarStyle: { ...style.tabBar, ...style.shadow } });
@@ -198,7 +199,7 @@ const UserStack = ({ navigation, route }) => {
             <Stack.Screen
                 name="SharedList"
                 component={SharedListScreen}
-                options={{ title: "共用帳戶", headerBackTitle: '主頁', headerBackVisible: Platform.OS == 'android' ? false : true }}
+                options={{ title: "個人共用帳戶", headerBackTitle: '主頁', headerBackVisible: Platform.OS == 'android' ? false : true }}
             />
             <Stack.Screen
                 name="UpdateUserName"
@@ -244,6 +245,11 @@ const UserStack = ({ navigation, route }) => {
                 name="PersonWeb"
                 component={PersonWeb}
                 options={{ title: "個人付費", headerBackTitle: '升級方案', headerBackVisible: Platform.OS == 'android' ? false : true }}
+            />
+            <Stack.Screen
+                name="SharedBusinessList"
+                component={SharedBusinessListScreen}
+                options={{ title: "商業共用帳戶", headerBackTitle: '升級方案', headerBackVisible: Platform.OS == 'android' ? false : true }}
             />
         </Stack.Navigator>
 

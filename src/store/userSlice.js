@@ -16,6 +16,11 @@ const initialState = {
     isLoading: false,
     error: "",
     sharedList:[],
+    businessInfo:{},
+    role:"",
+    businessSharedList:[],
+    businessSharedRequestList:[],
+    businessOwner:'',
 }
 /**
  * 取得使用者API
@@ -35,6 +40,32 @@ export const getUserInfo = createAsyncThunk('userSlice/getUserInfo', async (_,th
     } catch (e) {
         console.log("UserApi獲取失敗", e);
         return JSON.parse(await AsyncStorage.getItem('userInfo'));
+    }
+});
+
+/**
+ * 取得使用者API
+ */
+export const getBusinessInfo = createAsyncThunk('userSlice/getBusinessInfo', async (_,thunkAPI) => {
+    console.log("redux獲取businessInfoApi", thunkAPI.getState().userInfo.token);
+    try {
+        const response = await axios({
+            method: "GET",
+            url: `${BASE_URL}/account/account/business/info`,
+            headers: { 'Authorization': thunkAPI.getState().userInfo.token },
+        });
+        
+        
+        console.log("business獲取成功", response.data);
+        await AsyncStorage.removeItem('foodInfo');
+        return {info:response.data,role:"商業"};
+    } catch (e) {
+        console.log("business獲取失敗", e);
+        if(e.response.status=="400"){
+            return {info:{name:"",address:"",phone:"",number:""},role:"個人"};
+        }
+        
+        //return JSON.parse(await AsyncStorage.getItem('businessInfo'));
     }
 });
 /**
@@ -118,8 +149,8 @@ export const checkToken = createAsyncThunk('userSlice/checkToken', async (_,thun
         
         
         if(error.response.status=="400"){
-            console.log(`Bearer ${error.response.data}`);
-            thunkAPI.dispatch(setUserToken(`Bearer ${error.response.data}`));
+            //console.log(`Bearer ${error.response.data}`);
+            await thunkAPI.dispatch(setUserToken(`Bearer ${error.response.data}`));
             console.log("token錯誤");
             
         }
@@ -150,7 +181,7 @@ export const setUserToken = createAsyncThunk('userSlice/setUserToken', async (to
  * 取得使用者API
  */
 export const getSharedList = createAsyncThunk('userSlice/getSharedList', async (_,thunkAPI) => {
-    console.log("redux獲取uerInfoApi", thunkAPI.getState().userInfo.token);
+    console.log("redux獲取getSharedList", thunkAPI.getState().userInfo.token);
     try {
         const response = await axios({
             method: "GET",
@@ -161,6 +192,39 @@ export const getSharedList = createAsyncThunk('userSlice/getSharedList', async (
         return response.data;
     } catch (e) {
         console.log("getSharedList獲取失敗", e);
+    }
+});
+
+export const getBusinessSharedList = createAsyncThunk('userSlice/getBusinessSharedList', async (_,thunkAPI) => {
+    console.log("redux獲取BusinessSharedListApi", thunkAPI.getState().userInfo.token);
+    try {
+        const response = await axios({
+            method: "GET",
+            url: `${BASE_URL}/account/account/business/request`,
+            headers: { 'Authorization': thunkAPI.getState().userInfo.token },
+        });
+        console.log("BusinessSharedListApi獲取成功");
+        console.log(response);
+        var tempList1=[];
+        var tempList2=[];
+        for(var i=0;i<response.data.length;i++){
+            if(response.data[i].status=="processing"){
+                tempList1.push(response.data[i]);
+            }else{
+                tempList2.push(response.data[i]);
+            }
+        }
+        if(response.status=='202'){
+            console.log("member")
+            return {list1:[],list2:[],businessOwner:response.data.owner_name}
+        }else{
+            console.log("not member")
+            return {list1:tempList1,list2:tempList2,businessOwner:''}
+        }
+        
+    } catch (e) {
+        console.log("BusinessSharedListApi獲取失敗", e);
+        return {list1:[],list2:[]}
     }
 });
 
@@ -176,6 +240,12 @@ const userSlice = createSlice({
             console.log("redux清除userInfoList")
             state.token = "";
             state.info = initialState.info;
+            state.sharedList=[];
+            state.businessInfo={};
+            state.role="個人";
+            state.businessSharedList=[];
+            state.businessSharedRequestList=[];
+            state.businessOwner="";
         },
         removeError(state, action) {
             console.log("redux清除removeError")
@@ -232,6 +302,15 @@ const userSlice = createSlice({
             }),
             builder.addCase(getSharedList.fulfilled, (state, action) => {
                 state.sharedList=action.payload;
+            }),
+            builder.addCase(getBusinessInfo.fulfilled,(state,action)=>{
+                state.businessInfo=action.payload.info;
+                state.role=action.payload.role;
+            }),
+            builder.addCase(getBusinessSharedList.fulfilled,(state,action)=>{
+                state.businessSharedList=action.payload.list2
+                state.businessSharedRequestList=action.payload.list1
+                state.businessOwner=action.payload.businessOwner
             })
     },
 })

@@ -11,7 +11,7 @@ import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/n
 import { scale, moderateScale, verticalScale } from "./ScaleMethod";
 import messaging from '@react-native-firebase/messaging';
 import { useDispatch, useSelector } from "react-redux";
-import { checkToken, getSharedList, getUserInfo, setIsloading } from "../store/userSlice";
+import { checkToken, getBusinessInfo, getBusinessSharedList, getSharedList, getUserInfo, setIsloading } from "../store/userSlice";
 
 
 const UserScreen = () => {
@@ -29,15 +29,29 @@ const UserScreen = () => {
         React.useCallback(() => {
             const fetchData = async () => {
                 //console.log("個人頁面檢查token新方法");
-                
+
                 await dispatch(checkToken());
+                
                 await dispatch(getUserInfo());
-                await dispatch(getSharedList());
+                await dispatch(getBusinessInfo());
+
+                
             };
-    
+
             fetchData();
         }, [dispatch])
     )
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            if(state.role=="個人"){
+                await dispatch(getSharedList());
+            }else{
+                await dispatch(getBusinessSharedList());
+            }
+        };
+        fetchData();
+    },[state.role]);
 
     /**
      * 取得FCM
@@ -64,10 +78,15 @@ const UserScreen = () => {
     /**
      * 上拉刷新
      */
-    const onRefresh = useCallback(() => { // 避免不必要的渲染使用
+    const onRefresh = useCallback(async () => { // 避免不必要的渲染使用
         dispatch(setIsloading());
         dispatch(getUserInfo("" + state.token));
         dispatch(checkToken());
+        if(state.role=="個人"){
+            await dispatch(getSharedList());
+        }else{
+            await dispatch(getBusinessSharedList());
+        }
     }, []);
 
     return (
@@ -170,7 +189,7 @@ const UserScreen = () => {
                                 title={<>
                                     <Text style={{ fontSize: textSize }}>用戶類型</Text>
                                     <View style={styles.titleView_4}>
-                                        <Text style={styles.leftTitle}>{state.info?.role}</Text>
+                                        <Text style={styles.leftTitle}>{state.role}</Text>
                                         <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
                                     </View>
                                 </>}>
@@ -208,9 +227,44 @@ const UserScreen = () => {
                                     </View>
                                 </>}>
                             </Button>
+                            {state.role == "商業"?<>
                             <Button
                                 accessible={true}
-                                accessibilityLabel="前往查看共用用戶設定按鈕"
+                                accessibilityLabel="前往查看商業共用用戶設定按鈕"
+                                accessibilityRole="none"
+                                buttonStyle={styles.accountButtoncenter}
+                                icon={<FontAwesomeIcon icon={faList} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
+                                titleStyle={styles.buttonTitle}
+                                onPress={() => navigation.navigate('SharedBusinessList')}
+
+                                title={<>
+                                    {state.businessSharedRequestList?.length > 0 ?
+                                        <Badge
+                                            status="primary"
+                                            value={`${state.businessSharedList ? state.businessSharedRequestList?.length : 0}`}
+                                            containerStyle={{ position: 'absolute', top: 0, left: -10 }}
+                                        /> :
+                                        <>
+
+                                        </>}
+
+                                    <Text style={{ fontSize: textSize }}>查看商業共用用戶</Text>
+                                    <View style={styles.titleView_6}>
+                                    {state.businessOwner==""?<>
+                                    <Text style={styles.leftTitle}>{`${state.businessSharedList ? state.businessSharedList?.length : 0}人`}</Text>
+                                    </>:<>
+                                    <Text style={styles.leftTitle}></Text>
+                                    </>}
+                                        
+                                        <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
+
+                                    </View>
+                                </>}>
+                            </Button>
+                            </>:<>
+                            <Button
+                                accessible={true}
+                                accessibilityLabel="前往查看個人共用用戶設定按鈕"
                                 accessibilityRole="none"
                                 buttonStyle={styles.accountButtoncenter}
                                 icon={<FontAwesomeIcon icon={faList} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
@@ -218,7 +272,7 @@ const UserScreen = () => {
                                 onPress={() => navigation.navigate('SharedList')}
 
                                 title={<>
-                                    {state.sharedList?.requestUserList?.length>0 ?
+                                    {state.sharedList?.requestUserList?.length > 0 ?
                                         <Badge
                                             status="primary"
                                             value={`${state.sharedList ? state.sharedList.requestUserList?.length : 0}`}
@@ -228,7 +282,7 @@ const UserScreen = () => {
 
                                         </>}
 
-                                    <Text style={{ fontSize: textSize }}>查看共用用戶</Text>
+                                    <Text style={{ fontSize: textSize }}>查看個人共用用戶</Text>
                                     <View style={styles.titleView_6}>
 
                                         <Text style={styles.leftTitle}>{`${state.sharedList ? state.sharedList.userList?.length : 0}人`}</Text>
@@ -237,6 +291,8 @@ const UserScreen = () => {
                                     </View>
                                 </>}>
                             </Button>
+                            </>}
+                            
                             <Button
                                 accessible={true}
                                 accessibilityLabel="前往升級方案設定按鈕"
@@ -253,22 +309,27 @@ const UserScreen = () => {
                                     </View>
                                 </>}>
                             </Button>
-                            <Button
-                                accessible={true}
-                                accessibilityLabel="前往商業資訊按鈕"
-                                accessibilityRole="none"
-                                buttonStyle={styles.accountButtoncenter}
-                                icon={<FontAwesomeIcon icon={faBriefcase} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
-                                titleStyle={styles.buttonTitle}
-                                onPress={() => navigation.navigate('BusinessInfo')}
+                            {state.role == "商業" ? <>
+                                <Button
+                                    accessible={true}
+                                    accessibilityLabel="前往商業資訊按鈕"
+                                    accessibilityRole="none"
+                                    buttonStyle={styles.accountButtoncenter}
+                                    icon={<FontAwesomeIcon icon={faBriefcase} color="#404496" size={iconSize} style={styles.iconLeft}></FontAwesomeIcon>}
+                                    titleStyle={styles.buttonTitle}
+                                    onPress={() => navigation.navigate('BusinessInfo')}
 
-                                title={<>
-                                    <Text style={{ fontSize: textSize }}>查看商業資訊</Text>
-                                    <View style={styles.titleView_6}>
-                                        <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
-                                    </View>
-                                </>}>
-                            </Button>
+                                    title={<>
+                                        <Text style={{ fontSize: textSize }}>查看商業資訊</Text>
+                                        <View style={styles.titleView_6}>
+                                            <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={iconSize}></FontAwesomeIcon>
+                                        </View>
+                                    </>}>
+                                </Button>
+                            </> : <>
+
+                            </>}
+
                             <Button
                                 accessible={true}
                                 accessibilityLabel="開啟通知設定按鈕"
@@ -463,22 +524,29 @@ const UserScreen = () => {
                                     </View>
                                 </>}>
                             </Button>
-                            <Button
-                                accessible={true}
-                                accessibilityLabel="前往商業資訊按鈕"
-                                accessibilityRole="none"
-                                buttonStyle={[styles.accountButtoncenter, { height: moderateScale(50), }]}
-                                icon={<FontAwesomeIcon icon={faBriefcase} color="#404496" size={lookIconSize} style={styles.iconLeft}></FontAwesomeIcon>}
-                                titleStyle={styles.buttonTitle}
-                                onPress={() => navigation.navigate('BusinessInfo')}
+                            {state.role == "商業" ?
+                                <>
+                                    <Button
+                                        accessible={true}
+                                        accessibilityLabel="前往商業資訊按鈕"
+                                        accessibilityRole="none"
+                                        buttonStyle={[styles.accountButtoncenter, { height: moderateScale(50), }]}
+                                        icon={<FontAwesomeIcon icon={faBriefcase} color="#404496" size={lookIconSize} style={styles.iconLeft}></FontAwesomeIcon>}
+                                        titleStyle={styles.buttonTitle}
+                                        onPress={() => navigation.navigate('BusinessInfo')}
 
-                                title={<>
-                                    <Text style={{ fontSize: lookTestSize }}>查看商業資訊</Text>
-                                    <View style={[styles.titleView_6,]}>
-                                        <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={lookIconSize}></FontAwesomeIcon>
-                                    </View>
-                                </>}>
-                            </Button>
+                                        title={<>
+                                            <Text style={{ fontSize: lookTestSize }}>查看商業資訊</Text>
+                                            <View style={[styles.titleView_6,]}>
+                                                <FontAwesomeIcon icon={faChevronRight} color="#ECECEC" size={lookIconSize}></FontAwesomeIcon>
+                                            </View>
+                                        </>}>
+                                    </Button>
+                                </> : 
+                                <>
+
+                                </>}
+
                             <Button
                                 accessible={true}
                                 accessibilityLabel="開啟通知設定按鈕"

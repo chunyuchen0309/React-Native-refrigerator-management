@@ -30,17 +30,17 @@ const RegisterBusinessScreen = () => {
 			url: `${BASE_URL}/account/account/business/register`,
 			headers: { 'Authorization': state.token },
 			data: {
-				"address": ""+companyAddress,
-				"name": ""+companyName,
-				"phone": ""+companyPhone,
-				"number": ""+uniformNumbers,
+				"address": "" + companyAddress,
+				"name": "" + companyName,
+				"phone": "" + companyPhone,
+				"number": "" + uniformNumbers,
 			},
 		}).then(res => {
-			console.log("註冊商業帳號成功",res.data);
-		}).catch(function (error){
+			console.log("註冊商業帳號成功", res.data);
+		}).catch(function (error) {
 			console.log(error);
 		}).finally(() => {
-			//navigation.goBack();
+			navigation.navigate('User');
 		});
 	}
 
@@ -66,6 +66,7 @@ const RegisterBusinessScreen = () => {
 				<KeyboardAvoidingView behavior="position" enabled>
 					<View style={Userstyle.greyBg}>
 						<Input
+							autoCapitalize="none"
 							selectionColor='#777'
 							label="公司名稱"
 							labelStyle={Userstyle.lable1}
@@ -76,6 +77,7 @@ const RegisterBusinessScreen = () => {
 							onChangeText={handleCompanyName}
 						/>
 						<Input
+							autoCapitalize="none"
 							selectionColor='#777'
 							label="公司地址"
 							labelStyle={Userstyle.lable1}
@@ -86,6 +88,7 @@ const RegisterBusinessScreen = () => {
 							onChangeText={handleCompanyAddressChange}
 						/>
 						<Input
+							keyboardType="numeric"
 							selectionColor='#777'
 							label="公司電話"
 							labelStyle={Userstyle.lable1}
@@ -96,6 +99,8 @@ const RegisterBusinessScreen = () => {
 							onChangeText={handleCompanyPhoneChange}
 						/>
 						<Input
+							keyboardType="numeric"
+							autoCapitalize="none"
 							selectionColor='#777'
 							label="統一編號"
 							labelStyle={Userstyle.lable1}

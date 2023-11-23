@@ -22,31 +22,61 @@ const SharedAccountScreen=()=>{
     const [sendRole,setSendRole]=useState(false);
     const Shared=()=>{
         setIsLoading(true);
-        console.log('username:',''+state.info.username,
-        '\nrequestEmail:',''+sharedEmail,
-        '\nbusiness:',sendRole,);
-        
-        axios({
-            method:"PUT",
-            url:`${BASE_URL}/account/account/request/send`,
-            headers: {'Authorization': state.token},
-            data:{
-                'username':''+state.info.username,
-                'requestEmail':''+sharedEmail,
-                'business':sendRole,
-            },
-        }).then(res=>{
-            console.log("共享請求發送成功",res.data);
-            setIsLoading(false);
-            navigation.goBack();
-        }).catch(function (error){
-            console.log(error.response);
-            Alert.alert(`${error.response.data.errorMessage}`);
-            setIsLoading(false);
-        }).finally(()=>{
-            setIsLoading(false);
+        if(sendRole){
             
-        });        
+            console.log(
+            '\nnumber:',''+sharedEmail,
+            '\nbusiness:',sendRole,);
+
+            axios({
+                method:"POST",
+                url:`${BASE_URL}/account/account/business/request`,
+                headers: {'Authorization': state.token},
+                data:{
+                    number:sharedEmail,
+                },
+            }).then(res=>{
+                console.log("商業共享請求發送成功",res.data);
+                setIsLoading(false);
+                navigation.goBack();
+            }).catch(function (error){
+                console.log(error.response);
+                Alert.alert(`${error.response.data.errorMessage}`);
+                setIsLoading(false);
+            }).finally(()=>{
+                setIsLoading(false);
+                
+            });     
+
+        }else{
+            
+            console.log('username:',''+state.info.username,
+            '\nrequestEmail:',''+sharedEmail,
+            '\nbusiness:',sendRole,);
+            
+            axios({
+                method:"PUT",
+                url:`${BASE_URL}/account/account/request/send`,
+                headers: {'Authorization': state.token},
+                data:{
+                    'username':''+state.info.username,
+                    'requestEmail':''+sharedEmail,
+                    'business':sendRole,
+                },
+            }).then(res=>{
+                console.log("個人共享請求發送成功",res.data);
+                setIsLoading(false);
+                navigation.goBack();
+            }).catch(function (error){
+                console.log(error.response);
+                Alert.alert(`${error.response.data.errorMessage}`);
+                setIsLoading(false);
+            }).finally(()=>{
+                setIsLoading(false);
+                
+            });        
+        }
+        
         
     }
     return(
@@ -55,7 +85,7 @@ const SharedAccountScreen=()=>{
                 <KeyboardAvoidingView behavior="position" enabled>
                     <View style={Userstyle.greyBg}>
                         <Input
-                        label="對方電子郵件"
+                        label={`${sendRole?'輸入公司統一編號':'輸入對方電子郵件'}`}
                         labelStyle={Userstyle.lable1}
                         containerStyle={[Userstyle.containerStyle1,{marginBottom:0}]}
                         inputContainerStyle={Userstyle.inputContainerStyle1}

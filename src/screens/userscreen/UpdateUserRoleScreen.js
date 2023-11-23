@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, KeyboardAvoidingView, SafeAreaView, StyleSheet, View } from "react-native";
 import { Button, CheckBox, Input, Text,} from "react-native-elements";
 import Userstyle from "../../style/UserStyle";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
@@ -10,42 +10,45 @@ import { TouchableWithoutFeedback } from "react-native";
 import { Keyboard } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { moderateScale } from "../ScaleMethod";
+import { setUserToken } from "../../store/userSlice";
 
 const UpdateUserRoleScreen=()=>{
-    console.log("UpdateUserRoleScreen");
+    
     const state = useSelector(state => state.userInfo);
     const [userRole,setUserRole]=useState("");
     const [isLoading,setIsLoading]=useState(false);
     const navigation=useNavigation();
-
+    const dispatch = useDispatch()
     const Update=()=>{
+
         setIsLoading(true);
         console.log(userRole);
+        
         axios({
-            method:"PUT",
-            url:`${BASE_URL}/auth/modify`,
+            method:"GET",
+            url:`${BASE_URL}/account/account/business/switch`,
             headers: {'Authorization':state.token},
-            data:{
-                name:state.info.username,
-                phone:state.info.phone,
-                role:userRole,
-            },
-        }).then(res=>{
-            console.log(res.data);
+        }).then(async res=>{
+            console.log("更換token成功",res.data);
+            await dispatch(setUserToken(res.data));
             setIsLoading(false);
-        }).catch(e=>{
-            console.log(`UpdateUserName error ${e}`);
+            navigation.goBack();
+        }).catch(function (error){
+            console.log(error);
             setIsLoading(false);
+            if(error.response.status=="500"){
+                Alert.alert("目前無商業帳號，請註冊商業帳號或者申請商業帳號共用")
+            }
             
         }).finally(()=>{
             setIsLoading(false);
-            navigation.goBack();
+            
         });
     }
     useEffect(()=>{
-        setUserRole(state.info.role== "個人" ? 0:1 );
+        setUserRole(state.role=="商業"? 1:0 );
     },[]);
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>                   
@@ -76,6 +79,7 @@ const UpdateUserRoleScreen=()=>{
                     </View>   
                     <Button
                         buttonStyle={Userstyle.buttonUpdate}
+                        titleStyle={{fontSize:moderateScale(17),fontWeight:'500'}}
                         title="修改"
                         loading={isLoading}
                         onPress={()=>{Update()}}/>              

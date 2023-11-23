@@ -85,6 +85,7 @@ const RefrigeratorScreen = () => {
                         </TouchableOpacity>
                     </View>
                 ),
+                
             }
         );
     }, []);

@@ -53,7 +53,7 @@ const HandToRefScreen = () => {
     const [initialRender, setInitialRender] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalFinishVisible, setModaFinishlVisible] = useState(false);
-    const dispatch =useDispatch();
+    const dispatch = useDispatch();
     const getRefInfo = () => {
         setRefInfo(refState.refList);
         //console.log(().length);
@@ -118,12 +118,12 @@ const HandToRefScreen = () => {
             <TouchableOpacity
                 key={index}
                 accessible={true}
-                accessibilityLabel={`冷凍第${index +Buttonindex}層`}
+                accessibilityLabel={`冷凍第${index + Buttonindex}層`}
                 accessibilityRole="none"
                 style={{ flex: 1, backgroundColor: "#416BFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
                 //title={`Button ${index + 1}`}
                 onPress={() => handleButtonPress(index + Buttonindex, "freezerContainer")}
-                
+
             />
         ));
     };
@@ -136,7 +136,7 @@ const HandToRefScreen = () => {
         return buttonDownCenter.map((_, index) => (
             <TouchableOpacity
                 accessible={true}
-                accessibilityLabel={`冷藏第${index +Buttonindex}層`}
+                accessibilityLabel={`冷藏第${index + Buttonindex}層`}
                 accessibilityRole="none"
                 key={index}
                 style={index === buttonDownCenter.length - 1 ? { flex: 2, backgroundColor: "#95ECFF", marginVertical: moderateScale(3), borderRadius: moderateScale(10), } : { flex: 1, backgroundColor: "#95ECFF", marginVertical: moderateScale(3), borderRadius: moderateScale(10), }}
@@ -154,7 +154,7 @@ const HandToRefScreen = () => {
         return buttonTopDoor.map((_, index) => (
             <TouchableOpacity
                 accessible={true}
-                accessibilityLabel={`冷凍門第${index +Buttonindex}層`}
+                accessibilityLabel={`冷凍門第${index + Buttonindex}層`}
                 accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
@@ -172,7 +172,7 @@ const HandToRefScreen = () => {
         return buttonDownDoor.map((_, index) => (
             <TouchableOpacity
                 accessible={true}
-                accessibilityLabel={`冷藏門第${index +Buttonindex}層`}
+                accessibilityLabel={`冷藏門第${index + Buttonindex}層`}
                 accessibilityRole="none"
                 key={index}
                 style={{ flex: 1, backgroundColor: "#CDCFFF", marginVertical: moderateScale(2), borderRadius: moderateScale(10), }}
@@ -196,7 +196,7 @@ const HandToRefScreen = () => {
 
         var tempType = type;
 
-        if (tempType == "freezerDoorContainer" || tempType == "coolerDoorContainer") { 
+        if (tempType == "freezerDoorContainer" || tempType == "coolerDoorContainer") {
             //點擊門的情況
             //console.log("種類:"+tempType);
             console.log(` 選擇第 ${buttonIndex} 層`);
@@ -253,7 +253,7 @@ const HandToRefScreen = () => {
                 });
             }
         }
-        console.log("上傳資料：",newDataInfo);
+        console.log("上傳資料：", newDataInfo);
         axios({
             method: "POST",
             url: `${BASE_URL}/storage/item/add`,
@@ -265,11 +265,11 @@ const HandToRefScreen = () => {
             console.log(res);
             const deletedIndexes = [];
             const filteredList = addList.filter((item, index) => {
-            if (item["Select"] !== true) {  
-                return true; // 保留false
-            }
-            deletedIndexes.push(index);//儲存要刪除的index
-            return false; // 刪
+                if (item["Select"] !== true) {
+                    return true; // 保留false
+                }
+                deletedIndexes.push(index);//儲存要刪除的index
+                return false; // 刪
             });
             dispatch(addRemove(deletedIndexes));
             setAddList(filteredList);
@@ -282,7 +282,7 @@ const HandToRefScreen = () => {
                     navigation.navigate("Post");
                 }, 3500);
             }
-        }).catch(function(e){
+        }).catch(function (e) {
             console.log(e);
             Alert.alert("新增錯誤");
         }).finally(() => {
@@ -316,7 +316,7 @@ const HandToRefScreen = () => {
                             <Image source={require('../../../Img/arrow.png')}></Image>
                             <Text style={modal_fab.modalTitle}>點擊想要加入的食物列表後，在點選存入的冰箱</Text>
                             <AnimatedLottieView
-                                style={{ height: moderateScale(100), alignSelf: 'flex-end', top: moderateScale(-30,1.6), right: moderateScale(30,2) }}
+                                style={{ height: moderateScale(100), alignSelf: 'flex-end', top: moderateScale(-30, 1.6), right: moderateScale(30, 2) }}
                                 source={require('../../assets/click.json')}
                                 speed={0.5}
                                 autoPlay={true}
@@ -329,24 +329,24 @@ const HandToRefScreen = () => {
             </Modal>
 
             <Modal
-                    animationIn={"zoomIn"}
-                    animationInTiming={900}
-                    animationOut={"zoomOut"}
-                    animationOutTiming={800}
-                    isVisible={modalFinishVisible}
-                    backdropOpacity={0.8}
-                    onBackdropPress={() => { setModaFinishlVisible(false)}}
-                >
-                        <View style={styles.modalView}>
-                            <AnimatedLottieView
-                                style={{width:moderateScale(500),alignSelf:'center',paddingEnd:moderateScale(6)}}
-                                source={require('../../assets/addFoodFinish.json')}
-                                autoPlay
-                                speed={0.8}
-                                loop={false}>
-                            </AnimatedLottieView>
+                animationIn={"zoomIn"}
+                animationInTiming={900}
+                animationOut={"zoomOut"}
+                animationOutTiming={800}
+                isVisible={modalFinishVisible}
+                backdropOpacity={0.8}
+                onBackdropPress={() => { setModaFinishlVisible(false) }}
+            >
+                <View style={styles.modalView}>
+                    <AnimatedLottieView
+                        style={{ width: moderateScale(500), alignSelf: 'center', paddingEnd: moderateScale(6) }}
+                        source={require('../../assets/addFoodFinish.json')}
+                        autoPlay
+                        speed={0.8}
+                        loop={false}>
+                    </AnimatedLottieView>
 
-                        </View>
+                </View>
             </Modal>
 
             <View style={[Userstyle.towList, { height: moderateScale(400), marginVertical: moderateScale(20), paddingHorizontal: moderateScale(20), }]}>
@@ -356,10 +356,10 @@ const HandToRefScreen = () => {
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity
-                            accessible={true}
-                        accessibilityRole={"none"}
-                        accessibilityLabel={`點擊食物為${item.NewData ? item.NewData : item.OldData}`}
-                    
+                                accessible={true}
+                                accessibilityRole={"none"}
+                                accessibilityLabel={`點擊食物為${item.NewData ? item.NewData : item.OldData}`}
+
                                 onPress={() => { handlePress(index) }}
                             >
                                 <View style={[Userstyle.listButton, { height: moderateScale(45), marginHorizontal: 0, backgroundColor: item.Select ? '#FBD589' : '#FAFAFA' }]}>
@@ -375,16 +375,18 @@ const HandToRefScreen = () => {
             <View style={{ height: moderateScale(200) }}>
                 <DropDownPicker
                     placeholder="選擇存入冰箱"
-                    style={[dropdown.squareBox, { zIndex: 0, }]}
-                    containerStyle={[dropdown.squareContainer, { zIndex: 0 }]}
-                    textStyle={{ fontSize: moderateScale(15), color: '#777' }}
-                    placeholderStyle={{ color: '#777' }}
+                    style={dropdown.squareBox}
+                    containerStyle={dropdown.squareContainer}
+                    textStyle={{ fontSize: moderateScale(18), color: '#777', fontWeight: '500' }}
+                    placeholderStyle={{ color: '#777', fontWeight: '500' }}
                     dropDownContainerStyle={{ borderRadius: 0, height: moderateScale(150) }}
-                    listItemLabelStyle={{ paddingTop: 5, color: "#777", fontSize: moderateScale(15), height: moderateScale(25), paddingLeft: moderateScale(10), }}
-                    selectedItemLabelStyle={{ fontWeight: "bold", color: '#777' }}
-                    selectedItemContainerStyle={{ backgroundColor: "#FFC55A" }}
-                    TickIconComponent={({ style }) => <FontAwesomeIcon icon={faCheck} color="#777" style={style} />}
-                    iconContainerStyle={{ marginRight: moderateScale(15) }}
+                    listItemLabelStyle={{ color: "#777", fontSize: moderateScale(17, 0.5) }} //下方item內容文字
+                    listItemContainerStyle={{ height: moderateScale(35) }} //下方item高度 
+                    selectedItemLabelStyle={{ fontWeight: "bold", color: '#777' }} //選擇後的item文字
+                    selectedItemContainerStyle={{ backgroundColor: "#FFC55A" }} //選擇後的item高度＆背景
+                    TickIconComponent={({ style }) => <FontAwesomeIcon icon={faCheck} color="#777" style={style} />} //選擇到的item右方勾勾
+                    listParentContainerStyle={{ paddingLeft: moderateScale(20) }}
+                    listParentLabelStyle={{ fontWeight: "bold" }}
                     open={open}
                     setOpen={setOpen}
                     value={selectRef}
@@ -541,7 +543,7 @@ const styles = StyleSheet.create({
     modalView: {
         borderRadius: moderateScale(10),
         alignSelf: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
         backgroundColor: 'transparent',
         width: moderateScale(300),
         height: moderateScale(250),

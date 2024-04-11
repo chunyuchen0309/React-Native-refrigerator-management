@@ -95,16 +95,16 @@ const repiceSlice = createSlice({
             if(state.likeList?.length>0 &&state.repiceList?.length>0){
                 console.log("喜愛增加")
                 for (var i = 0; i < state.repiceList.length; i++) {
-                    let foundMatch = false; // 添加一個標誌來標記是否找到匹配
+                    let foundMatch = false; 
                     for (var j = 0; j < state.likeList.length; j++) {
                         if (state.repiceList[i].id === state.likeList[j].id) {
                             state.repiceList[i].like = true;
-                            foundMatch = true; // 找到匹配後設置標誌為 true
-                            break; // 找到匹配後跳出內部循環
+                            foundMatch = true; 
+                            break; 
                         }
                     }
                     if (!foundMatch) {
-                        state.repiceList[i].like = false; // 如果未找到匹配，設置為 false
+                        state.repiceList[i].like = false; 
                     }
                 }
             }else{

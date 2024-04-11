@@ -39,7 +39,7 @@ const ListScreen = () => {
     const [clearEffects, setClearEffects] = useState(true);
     const dispatch = useDispatch();
     const state = useSelector(state => state.userInfo);
-    
+
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('blur', () => {
             setSpeedDialOpen(false);//離開頁面觸發
@@ -162,8 +162,8 @@ const ListScreen = () => {
                 var jaccardNumber = jaccard.index(tempRecipeList, tempFoodList);
                 //console.log("jaccard:", jaccardNumber);
                 return {
-                    ...recipeItem, // Copy existing properties
-                    jaccardNumber: jaccardNumber // Add the new property
+                    ...recipeItem, 
+                    jaccardNumber: jaccardNumber 
                 };
             });
             tempJRecipeList.sort((a, b) => b.jaccardNumber - a.jaccardNumber);
